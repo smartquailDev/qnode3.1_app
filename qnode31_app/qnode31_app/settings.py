@@ -93,7 +93,7 @@ INSTALLED_APPS = [
     'cart',
     'cotizaciones',
     'coupons',
-    'HOMEDETAIL',
+    #'HOMEDETAIL',
     #'ordenes_servicios',
     'payment',
     'ProFit',
