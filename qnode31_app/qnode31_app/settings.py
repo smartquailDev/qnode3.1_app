@@ -51,6 +51,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.humanize',
     #Wagtail Inicials
     'core',
     'wagtail.contrib.forms',
@@ -89,6 +90,15 @@ INSTALLED_APPS = [
     #'students',
     'embed_video',
     #'actions',
+    'cart',
+    'cotizaciones',
+    'coupons',
+    'HOMEDETAIL',
+    #'ordenes_servicios',
+    'payment',
+    'ProFit',
+    'Proyectos',
+    'webapp',
     'baton.autodiscover',   
     #'memcache_status',
     'rest_framework'
@@ -144,13 +154,13 @@ REDIS_DB =os.environ.get('REDIS_DB')
 #DJANGO ADMIN SETUPS
 
 #LOGINGS REDIRECT
-
-#LOGIN_REDIRECT_URL = 'accounts:dashboard'
+from django.urls import reverse_lazy
+LOGIN_REDIRECT_URL = 'dashboard'
 LOGIN_URL = 'login'
 LOGOUT_URL = 'logout'
 
-from django.urls import reverse_lazy
-LOGIN_REDIRECT_URL = reverse_lazy('course_list')
+
+#LOGIN_REDIRECT_URL = reverse_lazy('course_list')
 
 BATON = {
     'SITE_HEADER': 'SmartQuail',

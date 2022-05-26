@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+
+
+{% block content %}
+<div class="container">
+	<div class="d-flex justify-content-center h-100">
+		<div class="card" style="height: 800px;">
+			<div class="card-header">
+        
+  <h3>Crear Usuario ProFix</h3>
+  <p>Porfavor, registrarse llenando el siguiente formulario:</p>
+  <form action="." method="post">
+    {{ user_form.as_p }}
+    {% csrf_token %}
+    <button type="submit" value="Create my account" class="btn btn-outline-secondary">Crear Usuario</button> 
+  </form>
+
+  </div>
+  </div>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,73 @@
+
+{% extends "DashBase.html" %}
+{% load i18n %}
+{% load static %}
+{% load thumbnail %}
+{% load humanize %}
+
+
+
+
+{% block content %}
+
+
+  <div class="card">
+    <div class="card-header">
+      <h4>{% block title %}Proyectos a Pagar{% endblock %}</h4>
+  <div class="card-tools">
+    <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
+      <i class="fas fa-minus"></i>
+    </button>
+    <button type="button" class="btn btn-tool" data-card-widget="remove" title="Remove">
+      <i class="fas fa-times"></i>
+    </button>
+  </div>
+</div>
+
+
+<div class="card-body">
+      
+  <div class="card-body p-0">
+    <table class="table table-striped projects">
+  <thead>
+    <tr>
+      <th>Item</th>
+      <th>Categoría</th>
+      <th>Proyecto</th>
+      <th>Fecha de ejecución</th>
+      <th>Cantidad </th>
+      <th>Valor unitario</th>
+      <th>Subtotal</th>
+      <th>Anticipo</th>
+      <th>V. a Pagar</th>
+      <th>Saldo</th>
+      <th>Boton de Pago</th>
+    </tr>
+  </thead>  
+    <tbody>
+      {% for product in products %}
+      {% if product.user == user %}
+      {% if  product.available is True %}
+    <tr data-widget="expandable-table" aria-expanded="false" style="text-align:center;" >
+      <td>{{ product.id }}</td>
+      <td>{{ product.category }}</td>
+      <td>{{ product.name }}</td>
+      <td>{{product.created|date:'d/m/Y' }}</td>
+      <td> {{ product.quantity }} &nbsp; {{ product.units }}</td>
+      <td> ${{ product.price }}</td>
+      <td> ${{ product.subtotal }}</td>
+      <td> {{ product.anticipo }}%</td>
+      <td> ${{ product.SubTotal_cost|floatformat:2}}</td>
+      <td> ${{ product.Saldo |floatformat:2}}</td>
+      <td><a href="{{ product.get_absolute_url }}"> <i class="fas fa-money-check-alt"></i> </a></td>
+    </tr>
+    {% endif %}
+    {% endif %}
+    {% endfor %}
+  </tbody>
+</table>
+</div>
+</div>
+</div>
+{% endblock %}
+

@@ -1,0 +1,15 @@
+{% extends "base2.html" %}
+
+
+{% block content %}
+<div class="container">
+  <div class="d-flex justify-content-center h-100">
+    <div class="card">
+      <div class="card-header">
+  <h1>Gracias por utilizar nuestro sistema</h1>
+  <p>Usted ha salido del sistema ProFix exitosamente. Usted puede <a href="{% url "login" %}">Ingresar de nuevo.</a>.</p>
+  </div>
+  </div>
+  </div>
+
+{% endblock %}

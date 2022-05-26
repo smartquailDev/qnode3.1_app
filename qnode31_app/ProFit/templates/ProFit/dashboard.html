@@ -1,0 +1,53 @@
+{% extends "DashBase.html" %}
+
+
+
+    
+
+{% block content %}
+
+
+  
+<section class="content">
+  <div class="card">
+    <div class="card-header">
+      <h4>{% block title %}Inicio{% endblock %}</h4>
+    
+
+  <div class="card-tools">
+    <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
+      <i class="fas fa-minus"></i>
+    </button>
+    <button type="button" class="btn btn-tool" data-card-widget="remove" title="Remove">
+      <i class="fas fa-times"></i>
+    </button>
+  </div>
+</div>
+
+  <div class="card-body">
+    <div class="card-body p-0">
+
+
+
+  <h1>Bienvenido {{ request.user.first_name }} a ProFix IT</h1>
+
+  {% with total_images_created=request.user.images_created.count %}
+    <p>Este sistema le ayudará a administrar los mantenimientos en su edifcio.{{ total_images_created }}{{ total_images_created|pluralize }}</p>
+  {% endwith %}
+
+  
+
+  <p>Usted puede ahora <a href="{% url "edit" %}">editar su perfil</a> y <a href="{% url "password_change" %}">cambiar su contraseña</a>.Si así lo desea.<p>
+    <p>Usted puede  <a href="{% url "cotizaciones:cotizacion_create" %}">cotizar</a></p>
+    <p>Usted puede ver sus  <a href="{% url "HOMEDETAIL:cotizacion_list" %}">cotizaciones</a></p>
+
+  
+  </div>
+</div>
+</div>
+</div>
+</section>
+
+
+
+    {% endblock %}

@@ -1,0 +1,37 @@
+{% extends "base2.html" %}
+{% load static %}
+{% block content %}
+<div class="container">
+	<div class="d-flex justify-content-center h-100">
+		<div class="card">
+			<div class="card-header">
+        
+        <img src="{% static '/img/logo.png' %}" alt="..." class="rounded mx-auto d-block" width="160" height="60">
+        <p></p>
+        <h6>Administración de Mantenimientos</h6>
+  {% if form.errors %}
+    <p>
+      Su nombre de usuario y contraseña no coinciden.
+      Porfavor volver a intenarlo. <a href="{% url "login" %}">Volver a intentar</a> 
+    </p>
+  {% else %}
+  <div class="card-body">
+  <div class="login-form">
+    <form action="{% url 'login' %}" method="post">
+      {{ form.as_p }}
+      {% csrf_token %}
+      <input type="hidden" name="next" value="{{ next }}" />
+      <button type="submit" value="Log in" class="btn btn-outline-secondary">Ingresar</button> 
+    </form>
+    <p><a href="{% url "password_reset" %}">Olvidó su contraseña?</a></p>
+    <p5>Porfavor, escriba su nombre de usuario y contraseña . Si todavia no tiene una cuenta, <a href="{% url "register" %}">registrarse aqui</a></p5>
+  {% endif %}
+  </div>
+  </div>
+</div>
+</div>
+</div>
+</div>
+
+
+{% endblock %}

@@ -1,0 +1,643 @@
+{% extends "webapp/base.html" %}
+{% load wagtailcore_tags wagtailimages_tags %}
+{% load static %}
+{% load widget_tweaks %}
+
+
+{% block content %}
+<section id="main-slider" class="carousel">
+    <div class="carousel-inner">
+        <div class="item active">
+            <div class="container">
+                <div class="carousel-content">
+                    <h1>{{page.banner_title1 | richtext }}</h1>
+                    <p class="lead">{{page.banner_info1 | richtext }}</p>
+                </div>
+            </div>
+        </div><!--/.item-->
+        <div class="item">
+            <div class="container">
+                <div class="carousel-content">
+                    <h1>{{page.banner_title2 | richtext }}</h1>
+                    <p class="lead">{{page.banner_info2 | richtext }}</p>
+                </div>
+            </div>
+        </div>
+        <div class="item">
+            <div class="container">
+                <div class="carousel-content">
+                    <h1>{{page.banner_title3 | richtext }}</h1>
+                    <p class="lead">{{page.banner_info3 | richtext }}</p>
+                </div>
+            </div>
+        </div>
+        <div class="item">
+            <div class="container">
+                <div class="carousel-content">
+                    <h1>{{page.banner_title4 | richtext }}</h1>
+                    <p class="lead">{{page.banner_info4 | richtext }}</p>
+                </div>
+            </div>
+        </div>
+        <!--/.item-->
+    </div><!--/.carousel-inner-->
+
+</section><!--/#main-slider-->
+
+<section id="services">
+    <div class="container">
+        <div class="box first">
+            <div class="row">
+                <div class="col-md-4 col-sm-6">
+                    <div class="center">
+                        <i class="icon-apple icon-md icon-color1"></i>
+                        <h4>{{page.service_title | richtext }}</h4>
+                        <p>{{page.service_info | richtext }}</p>
+                    </div>
+                </div><!--/.col-md-4-->
+                <div class="col-md-4 col-sm-6">
+                    <div class="center">
+                        <i class="icon-android icon-md icon-color2"></i>
+                        <h4>{{page.service_title2 | richtext }}</h4>
+                        <p>{{page.service_info2 | richtext }}</p>
+                    </div>
+                </div><!--/.col-md-4-->
+                <div class="col-md-4 col-sm-6">
+                    <div class="center">
+                        <i class="icon-windows icon-md icon-color3"></i>
+                        <h4>{{page.service_title3 | richtext }}</h4>
+                        <p>{{page.service_info3 | richtext }}</p>
+                    </div>
+                </div><!--/.col-md-4-->
+                <div class="col-md-4 col-sm-6">
+                    <div class="center">
+                        <i class="icon-html5 icon-md icon-color4"></i>
+                        <h4>{{page.service_title4 | richtext }}</h4>
+                        <p>{{page.service_info4 | richtext }}</p>
+                    </div>
+                </div><!--/.col-md-4-->
+                <div class="col-md-4 col-sm-6">
+                    <div class="center">
+                        <i class="icon-css3 icon-md icon-color5"></i>
+                        <h4>{{page.service_title5 | richtext }}</h4>
+                        <p>{{page.service_info5 | richtext }}</p>
+                    </div>
+                </div><!--/.col-md-4-->
+                <div class="col-md-4 col-sm-6">
+                    <div class="center">
+                        <i class="icon-thumbs-up icon-md icon-color6"></i>
+                        <h4>{{page.service_title6 | richtext }}</h4>
+                        <p>{{page.service_info6 | richtext }}</p>
+                    </div>
+                </div><!--/.col-md-4-->
+            </div><!--/.row-->
+        </div><!--/.box-->
+    </div><!--/.container-->
+</section><!--/#services-->
+
+<section id="portfolio">
+    <div class="container">
+        <div class="box">
+            <div class="center gap">
+                <h2>{{page.porfolio_title | richtext }}</h2>
+                <p class="lead">{{page.porfolio_info| richtext }}</p>
+            </div><!--/.center-->
+            <ul class="portfolio-filter">
+                <li><a class="btn btn-primary active" href="#" data-filter="*">Todos</a></li>
+                <li><a class="btn btn-primary" href="#" data-filter=".bootstrap">{{page.cartegory}}</a></li>
+                <li><a class="btn btn-primary" href="#" data-filter=".html">{{page.cartegory2}}</a></li>
+                <li><a class="btn btn-primary" href="#" data-filter=".wordpress">{{page.cartegory3}}</a></li>
+                <li><a class="btn btn-primary" href="#" data-filter=".wordpress">{{page.cartegory4}}</a></li>
+                <li><a class="btn btn-primary" href="#" data-filter=".wordpress">{{page.cartegory5}}</a></li>
+                <li><a class="btn btn-primary" href="#" data-filter=".wordpress">{{page.cartegory6}}</a></li>
+            </ul><!--/#portfolio-filter-->
+            {% for item in page.galleria.all %}
+            <ul class="portfolio-items col-4">
+                <li class="portfolio-item apps">
+                    <div class="item-inner">
+                        <div class="portfolio-image">
+                          {% image item.image scale-100 as p %}
+                            <img src="{{p.url}}" alt="">
+                            <div class="overlay">
+                                <a class="preview btn btn-danger" title="{{ page.descript }}" href="{{p.url}}"><i class="icon-eye-open"></i></a>
+                            </div>
+                        </div>
+                        <h5>{{ page.descript }}</h5>
+                    </div>
+                </li><!--/.portfolio-item-->
+                <li class="portfolio-item joomla bootstrap">
+                  <div class="item-inner">
+                      <div class="portfolio-image">
+                        {% image item.image scale-100 as p2 %}
+                          <img src="{{p2.url}}" alt="">
+                          <div class="overlay">
+                              <a class="preview btn btn-danger" title="{{ page.descript2 }}" href="{{p2.url}}"><i class="icon-eye-open"></i></a>
+                          </div>
+                      </div>
+                      <h5>{{ page.descript2 }}</h5>
+                  </div>
+                </li><!--/.portfolio-item-->
+                <li class="portfolio-item bootstrap wordpress">
+                  <div class="item-inner">
+                      <div class="portfolio-image">
+                        {% image item.image1 scale-100 as p3 %}
+                          <img src="{{p3.url}}" alt="">
+                          <div class="overlay">
+                              <a class="preview btn btn-danger" title="{{ page.descript3 }}" href="{{p3.url}}"><i class="icon-eye-open"></i></a>
+                          </div>
+                      </div>
+                      <h5>{{ page.descript3 }}</h5>
+                  </div>
+                </li><!--/.portfolio-item-->
+                <li class="portfolio-item joomla wordpress apps">
+                  <div class="item-inner">
+                      <div class="portfolio-image">
+                        {% image item.image2 scale-100 as p4 %}
+                          <img src="{{p4.url}}" alt="">
+                          <div class="overlay">
+                              <a class="preview btn btn-danger" title="{{ page.descript4 }}" href="{{p4.url}}"><i class="icon-eye-open"></i></a>
+                          </div>
+                      </div>
+                      <h5>{{ page.descript4 }}</h5>
+                  </div>
+                </li><!--/.portfolio-item-->
+                <li class="portfolio-item joomla html">
+                  <div class="item-inner">
+                      <div class="portfolio-image">
+                        {% image item.image3 scale-100 as p5 %}
+                          <img src="{{p5.url}}" alt="">
+                          <div class="overlay">
+                              <a class="preview btn btn-danger" title="{{ page.descript5 }}" href="{{p5.url}}"><i class="icon-eye-open"></i></a>
+                          </div>
+                      </div>
+                      <h5>{{ page.descript5 }}</h5>
+                  </div>
+                </li><!--/.portfolio-item-->
+                <li class="portfolio-item wordpress html">
+                  <div class="item-inner">
+                      <div class="portfolio-image">
+                        {% image item.image4 scale-100 as p6 %}
+                          <img src="{{p6.url}}" alt="">
+                          <div class="overlay">
+                              <a class="preview btn btn-danger" title="{{ page.descript6 }}" href="{{p.url}}"><i class="icon-eye-open"></i></a>
+                          </div>
+                      </div>
+                      <h5>{{ page.descript6 }}</h5>
+                  </div>
+                </li><!--/.portfolio-item-->
+                <li class="portfolio-item joomla html">
+                  <div class="item-inner">
+                      <div class="portfolio-image">
+                        {% image item.image5 scale-100 as p7 %}
+                          <img src="{{p7.url}}" alt="">
+                          <div class="overlay">
+                              <a class="preview btn btn-danger" title="{{ page.descript7 }}" href="{{p7.url}}"><i class="icon-eye-open"></i></a>
+                          </div>
+                      </div>
+                      <h5>{{ page.descript7 }}</h5>
+                  </div>
+                </li><!--/.portfolio-item-->
+                <li class="portfolio-item wordpress html">
+                  <div class="item-inner">
+                      <div class="portfolio-image">
+                        {% image item.image6 scale-100 as p8 %}
+                          <img src="{{p8.url}}" alt="">
+                          <div class="overlay">
+                              <a class="preview btn btn-danger" title="{{ page.descript8 }}" href="{{p8.url}}"><i class="icon-eye-open"></i></a>
+                          </div>
+                      </div>
+                      <h5>{{ page.descript8 }}</h5>
+                  </div>
+                </li>
+                <li class="portfolio-item joomla html">
+                  <div class="item-inner">
+                      <div class="portfolio-image">
+                        {% image item.image7 scale-100 as p9 %}
+                          <img src="{{p9.url}}" alt="">
+                          <div class="overlay">
+                              <a class="preview btn btn-danger" title="{{ page.descript9 }}" href="{{p9.url}}"><i class="icon-eye-open"></i></a>
+                          </div>
+                      </div>
+                      <h5>{{ page.descript9 }}</h5>
+                  </div>
+                </li>
+                <li class="portfolio-item joomla html">
+                  <div class="item-inner">
+                      <div class="portfolio-image">
+                        {% image item.image8 scale-100 as p10 %}
+                          <img src="{{p10.url}}" alt="">
+                          <div class="overlay">
+                              <a class="preview btn btn-danger" title="{{ page.descript10 }}" href="{{p10.url}}"><i class="icon-eye-open"></i></a>
+                          </div>
+                      </div>
+                      <h5>{{ page.descript10 }}</h5>
+                  </div>
+                </li>
+                <li class="portfolio-item joomla html">
+                  <div class="item-inner">
+                      <div class="portfolio-image">
+                        {% image item.image9 scale-100 as p11 %}
+                          <img src="{{p11.url}}" alt="">
+                          <div class="overlay">
+                              <a class="preview btn btn-danger" title="{{ page.descript11 }}" href="{{p11.url}}"><i class="icon-eye-open"></i></a>
+                          </div>
+                      </div>
+                      <h5>{{ page.descript11 }}</h5>
+                  </div>
+                </li>
+                <li class="portfolio-item joomla html">
+                  <div class="item-inner">
+                      <div class="portfolio-image">
+                        {% image item.image10 scale-100 as p12 %}
+                          <img src="{{p12.url}}" alt="">
+                          <div class="overlay">
+                              <a class="preview btn btn-danger" title="{{ page.descript12 }}" href="{{p12.url}}"><i class="icon-eye-open"></i></a>
+                          </div>
+                      </div>
+                      <h5>{{ page.descript12 }}</h5>
+                  </div>
+                </li>
+                <li class="portfolio-item joomla html">
+                  <div class="item-inner">
+                      <div class="portfolio-image">
+                        {% image item.image11 scale-100 as p13 %}
+                          <img src="{{p13.url}}" alt="">
+                          <div class="overlay">
+                              <a class="preview btn btn-danger" title="{{ page.descript13 }}" href="{{p13.url}}"><i class="icon-eye-open"></i></a>
+                          </div>
+                      </div>
+                      <h5>{{ page.descript13 }}</h5>
+                  </div>
+                </li>
+                <li class="portfolio-item joomla html">
+                  <div class="item-inner">
+                      <div class="portfolio-image">
+                        {% image item.image12 scale-100 as p14 %}
+                          <img src="{{p14.url}}" alt="">
+                          <div class="overlay">
+                              <a class="preview btn btn-danger" title="{{ page.descript14 }}" href="{{p14.url}}"><i class="icon-eye-open"></i></a>
+                          </div>
+                      </div>
+                      <h5>{{ page.descript14 }}</h5>
+                  </div>
+                </li>
+                <li class="portfolio-item joomla html">
+                  <div class="item-inner">
+                      <div class="portfolio-image">
+                        {% image item.image13 scale-100 as p15 %}
+                          <img src="{{p15.url}}" alt="">
+                          <div class="overlay">
+                              <a class="preview btn btn-danger" title="{{ page.descript15 }}" href="{{p15.url}}"><i class="icon-eye-open"></i></a>
+                          </div>
+                      </div>
+                      <h5>{{ page.descript15 }}</h5>
+                  </div>
+                </li>
+                <li class="portfolio-item joomla html">
+                  <div class="item-inner">
+                      <div class="portfolio-image">
+                        {% image item.image14 scale-100 as p16 %}
+                          <img src="{{p16.url}}" alt="">
+                          <div class="overlay">
+                              <a class="preview btn btn-danger" title="{{ page.descript16 }}" href="{{p16.url}}"><i class="icon-eye-open"></i></a>
+                          </div>
+                      </div>
+                      <h5>{{ page.descript16 }}</h5>
+                  </div>
+                </li>
+                <li class="portfolio-item joomla html">
+                  <div class="item-inner">
+                      <div class="portfolio-image">
+                        {% image item.image15 scale-100 as p17 %}
+                          <img src="{{p17.url}}" alt="">
+                          <div class="overlay">
+                              <a class="preview btn btn-danger" title="{{ page.descript17 }}" href="{{p17.url}}"><i class="icon-eye-open"></i></a>
+                          </div>
+                      </div>
+                      <h5>{{ page.descript17 }}</h5>
+                  </div>
+                </li>
+                <li class="portfolio-item joomla html">
+                  <div class="item-inner">
+                      <div class="portfolio-image">
+                        {% image item.image16 scale-100 as p18 %}
+                          <img src="{{p18.url}}" alt="">
+                          <div class="overlay">
+                              <a class="preview btn btn-danger" title="{{ page.descript18 }}" href="{{p18.url}}"><i class="icon-eye-open"></i></a>
+                          </div>
+                      </div>
+                      <h5>{{ page.descript18 }}</h5>
+                  </div>
+                </li>
+                <li class="portfolio-item joomla html">
+                  <div class="item-inner">
+                      <div class="portfolio-image">
+                        {% image item.image17 scale-100 as p19 %}
+                          <img src="{{p19.url}}" alt="">
+                          <div class="overlay">
+                              <a class="preview btn btn-danger" title="{{ page.descript19 }}" href="{{p19.url}}"><i class="icon-eye-open"></i></a>
+                          </div>
+                      </div>
+                      <h5>{{ page.descript19 }}</h5>
+                  </div>
+                </li>
+                <li class="portfolio-item joomla html">
+                  <div class="item-inner">
+                      <div class="portfolio-image">
+                        {% image item.image18 scale-100 as p20 %}
+                          <img src="{{p20.url}}" alt="">
+                          <div class="overlay">
+                              <a class="preview btn btn-danger" title="{{ page.descript20 }}" href="{{p20.url}}"><i class="icon-eye-open"></i></a>
+                          </div>
+                      </div>
+                      <h5>{{ page.descript20 }}</h5>
+                  </div>
+                </li>
+                <li class="portfolio-item joomla html">
+                  <div class="item-inner">
+                      <div class="portfolio-image">
+                        {% image item.image19 scale-100 as p21 %}
+                          <img src="{{p21.url}}" alt="">
+                          <div class="overlay">
+                              <a class="preview btn btn-danger" title="{{ page.descript21 }}" href="{{p21.url}}"><i class="icon-eye-open"></i></a>
+                          </div>
+                      </div>
+                      <h5>{{ page.descript21 }}</h5>
+                  </div>
+                </li>
+                <li class="portfolio-item bootstrap wordpress">
+                  <div class="item-inner">
+                      <div class="portfolio-image">
+                        {% image item.image20 scale-100 as p22 %}
+                          <img src="{{p22.url}}" alt="">
+                          <div class="overlay">
+                              <a class="preview btn btn-danger" title="{{ page.descript22 }}" href="{{p22.url}}"><i class="icon-eye-open"></i></a>
+                          </div>
+                      </div>
+                      <h5>{{ page.descript22 }}</h5>
+                  </div>
+                </li>
+                <li class="portfolio-item bootstrap wordpress">
+                  <div class="item-inner">
+                      <div class="portfolio-image">
+                        {% image item.image21 scale-100 as p23 %}
+                          <img src="{{p23.url}}" alt="">
+                          <div class="overlay">
+                              <a class="preview btn btn-danger" title="{{ page.descript23 }}" href="{{p23.url}}"><i class="icon-eye-open"></i></a>
+                          </div>
+                      </div>
+                      <h5>{{ page.descript23 }}</h5>
+                  </div>
+                </li>
+                <li class="portfolio-item bootstrap wordpress">
+                  <div class="item-inner">
+                      <div class="portfolio-image">
+                        {% image item.image22 scale-100 as p24 %}
+                          <img src="{{p24.url}}" alt="">
+                          <div class="overlay">
+                              <a class="preview btn btn-danger" title="{{ page.descript24 }}" href="{{p24.url}}"><i class="icon-eye-open"></i></a>
+                          </div>
+                      </div>
+                      <h5>{{ page.descript24 }}</h5>
+                  </div>
+                </li><!--/.portfolio-item-->
+            </ul>
+            {% endfor %}
+        </div><!--/.box-->
+    </div><!--/.container-->
+</section><!--/#portfolio-->
+
+<section id="pricing">
+    <div class="container">
+        <div class="box">
+            <div class="center">
+                <h2>{{page.plans_title | richtext }}</h2>
+                <p class="lead">{{page.plans_info | richtext }}</p>
+            </div><!--/.center-->
+            <div class="big-gap"></div>
+            <div id="pricing-table" class="row">
+                <div class="col-sm-4">
+                    <ul class="plan">
+                        <li class="plan-name">{{ page.plan_name }}</li>
+                        <li class="plan-price">${{page.plan_price }}</li>
+                        <li>{{page.plan_info}}</li>
+                        <li>{{page.plan_info2}}</li>
+                        <li>{{page.plan_info3}}</li>
+                        <li>{{page.plan_info4}}</li>
+                        <li>{{page.plan_info5}}</li>
+                        <li class="plan-action"><a href="#" class="btn btn-primary btn-lg">Contratar</a></li>
+                    </ul>
+                </div><!--/.col-sm-4-->
+                <div class="col-sm-4">
+                    <ul class="plan featured">
+                      <li class="plan-name">{{ page.plan2_name }}</li>
+                      <li class="plan-price">${{page.plan2_price }}</li>
+                      <li>{{page.plan2_info}}</li>
+                      <li>{{page.plan2_info2}}</li>
+                      <li>{{page.plan2_info3}}</li>
+                      <li>{{page.plan2_info4}}</li>
+                      <li>{{page.plan2_info5}}</li>
+                      <li class="plan-action"><a href="#" class="btn btn-primary btn-lg">Contratar</a></li>
+                    </ul>
+                </div><!--/.col-sm-4-->
+                <div class="col-sm-4">
+                    <ul class="plan">
+                      <li class="plan-name">{{ page.plan3_name }}</li>
+                      <li class="plan-price">${{page.plan3_price }}</li>
+                      <li>{{page.plan3_info}}</li>
+                      <li>{{page.plan3_info2}}</li>
+                      <li>{{page.plan3_info3}}</li>
+                      <li>{{page.plan3_info4}}</li>
+                      <li>{{page.plan3_info5}}</li>
+                      <li class="plan-action"><a href="#" class="btn btn-primary btn-lg">Contratar</a></li>
+                    </ul>
+                </div><!--/.col-sm-4-->
+            </div>
+        </div>
+    </div>
+</section><!--/#pricing-->
+
+<section id="about-us">
+    <div class="container">
+        <div class="box">
+            <div class="center">
+                <h2>{{page.team_title | richtext }}</h2>
+                <p class="lead">{{page.team_info | richtext }}</p>
+            </div>
+            <div class="gap"></div>
+            <div id="team-scroller" class="carousel scale">
+              {% for item in page.galleria.all %}
+                <div class="carousel-inner">
+                    <div class="item active">
+                        <div class="row">
+                            <div class="col-sm-4">
+                                <div class="member">
+                                  {% image item.image24 scale-100 as T %}
+                                    <p><img class="img-responsive img-thumbnail img-circle" src="{{T.url}}" alt="" ></p>
+                                    <h3>{{ page.crew_name | richtext }}<small class="designation">{{ page.crew_title | richtext }}</small></h3>
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                              <div class="member">
+                                {% image item.image25 scale-100 as T2 %}
+                                  <p><img class="img-responsive img-thumbnail img-circle" src="{{T2.url}}" alt="" ></p>
+                                  <h3>{{ page.crew_name2 | richtext }}<small class="designation">{{ page.crew_title2 | richtext }}</small></h3>
+                              </div>
+                            </div>
+                            <div class="col-sm-4">
+                              <div class="member">
+                                {% image item.image26 scale-100 as T3 %}
+                                  <p><img class="img-responsive img-thumbnail img-circle" src="{{T3.url}}" alt="" ></p>
+                                  <h3>{{ page.crew_name3 | richtext }}<small class="designation">{{ page.crew_title3 | richtext }}</small></h3>
+                              </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="item">
+                        <div class="row">
+                            <div class="col-sm-4">
+                              <div class="member">
+                                {% image item.image27 scale-100 as T4 %}
+                                  <p><img class="img-responsive img-thumbnail img-circle" src="{{T4.url}}" alt="" ></p>
+                                  <h3>{{ page.crew_name4 | richtext }}<small class="designation">{{ page.crew_title4 | richtext }}</small></h3>
+                              </div>
+                            </div>
+                            <div class="col-sm-4">
+                              <div class="member">
+                                {% image item.image28 scale-100 as T5 %}
+                                  <p><img class="img-responsive img-thumbnail img-circle" src="{{T5.url}}" alt="" ></p>
+                                  <h3>{{ page.crew_name5 | richtext }}<small class="designation">{{ page.crew_title5 | richtext }}</small></h3>
+                              </div>
+                            </div>
+                            <div class="col-sm-4">
+                              <div class="member">
+                                {% image item.image29 scale-100 as T6 %}
+                                  <p><img class="img-responsive img-thumbnail img-circle" src="{{T6.url}}" alt="" ></p>
+                                  <h3>{{ page.crew_name6 | richtext }}<small class="designation">{{ page.crew_title6 | richtext }}</small></h3>
+                              </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+                <a class="left-arrow" href="#team-scroller" data-slide="prev">
+                    <i class="icon-angle-left icon-4x"></i>
+                </a>
+                <a class="right-arrow" href="#team-scroller" data-slide="next">
+                    <i class="icon-angle-right icon-4x"></i>
+                </a>
+            </div><!--/.carousel-->
+        </div><!--/.box-->
+    </div><!--/.container-->
+</section><!--/#about-us-->
+
+<section id="contact">
+    <div class="container">
+        <div class="box last">
+            <div class="row">
+                <div class="col-sm-6">
+                    <h1>{{page.contact_title | richtext }}</h1>
+                    <p>{{page.contact_info | richtext }}</p>
+                    <div class="status alert alert-success" style="display: none"></div>
+                      <form id="main-contact-form" class="contact-form" name="contact-form" role="form" action="{% pageurl page %}" method="POST" novalidate>
+        {% csrf_token %}
+        {% for hidden_field in form.hidden_fields %}
+          {{ hidden_field }}
+        {% endfor %}
+
+        {% if form.non_field_errors %}
+          <div class="alert alert-danger" role="alert">
+          {% for error in form.non_field_errors %}
+            {{ error }}
+          {% endfor %}
+          </div>
+        {% endif %}
+
+        {% for field in form.visible_fields %}
+          <div class="form-group">
+          {{ field.label_tag }}
+
+          {% if form.is_bound %}
+            {% if field.errors %}
+            {% render_field field class="form-control is-invalid" %}
+            {% for error in field.errors %}
+              <div class="invalid-feedback">
+              {{ error }}
+              </div>
+            {% endfor %}
+            {% else %}
+            {% render_field field class="form-control is-valid" %}
+            {% endif %}
+          {% else %}
+            {% render_field field class="form-control" %}
+          {% endif %}
+
+          {% if field.help_text %}
+            <small class="form-text text-muted">{{ field.help_text }}</small>
+          {% endif %}
+          </div>
+        {% endfor %}
+        <button type="submit" class="btn btn-primary">Enviar</button>
+        </form>
+                </div><!--/.col-sm-6-->
+                <div class="col-sm-6">
+                    <h1>Visitanos</h1>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <address>
+                                <strong>{{page.company_name | richtext}}</strong><br>
+                                {{ page.direccion | richtext }}, {{ page.numeracion}}<br>
+                                {{ page.ciudad | richtext }}<br>
+                                <abbr title="Phone">P:</abbr> {{page.telefono}}
+                            </address>
+                        </div>
+                    </div>
+                    <h1>Siguenos en nuestras redes</h1>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <ul class="social">
+                              {% if settings.webapp.SocialMediaSettings.facebook %}
+                                <li><a href="{{ settings.webapp_0.SocialMediaSettings.facebook }}"><i class="icon-facebook icon-social"></i> Facebook</a></li>
+                              {% endif %}
+                              {% if settings.webapp.SocialMediaSettings.google_plus %}
+                                <li><a href="#"><i class="icon-google-plus icon-social"></i> Google Plus</a></li>
+                              {% endif %}
+                              {% if settings.webapp.SocialMediaSettings.pinterest %}
+                                <li><a href="#"><i class="icon-pinterest icon-social"></i> Pinterest</a></li>
+                              {% endif %}
+                            </ul>
+                        </div>
+                        <div class="col-md-6">
+                            <ul class="social">
+                              {% if settings.webapp.SocialMediaSettings.instagram %}
+                                <li><a href="#"><i class="icon-linkedin icon-social"></i>instagram</a></li>
+                              {% endif %}
+                              {% if settings.webapp.SocialMediaSettings.twitter %}
+                                <li><a href="#"><i class="icon-twitter icon-social"></i> Twitter</a></li>
+                              {% endif %}
+                              {% if settings.webapp.SocialMediaSettings.youtube %}
+                                <li><a href="#"><i class="icon-youtube icon-social"></i> Youtube</a></li>
+                              {% endif %}
+                            </ul>
+                        </div>
+                    </div>
+                </div><!--/.col-sm-6-->
+            </div><!--/.row-->
+        </div><!--/.box-->
+    </div><!--/.container-->
+</section><!--/#contact-->
+
+<footer id="footer">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-6">
+                &copy; 2022 <a target="_blank" href="#" title="Free Twitter Bootstrap WordPress Themes and HTML templates">SmartQuail, Inc. </a>. All Rights Reserved.
+            </div>
+            <div class="col-sm-6">
+                <img class="pull-right" src="{% static '/img/sqlogo.png' %}" alt="ShapeBootstrap" title="ShapeBootstrap">
+            </div>
+        </div>
+    </div>
+</footer>
+
+{% endblock %}

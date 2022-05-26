@@ -1,0 +1,71 @@
+
+{% extends "DashBase.html" %}
+{% load i18n %}
+{% load static %}
+{% load thumbnail %}
+
+
+
+{% block extrastyle %}
+  <link rel="stylesheet" type="text/css" href="{% static "css/admin.css" %}" />
+{% endblock %}
+
+{% block content %}
+
+<section class="content">
+  <div class="card card-default">
+    <div class="card-header">
+      <h4>{% block title %}Cotizaciones de Mantenimiento{% endblock %}</h4>
+    
+
+  <div class="card-tools">
+    <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
+      <i class="fas fa-minus"></i>
+    </button>
+    <button type="button" class="btn btn-tool" data-card-widget="remove" title="Remove">
+      <i class="fas fa-times"></i>
+    </button>
+  </div>
+</div>
+
+{% for product in products %}
+{% if product.Edificio == user %}
+{% if  product.paid is True %}
+
+
+<div class="card-body">
+  <div class="card-body p-0">
+    <table class="table table-striped projects">
+  <thead>
+    <tr>
+      <th>CÓDIGO</th>
+      <th>Edificio</th>
+      <th>Fecha de emisión</th>
+      <th>Nombre de Proyecto</th>
+      <th>Estado</th>
+      <th>Valor final</th>
+      <th>Imprimir</th>
+    </tr>
+  </thead>  
+    <tbody>
+    <tr data-widget="expandable-table" aria-expanded="false">
+      <td>{{ product.code }}</td>
+      <td>{{ product.Edificio }}</td>
+      <td>{{product.created }}</td>
+      <td>{{product.project_name}}</td>
+      <td><strong>Aprobado</strong></td> 
+      <td> ${{product.get_total|floatformat:1 }}</td>
+      <td><a href=""> <i class="fas fa-print"></i> </a></td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+</div>
+</div>
+</section>
+{% endif %}
+{% endif %}
+{% endfor %}
+{% endblock %}
+

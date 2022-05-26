@@ -15,6 +15,11 @@ from django.conf.urls.static import static
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('baton/', include('baton.urls')),
+    path('ProFit/', include('ProFit.urls')),
+    path('cotizaciones/', include('HOMEDETAIL.urls', namespace='cotizacion')),
+    path('cotizaciones_profit/', include('cotizaciones.urls', namespace='cotizaciones')),
+    path('Proyectos/', include('Proyectos.urls', namespace='Proyectos')),
+    #path('Orders/', include('ordenes_servicios.urls', namespace='orders')),
     #E-commerce-configs
     #path('coupons/', include('coupons.urls', namespace='coupons')),
     #path('cart/', include('cart.urls', namespace='cart')),

@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+
+
+{% block content %}
+<div class="container">
+	<div class="d-flex justify-content-center h-100">
+		<div class="card">
+			<div class="card-header">
+  <h1>Bienvenido {{ new_user.first_name }}!</h1>
+  <p>Su cuenta ha sido creada con éxito. Ahora usted puede <a href="{% url "login" %}">ingresar</a>.</p>
+  </div>
+  </div>
+  </div>
+{% endblock %}

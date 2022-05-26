@@ -1,0 +1,59 @@
+{% load static %}
+{% load qr_code %}
+
+
+
+
+<html>
+<body>
+    <div class="header">
+      <img src="{% static '/img/header.png' %}" alt="" style="width:100%;">
+    </div>
+
+  <h1>{{edificio.building_name}}</h1>
+  <p>
+    <hr width="5%" size="8" align="center">
+    <h4>Información General</h4>
+    <hr width="100%" size="8" align="center">
+    <b>Codigo:</b> {{edificio.code}}</br>
+    <b>Empresa Administradora:</b> {{edificio.manager_administrator_name}}</br>
+    <b>Ubicación:</b> {{edificio.building_address}}</br>
+    <b>Ciudad:</b> {{edificio.city}}</br>
+    <b>Pisos:</b> {{edificio.building_levels}}</br>
+    <b>Areas Comunales:</b> {{edificio.building_levels}}</br>
+    <b>Parqueaderos:</b> {{edificio.building_levels}}</br>
+    <b>Administración:</b> {{edificio.administration_manager}}</br>
+    <b>Contacto de administración:</b> {{edificio.administrator_phonenumber }}</br>
+    <b>Email administración:</b> {{edificio.administrator_email }}</br>
+    <b>Aseguradora:</b> {{edificio.insurance_carrier }}</br>
+    <b>Departamento contable:</b> {{edificio.building_accountant }}</br>
+    <hr width="100%" size="8" align="center">
+    <h4>Registro de Mantenimiento</h4>
+    <hr width="100%" size="8" align="center">
+    <b>Número de proyectos realizados:</b> {{edificio.project_number}}</br>
+    <b>Número de proyectos cotizados:</b> {{cotizacion.project_name}}</br>
+    <b>Número de proyectos entregados:</b> {{edificio.project_number}}</br>
+    <b>Fecha de Registro:</b> {{edificio.created}}</br>
+    <b>Ultima actualización:</b> {{edificio.updated}}</br>
+
+    <hr width="10%" size="8" align="center">
+    <h6> &nbsp; {{edificio.code}}
+       <img src="{% qr_url_from_text "Terminos Y Condiciones de uso de informacion priviligiada" url_signature_enabled=True size='S' %}" alt="" class="center" width="100 px" ;></h6>
+
+
+  <footer>
+    <hr width="100%" size="8" align="center">
+    <ul>
+      <h5>
+      PROFIX HOUSING MAINTENENCE IT ENVELOPMENT.S.A.S <br>
+      +(593)-09-928-3543 &nbsp; <a href="https://www.profixgroup.io"> www.profixgroup.io</a> <br>
+      info@profixgroup.io <br>
+      ProFix Group®  <br>
+      QUITO-ECUADOR <br>
+     </h5>
+    </ul>
+  </footer>
+
+
+</body>
+</html>

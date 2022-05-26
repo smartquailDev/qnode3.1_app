@@ -1,0 +1,158 @@
+
+{% extends "DashBase.html" %}
+{% load static %}
+{% block content %}
+    <section class="content">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-12">
+            
+            <!-- Main content -->
+            <div class="invoice p-3 mb-3">
+              <!-- title row -->
+              <div class="row">
+                <div class="col-12">
+                  <h4>
+                    <i class="fas fa-file-invoice"></i> NOTA DE PAGO
+                  </h4>
+                </div>
+                <!-- /.col -->
+              </div>
+              <!-- info row -->
+             
+              <!-- /.row -->
+              
+            
+            
+              <div class="row">
+                <div class="col-12 table-responsive">
+                  <table class="table table-striped">
+                    <thead>
+                    <tr>
+                      <th>Mantenimiento</th>
+                      <th>Proyecto</th>
+                      <th>Cantidad</th>
+                      <th>Costo Unitario</th>
+                      <th>Subtotal</th>
+                      <th>Anticipo</th>
+                      <th>Total a pagar</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                      {% for item in cart %}
+                     {% with product=item.product %}
+                    <tr>
+                      <td>{{item.product.category}}</td>
+                      <td>{{ item.product.name }}</td>
+                      <td>{{ item.product.quantity }}</td>
+                      <td class="num">${{ item.price }}</td>
+                      <td>${{ item.product.subtotal | floatformat:"2" }}</td>
+                      <td>%{{ item.product.anticipo|floatformat:"0" }}</td>
+                      <td>${{ item.product.SubTotal_cost|floatformat:"2"}}</td>
+                      <td><a href="{% url "cart:cart_remove" product.id %}"><i class="fas fa-trash-alt"></i></a></td>
+                    </tr>
+                    </tbody>
+                    {% endwith %}
+                    {% endfor %}
+                  </table>
+                </div>
+               
+               
+                <!-- /.col -->
+              </div>
+              
+              <!-- /.row -->
+
+              <div class="row">
+                <!-- accepted payments column -->
+                <div class="col-6">
+                  <p class="lead">Descuento Promocional:</p>
+                  <div class="form-group">
+                    <form action = "{% url "coupons:apply" %}" method="post">
+                    {{ coupon_apply_form }}
+                    {% csrf_token %}
+                    <button type="submit" value="Apply" class="btn btn-primary">
+                      <i class="fas fa-tags"></i> Aplicar
+                    </button>
+                    
+                    </form>
+                  </div>
+
+                  <p class="text-muted well well-sm shadow-none" style="margin-top: 10px;">
+                  Si dispone de un cupón de descuento. Apliquelo ingresando el codigo promocional. 
+                  </p>
+                </div>
+                
+                <!-- /.col -->
+                
+                <div class="col-6">
+                  <p class="lead">Montos finales a pagar</p>
+
+                  <div class="table-responsive">
+                    <table class="table">
+                      
+                      <tr>
+                        <th style="width:50%">Subtotal:</th>
+                        <td>${{ cart.total2|floatformat:"2" }}</td>
+                      </tr>
+                      <tr>
+                        <th>I.V.A (12%)</th>
+                        <td>${{ cart.tax_price|floatformat:"2" }}</td>
+                      </tr>
+                      <tr>
+                        {% if cart.coupon %}
+                        <th>Descuento "{{ cart.coupon.code }}" ({{ cart.coupon.discount }})% :</th>
+                        <td class = "num neg">
+                          - ${{cart.get_discount|floatformat:"2"}}</td>
+                        
+                        {% endif %}
+                      
+                      </tr>
+                      
+                      <tr>
+                        <th>Total:</th>
+                        <td>${{ cart.get_total_price_after_discount|floatformat:"2" }}</td>
+                      </tr>
+                    </table>
+        
+                        <p class="text-center">
+                          <a href="{% url "Proyectos:product_list" %}" class="btn btn-primary">AGREGAR PROYECTOS</a>
+                          <a href="{% url "orders:order_create" %}" class="btn btn-success">PAGAR</a>
+                        </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="callout callout-info">
+        <h5><i class="fas fa-info"></i> Términos & condiciones:</h5>
+        This page has been enhanced for printing. Click the print button at the bottom of the invoice to test.
+      </div><!-- /.container-fluid -->
+    </section>
+    <!-- /.content -->
+  </div>
+  <!-- /.content-wrapper -->
+
+
+  <!-- Control Sidebar -->
+  <aside class="control-sidebar control-sidebar-dark">
+    <!-- Control sidebar content goes here -->
+  </aside>
+  <!-- /.control-sidebar -->
+</div>
+<!-- ./wrapper -->
+
+<!-- jQuery -->
+<script src="{% static 'plugins/jquery/jquery.min.js' %}"></script>
+<!-- Bootstrap 4 -->
+<script src="{% static 'plugins/bootstrap/js/bootstrap.bundle.min.js' % }"></script>
+<!-- AdminLTE App -->
+<script src="{% static 'dist/js/adminlte.min.js' %}"></script>
+<!-- AdminLTE for demo purposes -->
+<script src="{% static 'dist/js/demo.js' %}"></script>
+</body>
+</html>
+
+{% endblock %}

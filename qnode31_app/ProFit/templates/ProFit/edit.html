@@ -1,0 +1,112 @@
+{% extends "DashBase.html" %}
+{% load widget_tweaks %}
+
+
+
+
+{% block content %}
+<section class="content">
+  <div class="card">
+    <div class="card-header">
+      <h4>{% block title %}Editar información básica del edificio {% endblock %}</h4>
+  <div class="card-tools">
+    <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
+      <i class="fas fa-minus"></i>
+    </button>
+    <button type="button" class="btn btn-tool" data-card-widget="remove" title="Remove">
+      <i class="fas fa-times"></i>
+    </button>
+  </div>
+</div>
+<div class="card-body">
+  <div class="card-body p-0">
+
+
+  
+          
+  <form action="." method="post" enctype="multipart/form-data">
+
+            {% csrf_token %}
+            {% for hidden_field in user_form.hidden_fields %}
+              {{ hidden_field }}
+            {% endfor %}
+          
+            {% if user_form.non_field_errors %}
+              <div class="alert alert-danger" role="alert">
+                {% for error in user_form.non_field_errors %}
+                  {{ error }}
+                {% endfor %}
+              </div>
+            {% endif %}
+          
+            {% for field in user_form.visible_fields %}
+              <div class="form-group">
+                {{ field.label_tag }}
+          
+                {% if user_form.is_bound %}
+                  {% if field.errors %}
+                    {% render_field field class="form-control is-invalid" %}
+                    {% for error in field.errors %}
+                      <div class="invalid-feedback">
+                        {{ error }}
+                      </div>
+                    {% endfor %}
+                  {% else %}
+                    {% render_field field class="form-control is-valid" %}
+                  {% endif %}
+                {% else %}
+                  {% render_field field class="form-control" %}
+                {% endif %}
+          
+                {% if field.help_text %}
+                  <small class="form-text text-muted">{{ field.help_text }}</small>
+                {% endif %}
+              </div>
+            {% endfor %}
+        
+            {% for hidden_field in profile_form.hidden_fields %}
+              {{ hidden_field }}
+            {% endfor %}
+          
+            {% if profile_form.non_field_errors %}
+              <div class="alert alert-danger" role="alert">
+                {% for error in user_form.non_field_errors %}
+                  {{ error }}
+                {% endfor %}
+              </div>
+            {% endif %}
+          
+            {% for field in profile_form.visible_fields %}
+              <div class="form-group">
+                {{ field.label_tag }}
+          
+                {% if uprofile_form.is_bound %}
+                  {% if field.errors %}
+                    {% render_field field class="form-control is-invalid" %}
+                    {% for error in field.errors %}
+                      <div class="invalid-feedback">
+                        {{ error }}
+                      </div>
+                    {% endfor %}
+                  {% else %}
+                    {% render_field field class="form-control is-valid" %}
+                  {% endif %}
+                {% else %}
+                  {% render_field field class="form-control" %}
+                {% endif %}
+          
+                {% if field.help_text %}
+                  <small class="form-text text-muted">{{ field.help_text }}</small>
+                {% endif %}
+              </div>
+            {% endfor %}
+          
+            <button type="submit" class="btn btn-primary">Guardar modificaciones</button>
+          </form>
+        </div>
+        </div>      
+      </div>
+</section>
+
+
+{% endblock %}
