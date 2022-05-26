@@ -25,7 +25,8 @@ kombu==5.2.2
 #easy-thumbnails==2.8
 django-thumbnails
 #reportlab
-
+django-phone-field
+django-qr-code
 
 
 boto3
