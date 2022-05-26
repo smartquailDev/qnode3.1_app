@@ -26,6 +26,7 @@ kombu==5.2.2
 django-thumbnails
 #reportlab
 django-phone-field
+django-phonenumber-field
 django-qr-code
 
 
