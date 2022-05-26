@@ -4,6 +4,7 @@ from django.contrib.auth import authenticate, login
 from .forms import LoginForm, UserRegistrationForm, \
                    UserEditForm, ProfileEditForm
 from django.contrib.auth.decorators import login_required
+from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib import messages
 from .models import Profile
 
@@ -77,4 +78,6 @@ def edit(request):
                   'ProFit/edit.html',
                   {'user_form': user_form,
                    'profile_form': profile_form})
+
+
 
