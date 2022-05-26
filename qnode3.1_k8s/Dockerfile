@@ -10,18 +10,19 @@ RUN git clone https://github.com/smartquailDev/qnode3.1_app.git
 
 #COPY . /qnode0_app
 #COPY ./qnode0_app.dev/qnode0_app_env_dev/qnode0_app/ /qnode0_app
-COPY ./scripts /scripts
-#COPY ./.env /qnode10_app/.env 
-#No olvidar sacar las variables de entorno.
 COPY ./requirements.txt /requirements.txt
+COPY ./scripts /scripts
+COPY ./uwsgi_prod.ini /qnode3.1_app/qnode31_app/uwsgi_prod.ini
 
-
+#COPY ./.env /qnode0.1_app/qnode01_app/.env 
+#No olvidar sacar las variables de entorno.
 
 
 WORKDIR /qnode3.1_app/qnode31_app/
-EXPOSE 8000 443 
+EXPOSE 443 
 EXPOSE 25
-
+EXPOSE 9000
+EXPOSE 587
 
 RUN python -m venv /py && \
     /py/bin/pip install --upgrade pip && \
@@ -29,7 +30,9 @@ RUN python -m venv /py && \
     apk add --update --no-cache --virtual .tmp-deps && \
     apk add build-base  postgresql-dev gcc musl-dev python3-dev linux-headers && \
     apk add libffi-dev build-base py3-cffi py3-cryptography && \
-    apk add jpeg-dev   zlib-dev libjpeg build-base py3-gobject3 wget  && \
+    apk add jpeg-dev   zlib-dev libjpeg build-base  wget  && \
+    apk --update --upgrade --no-cache add fontconfig ttf-freefont font-noto terminus-font && \
+    apk add gtk+3.0 pango && \
     apk del libressl-dev && \
     apk add busybox-extras && \
     apk add openssl-dev && \
@@ -40,16 +43,48 @@ RUN python -m venv /py && \
     apk add libressl-dev  && \
     apk del .tmp-deps && \
     adduser --disabled-password --no-create-home qnode31 && \
-    mkdir -p /vol/web/static && \
-    mkdir -p /vol/web/media && \
-    chown -R qnode31:qnode31 /vol && \
-    #chmod -R 755 /qnode10_app/ && \
-    chmod -R 755 /vol  && \
+
+    #Static Files
+    mkdir -p /qnode3.1_app/qnode31_app/static && \
+   # mkdir -p /qnode0.0_app/qnode0_app/static/media && \
+    chmod -R 755 /qnode3.1_app/qnode31_app/static  && \
+
+    mkdir -p /qnode3.1_app/qnode31_app/media && \
+    chmod -R 755 /qnode3.1_app/qnode31_app/media  && \
+    chown -R qnode31:qnode31 /qnode3.1_app/qnode31_app/media && \
+    
+    mkdir -p /qnode3.1_app/qnode31_app/staticfiles && \
+    chmod -R 755 /qnode3.1_app/qnode31_app/staticfiles  && \
+    chown -R qnode31:qnode31 /qnode3.1_app/qnode31_app/staticfiles && \
+
+    #chmod -R 755 /qnode0.0_app/qnode0_app/static/media  && \
+    chown -R qnode31:qnode31 /qnode3.1_app/qnode31_app/static && \
+    #chown -R qnode0:qnode0 /qnode0.0_app/qnode0_app/static/media && \
+    #Uswgi
+    
+    mkdir -p  /var/log/uwsgi/ && \
+    chown -R qnode31:qnode31 /var/log/uwsgi/ && \
+    #GNUCORN
+    mkdir -p /qnode3.1_app/qnode31_app/run/ && \
+    mkdir -p /var/log/gunicorn &&\
+    chown -R qnode31:qnode31 /var/log/gunicorn &&\
+    
+    chmod -R 755 /qnode3.1_app/qnode31_app/ && \
+    
     chmod -R 755 /scripts  && \
+    chown -R qnode31:qnode31 /qnode3.1_app/qnode31_app/run/  && \
+    chown -R qnode31:qnode31 /qnode3.1_app/qnode31_app/ &&\
+    chmod -R 755 /var/log/gunicorn  && \
+    
+    #chmod -R u+x /scripts/gunicorn_run.sh &&\
+    chmod -R u+x /scripts/run.sh &&\
     chmod -R +x /scripts
 
 ENV PATH="/scripts:/py/bin:$PATH"
+#COPY ./scripts/gunicorn.socket /qnode0.0_app/qnode0_app/run/
 
 USER qnode31
 
 CMD ["run.sh"]
+
+
