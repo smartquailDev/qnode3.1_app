@@ -27,6 +27,7 @@ django-thumbnails
 #reportlab
 django-phone-field
 django-phonenumber-field
+django-phonenumbers
 django-qr-code
 
 
