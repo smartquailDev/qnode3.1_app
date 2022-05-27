@@ -2,23 +2,28 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from django.contrib.auth import authenticate, login
 from .forms import LoginForm, UserRegistrationForm, \
-                   UserEditForm, ProfileEditForm
+                   UserEditForm, ProfileEditForm, UserRequestForm
 from django.contrib.auth.decorators import login_required
 from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib import messages
-from .models import Profile
+from .models import Profile, UserRequest
 
 def user_login(request):
     if request.method == 'POST':
         form = LoginForm(request.POST)
         if form.is_valid():
+            remember_me = form.cleaned_data['remember_me']
             cd = form.cleaned_data
             user = authenticate(request,
                                 Usuario= cd['username'],
-                                Contraseña= cd['password'])
+                                Contraseña= cd['password'],
+                                remember_me = cd['remember_me'])
             if user is not None:
                 if user.is_active:
                     login(request, user)
+                    if not remember_me:
+                        request.session.set_expiry(0)
+
                     return HttpResponse('Authenticated '\
                                         'successfully')
                 else:
@@ -79,5 +84,26 @@ def edit(request):
                   {'user_form': user_form,
                    'profile_form': profile_form})
 
+
+def user_request(request):
+    if request.method == 'POST':
+        user_request_form = UserRequestForm(request.POST)
+        if user_request_form.is_valid():
+            # Create a new user object but avoid saving it yet
+            new_profit = user_request_form.save(commit=False)
+            # Set the chosen password
+           
+            # Save the User object
+            new_profit.save()
+            # Create the user profile
+            UserRequest.objects.create(admin_user=new_profit)
+            return render(request,
+                          'ProFit/request_done.html',
+                          {'new_profit': new_profit})
+    else:
+        user_request_form = UserRequestForm()
+    return render(request,
+                  'ProFit/request.html',
+                  {'user_request_form': user_request_form })
 
 

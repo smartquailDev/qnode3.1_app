@@ -3,6 +3,7 @@ from django.conf import settings
 from django.contrib.auth.models import User
 from django.core.validators import MinValueValidator, \
                                    MaxValueValidator
+from phone_field import PhoneField
 
 
 class Profile(models.Model):
@@ -15,6 +16,20 @@ class Profile(models.Model):
     RUC = models.IntegerField(default=0,validators=[MinValueValidator(0),MaxValueValidator(100)],blank=True,verbose_name='Registro único de contribuyente' )
     #date_of_birth = models.DateField(blank=True, null=True)
     photo = models.ImageField(upload_to='users/%Y/%m/%d/', blank=True,verbose_name='Foto de Usuario')
+
+    def __str__(self):
+        return '{}'.format(self.direccion)
+        #return 'Perfil del edificio: {}'.format(self.user.username)
+
+
+
+class UserRequest(models.Model):
+    admin_user = models.CharField(max_length=50,null=True,verbose_name='Nombre del Administrador')
+    edificio = models.CharField(max_length=50,null=True,verbose_name='Edificio')
+    direccion = models.CharField(max_length=50,null=True,verbose_name='Direccion del edificio')
+    #phonenumber = PhoneField(blank=True,verbose_name='Telefono')
+    email= models.EmailField(verbose_name='Email',blank=True,)
+ 
 
     def __str__(self):
         return '{}'.format(self.direccion)

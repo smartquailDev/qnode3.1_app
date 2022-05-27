@@ -18,6 +18,7 @@ urlpatterns = [
     # alternative way to include authentication views
     # path('', include('django.contrib.auth.urls')),
     path('register/', views.register, name='register'),
+    path('requester/', views.user_request, name='user_request'),
     path('edit/', views.edit, name='edit'),
     #path('users/', views.user_list, name='user_list'),
     #path('users/follow/', views.user_follow, name='user_follow'),

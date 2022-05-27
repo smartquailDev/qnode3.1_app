@@ -175,7 +175,7 @@ a {
 }
 
 a:hover {
-  color: #224abe;
+  color: #c20a11;
   text-decoration: underline;
 }
 
@@ -6048,7 +6048,7 @@ a.badge-dark.focus {
 
 .alert-danger {
   color: #78261f;
-  background-color: #fc544b;
+  background-color: #4b67fc;
 }
 
 .alert-danger hr {
