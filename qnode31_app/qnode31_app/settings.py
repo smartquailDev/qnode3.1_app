@@ -38,6 +38,7 @@ ALLOWED_HOSTS = ['*']
 
 INSTALLED_APPS = [
     'baton',
+    'ProFit',
     #'account',
     #'courses',
     #'courses_exams',
@@ -96,7 +97,6 @@ INSTALLED_APPS = [
     #'HOMEDETAIL',
     #'ordenes_servicios',
     'payment',
-    'ProFit',
     'Proyectos',
     'webapp',
     'baton.autodiscover',   
@@ -260,6 +260,12 @@ SOCIAL_AUTH_TWITTER_SECRET =  os.environ.get('SOCIAL_AUTH_TWITTER_SECRET')
 
 SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = os.environ.get('SOCIAL_AUTH_GOOGLE_OAUTH2_KEY ')
 SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = os.environ.get('SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET ')
+
+
+
+PHONENUMBER_DB_FORMAT="NATIONAL"
+PHONENUMBER_DEFAULT_REGION="EC"
+PHONENUMBER_DEFAULT_FORMAT= "NATIONAL"
 
 
 

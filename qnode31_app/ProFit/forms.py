@@ -37,5 +37,5 @@ class ProfileEditForm(forms.ModelForm):
 class UserRequestForm(forms.ModelForm):
     class Meta:
         model = UserRequest
-        fields = ('admin_user','edificio', 'direccion','email')
+        fields = ('admin_user','edificio', 'direccion','email','phonenumber')
 

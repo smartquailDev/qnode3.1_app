@@ -4,6 +4,8 @@ from django.contrib.auth.models import User
 from django.core.validators import MinValueValidator, \
                                    MaxValueValidator
 from phone_field import PhoneField
+from phonenumber_field.modelfields import PhoneNumberField
+import phonenumbers
 
 
 class Profile(models.Model):
@@ -24,16 +26,15 @@ class Profile(models.Model):
 
 
 class UserRequest(models.Model):
-    admin_user = models.CharField(max_length=50,null=True,verbose_name='Nombre del Administrador')
-    edificio = models.CharField(max_length=50,null=True,verbose_name='Edificio')
-    direccion = models.CharField(max_length=50,null=True,verbose_name='Direccion del edificio')
-    #phonenumber = PhoneField(blank=True,verbose_name='Telefono')
+    admin_user = models.CharField(max_length=50,null=True,verbose_name='Nombre completo del administrador:')
+    edificio = models.CharField(max_length=50,null=True,verbose_name='Nombre del Edificio:')
+    direccion = models.CharField(max_length=50,null=True,verbose_name='Dirección del edificio')
+    phonenumber=PhoneNumberField(blank=True,null=True,verbose_name='Teléfono de contacto')
+    #phonenumber =  models.BigIntegerField(blank=True,null=True,verbose_name='Teléfono de contacto')
     email= models.EmailField(verbose_name='Email',blank=True,)
  
-
     def __str__(self):
-        return '{}'.format(self.direccion)
-        #return 'Perfil del edificio: {}'.format(self.user.username)
+        return '{}'.format(self.id)
 
 
 class Contact(models.Model):

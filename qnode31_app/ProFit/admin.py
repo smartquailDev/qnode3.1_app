@@ -8,4 +8,4 @@ class ProfileAdmin(admin.ModelAdmin):
 
 @admin.register(UserRequest)
 class UserRequestAdmin(admin.ModelAdmin):
-    list_display = ['admin_user','edificio','direccion','email']
+    list_display = ['edificio','admin_user','direccion','email','phonenumber']

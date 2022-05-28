@@ -32,52 +32,11 @@
                   <div class="text-center">
                     <h1 class="h4 text-gray-900 mb-4"><img src="{% static 'img/logo2.png' %}" class="responsive" ></h1>
                   </div>
-                  <form action="." method="post" novalidate>
-					{% csrf_token %}
-					{% for hidden_field in user_request_form.hidden_fields %}
-					  {{ hidden_field }}
-					{% endfor %}
-				  
-					{% if form.non_field_errors %}
-					  <div class="alert alert-danger" role="alert">
-						{% for error in user_request_form.non_field_errors %}
-						  {{ error }}
-						{% endfor %}
-					  </div>
-					{% endif %}
-				  
-					{% for field in user_request_form.visible_fields %}
-					  <div class="form-group">
-						{{ field.label_tag }}
-				  
-						{% if user_request_form.is_bound %}
-						  {% if field.errors %}
-							{% render_field field class="form-control is-invalid" %}
-							{% for error in field.errors %}
-							  <div class="invalid-feedback">
-								{{ error }}
-							  </div>
-							{% endfor %}
-						  {% else %}
-							{% render_field field class="form-control is-valid" %}
-						  {% endif %}
-						{% else %}
-						  {% render_field field class="form-control" %}
-						{% endif %}
-				  
-						{% if field.help_text %}
-						  <small class="form-text text-muted">{{ field.help_text }}</small>
-              
-						{% endif %}
-					  </div>
-					{% endfor %} 
-         
-					<button type="submit" class="btn btn-primary btn-block">Sign In</button>
-				  </form>
+                  <h1>Gracias por registrarse a ProFix Maintenance IT, en unos minutos un acesor comercial se pondrá en contacto con usted.</h1>
                   <hr>
                   <div class="text-center">
-                    Solicite
-                    <a class="font-weight-bold small" href="register.html">aquí</a> la creación de una cuenta de perfil para el edificio que administra.
+                   
+                    <a class="font-weight-bold small" href="register.html">Volver a la pagina de inicio.</a> 
                   </div>
                   <div class="text-center">
                   </div>

@@ -7,6 +7,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib import messages
 from .models import Profile, UserRequest
+from .task import User_Request
 
 def user_login(request):
     if request.method == 'POST':
@@ -95,15 +96,27 @@ def user_request(request):
            
             # Save the User object
             new_profit.save()
+
+            User_Request(new_profit.id)
+            request.session['new_profit_id'] = new_profit.id 
+
+            
             # Create the user profile
             UserRequest.objects.create(admin_user=new_profit)
+
+
+            
+
             return render(request,
                           'ProFit/request_done.html',
-                          {'new_profit': new_profit})
+                          {'new_profit': new_profit})    
     else:
         user_request_form = UserRequestForm()
+        
+
     return render(request,
                   'ProFit/request.html',
                   {'user_request_form': user_request_form })
+    
 
 
