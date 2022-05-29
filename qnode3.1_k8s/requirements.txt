@@ -46,6 +46,7 @@ weasyprint
 django-braces
 django-embed-video
 django-memcache-status
+django-bootstrap4
 
 #Lenguajes
 django-parler

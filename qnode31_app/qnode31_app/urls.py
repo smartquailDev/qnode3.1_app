@@ -21,6 +21,7 @@ urlpatterns = [
     path('cart/', include('cart.urls', namespace='cart')),
    # path('Orders/', include('ordenes_servicios.urls', namespace='orders')),
     path('cotizaciones_profit/', include('cotizaciones.urls', namespace='cotizaciones')),
+    path('cotizaciones/', include('edificio_1.urls', namespace='edificio_1')),
     #path('edificios/', include('HOMEDETAIL.urls', namespace='edificio')),
     #path('Orders/', include('ordenes_servicios.urls', namespace='orders')),
     #E-commerce-configs
