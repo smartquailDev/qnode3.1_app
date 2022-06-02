@@ -21,6 +21,28 @@ from io import BytesIO
 from django.core.mail import EmailMessage
 
 
+#----- Solicitud de cliente de cotizaciones 
+
+def cotizacion_create(request):
+    if request.method == 'POST':
+        form = ProFitCreateForm(request.POST)
+        form.instance.usuario = request.user
+        if  form.is_valid():
+            coti = form.save(commit=False)
+            coti.save()
+            # launch asynchronous task
+            cotizacion_created.delay(coti.id)
+        
+            # set the order in the session
+            request.session['coti_id'] = coti.id
+            # redirect for payment
+            return redirect(reverse('payment:done'))
+    else:
+        form = ProFitCreateForm()
+    return render(request,
+                  'cotizaciones/profit/create.html',
+                  {'form': form})
+
 #------- Lista y detall de cotizaciones-------------
 
 def invoice_list(request, category_slug=None):

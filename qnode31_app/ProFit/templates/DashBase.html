@@ -127,7 +127,7 @@
                 <ul class="nav nav-treeview">
                   <li class="nav-item">
                     {% if perms.edificio_1.can_add_ProFit %}
-                    <a href="" class="nav-link">
+                    <a href="{% url "edificio_1:cotizacion_create" %}" class="nav-link">
                       <i class="far fa-circle nav-icon"></i> 
                     {% endif %}
                     
@@ -135,15 +135,15 @@
                     </a>
                   </li>
                   <li class="nav-item">
-                    <a href=""  class="nav-link">
+                    <a href="{% url "edificio_1:invoice_list" %}"  class="nav-link">
                       <i class="far fa-circle nav-icon"></i>
-                      <p>Cotizaciones</p>
+                      <p>Generador de Cotizaciones</p>
                     </a>
                   </li>
                   <li class="nav-item">
                     <a href="pages/layout/boxed.html" class="nav-link">
                       <i class="far fa-circle nav-icon"></i>
-                      <p>Historico de Cotizaciones</p>
+                      <p> Cotizaciones aprobadas</p>
                     </a>
                   </li>
                 </ul>

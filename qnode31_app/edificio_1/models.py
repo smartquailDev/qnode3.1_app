@@ -234,7 +234,7 @@ class order_cotizacion(models.Model):
         return sum(item.get_cost() for item in self.items.all())
 
     def __bool__(self):
-        return self.paid
+        return self.aprobe
 
     def Sub_Total(self):
         total_cost = sum(item.get_cost() for item in self.items.all())
