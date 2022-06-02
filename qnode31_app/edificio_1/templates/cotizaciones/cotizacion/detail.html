@@ -1,0 +1,60 @@
+
+{% extends "DashBase.html" %}
+{% load i18n %}
+{% load static %}
+
+
+
+
+{% block content %}
+
+<section class="content">
+  <div class="card">
+    <div class="card-header">
+      <h4>{% block title %} Detalle de Mantenimiento a Cotizar{% endblock %}</h4>
+  <div class="card-tools">
+    <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
+      <i class="fas fa-minus"></i>
+    </button>
+    <button type="button" class="btn btn-tool" data-card-widget="remove" title="Remove">
+      <i class="fas fa-times"></i>
+    </button>
+  </div>
+</div>
+
+<div class="card-body">
+  <div class="card-body p-0">
+
+  <div class="product-detail">
+    <p class="price"><strong>Edificio:</strong>&nbsp; &nbsp; {{ invoice.Edificio }}</p>
+    <img src="{% if invoice.image %}{{ invoice.image.url }}{% else %}{% static "img/no_image.png" %}{% endif %}">
+    <h1>{{ invoice.project_name }}</h1>
+    <h2><a href="{{ invoice.category.get_absolute_url }}">{{ invoice.category }}</a></h2>
+    
+    {{ invoice.description|linebreaks }}
+    <p class="price"><strong>Cantidad:</strong>&nbsp; &nbsp; {{ invoice.quantity }} {{invoice.Units}}</p>
+    <p class="price"><strong>Valor unitario:</strong>&nbsp; &nbsp;${{ invoice.price  }}</p>
+    <p class="price"><strong> Sub Total </strong>&nbsp; &nbsp;${{ invoice.Sub_total  }}</p>
+    <p class="price"><strong>I.V.A: 12%:</strong>&nbsp; &nbsp;{{ invoice.Sub_Total_IVA  }}</p>
+    <p class="price"><strong>Total:</strong>&nbsp; &nbsp;{{ invoice.Total  }}</p>
+    <div class="input-group input-group-sm">
+      <form action="{% url "edificio_1:coti_cart_add" invoice.id %}" method="post">
+        {{ coti_cart_invoice_form }}
+        {% csrf_token %}
+        <button type="submit" value="{% trans "Add to cart" %}" class="btn btn-default"><i class="fas fa-cart-arrow-down"></i></button>
+      </form>
+    </div>
+    
+    
+  </div>
+ 
+</div>
+</div>
+</div>
+</section>
+
+
+
+
+
+{% endblock %}

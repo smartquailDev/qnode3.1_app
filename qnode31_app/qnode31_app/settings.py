@@ -92,6 +92,8 @@ INSTALLED_APPS = [
     'embed_video',
     #'actions',
     'cart',
+    'parler',
+    'qr_code',
     'cotizaciones',
     'bootstrap4',
     'coupons',
@@ -136,7 +138,7 @@ GA_VIEW_ID = os.environ.get('GA_VIEW_ID_ENV')
 
 
 WAGTAIL_SITE_NAME = 'Smart Business Media'
-SESSION_COOKIE_AGE = 360
+#SESSION_COOKIE_AGE = 360
 
 #RESTFRAMEWORK
 REST_FRAMEWORK = {
@@ -221,6 +223,7 @@ EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 #Ecommerce App
 CART_SESSION_ID = 'cart'
+COTI_CART_SESSION_ID = 'coti_cart'
 
 BRAINTREE_MERCHANT_ID = os.environ.get('BRAINTREE_M_ID')
 BRAINTREE_PUBLIC_KEY = os.environ.get('BRAINTREE_KEY')
@@ -282,6 +285,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'edificio_1.context_processors.coti_cart',
             ],
         },
     },

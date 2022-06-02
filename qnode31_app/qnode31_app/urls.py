@@ -18,8 +18,8 @@ urlpatterns = [
     path('ProFit/', include('ProFit.urls')),
     #path('cotizaciones_profit/', include('cotizaciones.urls', namespace='cotizaciones')),
     path('Proyectos/', include('Proyectos.urls', namespace='Proyectos')),
-    path('cart/', include('cart.urls', namespace='cart')),
-   # path('Orders/', include('ordenes_servicios.urls', namespace='orders')),
+    path('coti_cart/', include('edificio_1.urls', namespace='coti_cart')),
+    path('Orders/', include('edificio_1.urls', namespace='orders')),
     path('cotizaciones_profit/', include('cotizaciones.urls', namespace='cotizaciones')),
     path('cotizaciones/', include('edificio_1.urls', namespace='edificio_1')),
     #path('edificios/', include('HOMEDETAIL.urls', namespace='edificio')),
@@ -39,6 +39,7 @@ urlpatterns = [
     #path('students/', include('students.urls')),
     #path('api/', include('courses.api.urls', namespace='api')),
     #path('social-auth/', include('social_django.urls', namespace='social')),
+    path('qr_code/', include('qr_code.urls', namespace="qr_code")),
     
      
     re_path(r'^smartbusinessmedia/', include(wagtailadmin_urls),name='wagtail'),

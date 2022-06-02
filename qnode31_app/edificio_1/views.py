@@ -1,73 +1,103 @@
+#from dal import autocomplete
+from zoneinfo import available_timezones
 from django.urls import reverse
+from datetime import date
 from django.shortcuts import render, redirect
-from .forms import ProFitCreateForm
-from cart.cart import Cart
-from .tasks import cotizacion_created
 from django.contrib.admin.views.decorators import staff_member_required
 from django.shortcuts import get_object_or_404
-
-#from Proyectos.models import Project,mantenimiento 
+from .models import Cotizacion,ProFit,InvoiceItem,Category
+from .forms import ProFitCreateForm,CotiCartAddProductForm,CotiCreateForm
+#from Proyectos.models import Project,mantenimiento
 from django.conf import settings
+from .tasks import cotizacion_created
+from .coti_cart import Coti_Cart
 from django.http import HttpResponse
 from django.template.loader import render_to_string
-from django.core.files.storage import FileSystemStorage
-from django.utils.translation import gettext_lazy as _
-from .models import ProFit,Visit 
-from datetime import datetime
-from django.views import generic
+import weasyprint
 from django.utils.safestring import mark_safe
-from .utils import Calendar
+from qr_code.qrcode.utils import ContactDetail, WifiConfig, Coordinates, QRCodeOptions
+from django.views.decorators.http import require_POST
+from io import BytesIO
+from django.core.mail import EmailMessage
 
 
-from datetime import datetime, date
-#from profixinvoice.models import InvoiceInfo, ServiceProviderInfo, ClientInfo, Item, Transaction
-#from profixinvoice.templates import SimpleInvoice
+#------- Lista y detall de cotizaciones-------------
+
+def invoice_list(request, category_slug=None):
+    category = None
+    categories = Category.objects.all()
+    invoices =  Cotizacion.objects.filter(available=True)
+    if category_slug:
+        category = get_object_or_404(Category, slug=category_slug)
+        invoices = invoices.filter(category=category)
+    return render(request, 
+        'cotizaciones/cotizacion/list.html',  
+        {'category':category,
+        'categories':categories,
+        'invoices': invoices})
 
 
+def invoice_detail(request,id, slug):
+    invoice = get_object_or_404(Cotizacion,id=id,slug=slug,available=True)
+    coti_cart_invoice_form = CotiCartAddProductForm()
+   
+    return render(request,'cotizaciones/cotizacion/detail.html',{'invoice':invoice , ' coti_cart_invoice_form': coti_cart_invoice_form} )
 
-def cotizacion_create(request):
+#-----------Cartas de Aprobacion---------
 
+@require_POST
+def coti_cart_add(request, invoice_id):
+    coti_cart = Coti_Cart(request)
+    invoice = get_object_or_404(Cotizacion, id=invoice_id)
+    form = CotiCartAddProductForm(request.POST)
+    if form.is_valid():
+        cd = form.cleaned_data
+        coti_cart.add(invoice=invoice,
+                 anticipo=cd['anticipo'],
+                 quantity=cd['quantity'],
+                 #update_anticipo=cd['update_a'],
+                 update_quantity=cd['update'])
+    return redirect('coti_cart:coti_cart_detail')
+
+def coti_cart_remove(request,invoice_id):
+    coti_cart=Coti_Cart(request)
+    invoice= get_object_or_404(Cotizacion,id=invoice_id)
+    coti_cart.remove(invoice)
+    return redirect('coti_cart:coti_cart_detail')
+
+def coti_cart_detail(request):
+    coti_cart = Coti_Cart(request)
+    return render(request, 'coti_cart/detail.html', {'coti_cart':coti_cart})
+
+#-------Ordenes aprobadas de cotizacion----
+
+def order_coti_create(request):
+    coti_cart = Coti_Cart(request)
     if request.method == 'POST':
-        form = ProFitCreateForm(request.POST)
-        form.instance.usuario = request.user
-        if  form.is_valid():
+        form = CotiCreateForm(request.POST)
+
+        if form.is_valid():
             coti = form.save(commit=False)
             coti.save()
+
+            for item in coti_cart:
+                InvoiceItem.objects.create(coti=coti,
+                                         invoice=item['invoice'],
+                                         price=item['price'],
+                                         quantity=item['quantity'],
+                                         anticipo= item['anticipo'])
+            # clear the cart
+            coti_cart.clear()
             # launch asynchronous task
-            cotizacion_created.delay(coti.id)
-        
+            #order_created.delay(order.id)
             # set the order in the session
-            request.session['coti_id'] = coti.id
+            #request.session['order_id'] = order.id
+    
             # redirect for payment
-            return redirect(reverse('payment:done'))
+            return render(request, 'cotizaciones/cotizacion/created.html', {'coti':coti} )
     else:
-        form = ProFitCreateForm()
+        form = CotiCreateForm()
     return render(request,
-                  'cotizaciones/profit/create.html',
-                  {'form': form})
+                  'cotizaciones/cotizacion/create_coti.html',
+                  {'coti_cart': coti_cart, 'form': form})
 
-
-
-class CalendarView(generic.ListView):
-    model = Visit
-    template_name = 'cotizaciones/profit/calendar.html'
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-
-        # use today's date for the calendar
-        d = get_date(self.request.GET.get('day', None))
-
-        # Instantiate our calendar class with today's year and date
-        cal = Calendar(d.year, d.month)
-
-        # Call the formatmonth method, which returns our calendar as a table
-        html_cal = cal.formatmonth(withyear=True)
-        context['calendar'] = mark_safe(html_cal)
-        return context
-
-def get_date(req_day):
-    if req_day:
-        year, month = (int(x) for x in req_day.split('-'))
-        return date(year, month, day=1)
-    return datetime.today()

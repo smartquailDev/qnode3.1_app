@@ -41,6 +41,7 @@ djangorestframework
 #Ecommerce
 braintree
 weasyprint
+django-qr-code
 
 #Eduaction
 django-braces

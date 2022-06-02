@@ -29,31 +29,34 @@
                   <table class="table table-striped">
                     <thead>
                     <tr>
-                      <th>Mantenimientom</th>
+                      <th>Mantenimiento</th>
                       <th>Proyecto</th>
                       <th>Cantidad</th>
                       <th>Costo Unitario</th>
                       <th>Subtotal</th>
-                      <th>Anticipo</th>
-                      <th>Total a pagar</th>
+                      <th>Anticipos</th>
+                      <th>Total a pagar {{invoice.price}}</th>
                     </tr>
                     </thead>
                     <tbody>
-                      {% for item in coti_cart %}
-                     {% with product=item.product %}
+                      
+                    {% for item in coti_cart %}
+                     {% with invoice=item.invoice %}
                     <tr>
-                      <td>{{item.product.category}}</td>
-                      <td>{{ item.product.name }}</td>
-                      <td>{{ item.product.quantity }}</td>
+                      <td>{{item.price}}</td>
+                      <td>{{ item.invoice.project_name }}</td>
+                      <td>{{ item.invoice.quantity }}</td>
                       <td class="num">${{ item.price }}</td>
-                      <td>${{ item.product.subtotal | floatformat:"2" }}</td>
-                      <td>%{{ item.product.anticipo|floatformat:"0" }}</td>
-                      <td>${{ item.product.SubTotal_cost|floatformat:"2"}}</td>
-                      <td><a href="{% url "cart:cart_remove" product.id %}"><i class="fas fa-trash-alt"></i></a></td>
+                      <td>${{ item.invoice.subtotal | floatformat:"2" }}</td>
+                      <td>%{{ item.invoice.anticipo|floatformat:"0" }}</td>
+                      <td>${{ item.invoice.SubTotal_cost|floatformat:"2"}}</td>
+                      <td><a href="{% url "coti_cart:coti_cart_remove" invoice.id %}"><i class="fas fa-trash-alt"></i></a></td>
                     </tr>
-                    </tbody>
                     {% endwith %}
                     {% endfor %}
+                    </tbody>
+                    
+                   
                   </table>
                 </div>
                
@@ -95,7 +98,7 @@
         
                         <p class="text-center">
                           <a href="{% url "Proyectos:product_list" %}" class="btn btn-primary">AGREGAR PROYECTOS</a>
-                          <a href="" class="btn btn-success">PAGAR</a>
+                          <a href="{% url "edificio_1:order_coti_create" %}" class="btn btn-success">PAGAR</a>
                         </p>
                   </div>
                 </div>

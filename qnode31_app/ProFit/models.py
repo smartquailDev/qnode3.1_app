@@ -10,6 +10,7 @@ import phonenumbers
 
 class Profile(models.Model):
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    edificio = models.CharField(max_length=50,null=True,verbose_name='Nombre del Edificio:')
     admin_user = models.CharField(max_length=50,null=True,verbose_name='Nombre del Administrador')
     direccion = models.CharField(max_length=50,null=True,verbose_name='Direccion del edificio')
     telefono = models.CharField(max_length=50,null=True,verbose_name='Número de contacto de administración')
@@ -20,7 +21,7 @@ class Profile(models.Model):
     photo = models.ImageField(upload_to='users/%Y/%m/%d/', blank=True,verbose_name='Foto de Usuario')
 
     def __str__(self):
-        return '{}'.format(self.direccion)
+        return '{}'.format(self.edificio)
         #return 'Perfil del edificio: {}'.format(self.user.username)
 
 

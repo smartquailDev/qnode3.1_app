@@ -1,0 +1,125 @@
+{% load static %}
+{% load qr_code %}
+
+<html> 
+<body> 
+  <link href="//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css" rel="stylesheet">
+
+
+  <style type="text/css" media="screen, print">
+    @font-face {
+      font-family: 'Abel', sans-serif;
+      src: url("https://fonts.googleapis.com/css2?family=Abel&display=swap" rel="stylesheet" rel="stylesheet");
+    }
+    
+    body { font-family: 'Abel', sans-serif }
+  </style>
+
+    <div class="header">
+      <img src="{% static '/img/header.png' %}" alt="" style="width:100%;">        
+    </div>
+
+  <span class="secondary"> 
+    {{ cotizacion.created|date:"M d, Y" }} 
+  </span> 
+  
+ 
+  <div class=header2> 
+    <b>EDIFICIO:</b> {{ cotizacion.Edificio }} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    <b>PROYECTO:</b>{{ cotizacion.project_name }}<br>
+    <b>UBICACIóN:</b>{{ cotizacion.dire }}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+    <b>COTIZACIÓN:</b>{{ cotizacion.code }}<br> 
+    <b>ADMINISTRACIÓN:</b>Maria Fernanda&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    <b>PROFIX ADMIN:</b>Ing. Alchacoa María Carolina<br>
+    <b>E-MAIL EDIFICIO:</b>info@profixgroup.io&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    <b>E-MAIL ADMIN:</b>info@profixgroup.io<br>
+  </div> 
+
+  
+  <table> 
+    <thead> 
+      <tr> 
+        <th>Id</th> 
+        <th>Item</th> 
+        <th>Costo unitario</th> 
+        <th>Cantidad </th> 
+        <th>Unidades </th> 
+        <th>Costo total</th> 
+      </tr> 
+    </thead> 
+    <tbody> 
+      {% for item in cotizacion.items.all %} 
+        <tr class="row{% cycle "1" "2" %}"> 
+          <td>{{ item.id }}</td> 
+          <td>{{ item.project }}</td> 
+          <td class="num">${{ item.price }}</td> 
+          <td class="num">{{ item.quantity }}</td> 
+          <td class="num">{{ item.Unit }}</td> 
+          <td class="num">${{ item.get_cost }}</td> 
+        </tr> 
+      {% endfor %} 
+      
+      <tr class="total"> 
+        <td colspan="5">Sub Total</td> 
+        <td class="num">${{ cotizacion.get_total_cost }}</td> 
+      </tr> 
+
+      <tr class="total"> 
+        <td colspan="5">IVA 12%</td> 
+        <td class="num">${{ cotizacion.get_total_tax_cost|floatformat }}</td> 
+      </tr> 
+      <tr class="subtotal"> 
+        <td class="num"></td> 
+      </tr> 
+      
+
+      <tr class="total"> 
+        <td colspan="5">Valor Final</td> 
+        <td class="num">${{ cotizacion.get_total|floatformat:1 }}</td> 
+      </tr> 
+     
+    </tbody> 
+  </table> 
+     
+  <span class="{% if cotizacion.paid %}paid {% else %}{% endif %}"> 
+    {% if cotizacion.paid %}Aprobado por:
+    HOME DETAIL<br> Arq. CRISTIAN SILVA<br>Gerente General<br><img src="{% qr_url_from_text "Terminos Y Condiciones de uso de informacion priviligiada" url_signature_enabled=True size='S' %}" alt="" class="center" width="300 px" ;></h6> 
+     {% else %}
+     {% endif %} 
+  </span> 
+
+
+  <span class="{% if cotizacion.paid2 %}paid2 {% else %}{% endif %}"> 
+    {% if cotizacion.paid2 %}Rechazado por:
+    HOME DETAIL<br> Arq. CRISTIAN SILVA DOMÍNGUEZ<br>Gerente General<img src="{% qr_url_from_text "Terminos Y Condiciones de uso de informacion priviligiada" url_signature_enabled=True size='M' %}" alt="" class="center" width="300 px" ;></h6> 
+     {% else %}
+     {% endif %} 
+  </span> 
+
+
+  
+
+  
+    <hr width="10%" size="8" align="center">
+    <h6> &nbsp; Términos & <br>
+      Condiciones<br>
+       <img src="{% qr_url_from_text "Terminos Y Condiciones de uso de informacion priviligiada" url_signature_enabled=True size='S' %}" alt="" class="center" width="100 px" ;></h6> 
+  
+
+  <footer>   
+    <hr width="100%" size="8" align="center"> 
+    <ul>
+      <h5> 
+      PROFIX HOUSING MAINTENENCE IT ENVELOPMENT.S.A.S <br>
+      +(593)-09-928-3543 &nbsp;info@profixgroup.io <br>
+      <a href="https://www.profixgroup.io"> www.profixgroup.io</a> &nbsp;ProFix Group®  <br>
+      BUSINESS LAB REPORT BY SmartQuail® <br>
+      QUITO-ECUADOR 2021 <br>
+     </h5>
+    </ul>
+  </footer>
+  
+</body> 
+</html> 
+
+
