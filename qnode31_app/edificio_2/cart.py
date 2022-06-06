@@ -1,6 +1,6 @@
 from decimal import Decimal
 from django.conf import settings
-from edificio_1.models import Cotizacion
+from edificio_2.models import Cotizacion
 
 
 class Cart(object):

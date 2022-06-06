@@ -1,0 +1,16 @@
+from django.urls import path,re_path,include
+from . import views
+from django.utils.translation import gettext_lazy as _
+
+
+app_name = 'edificio_2'
+
+urlpatterns = [
+    path('cotizaciones/', views.invoice_list, name='invoice_list'),
+    path('cotizaciones/<slug:category_slug>/', views.invoice_list, name='invoice_list_by_category'),
+    path('cotizaciones/<int:id>/<slug:slug>/', views.invoice_detail,name='invoice_detail'),
+    
+    path('cart/', views.cart_detail, name='cart_detail'),
+    path('cart/add/<int:invoice_id>/',views.cart_add, name='cart_add'),
+    path('remove/<int:invoice_id>/', views.cart_remove, name='cart_remove'),
+]

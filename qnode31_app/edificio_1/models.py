@@ -102,7 +102,7 @@ class Diagnostico(TranslatableModel):
         verbose_name_plural = 'Diagnostico de Mantenimiento'
 
     def __str__(self):
-        return 'Reporte: {}'.format(self.code)
+        return 'Reporte: {}'.format(self.report_code)
 
     def sub_total(self):
         return '{} $' .format(self.price * self.quantity)
@@ -188,7 +188,7 @@ class Cotizacion(models.Model):
 
 
     def __str__(self):
-        return self.coti_code
+        return self.project_name
 
     def Sub_total(self):
         return self.price * self.quantity
@@ -260,9 +260,7 @@ class InvoiceItem(models.Model):
     ('Gl','Gl'),
     ]
     order = models.ForeignKey(order_cotizacion, related_name='items', on_delete=models.CASCADE,null=True)
-    coti = models.ForeignKey(Cotizacion,
-                              related_name='order_items',
-                              on_delete=models.CASCADE)
+    coti = models.ForeignKey(Cotizacion,related_name='order_items', on_delete=models.CASCADE)
     invoice = models.ForeignKey(Diagnostico,related_name='invoice_items',on_delete=models.CASCADE, null=True)
     price = models.DecimalField(max_digits=10, decimal_places=1)
     quantity = models.PositiveIntegerField(default=1)

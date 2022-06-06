@@ -91,13 +91,14 @@ INSTALLED_APPS = [
     #'students',
     'embed_video',
     #'actions',
-    'cart',
+    #'cart',
     'parler',
     'qr_code',
     'cotizaciones',
     'bootstrap4',
     'coupons',
     'edificio_1',
+    'edificio_2',
     #'HOMEDETAIL',
     #'ordenes_servicios',
     'payment',
@@ -222,8 +223,8 @@ BATON = {
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 #Ecommerce App
-CART_SESSION_ID = 'cart'
-COTI_CART_SESSION_ID = 'coti_cart'
+CART_SESSION_ID = 'edificio_2.cart'
+#COTI_CART_SESSION_ID = 'coti_cart'
 
 BRAINTREE_MERCHANT_ID = os.environ.get('BRAINTREE_M_ID')
 BRAINTREE_PUBLIC_KEY = os.environ.get('BRAINTREE_KEY')
@@ -285,7 +286,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
-                'edificio_1.context_processors.coti_cart',
+                'cart.context_processors.cart',
             ],
         },
     },

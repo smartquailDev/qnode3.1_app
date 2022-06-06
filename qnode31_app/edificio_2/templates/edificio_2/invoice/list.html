@@ -1,0 +1,80 @@
+
+{% extends "DashBase.html" %}
+{% load i18n %}
+{% load static %}
+{% load thumbnail %}
+{% load humanize %}
+
+
+
+
+{% block content %}
+
+
+  <div class="card">
+    <div class="card-header">
+      <h4>{% block title %} 
+        {% for invoice in invoices %}
+        Items a ser cotizados para el edificio: {{ invoice.Edificio}}
+        {% endfor %}
+        {% endblock %}</h4>
+  <div class="card-tools">
+    <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
+      <i class="fas fa-minus"></i>
+    </button>
+    <button type="button" class="btn btn-tool" data-card-widget="remove" title="Remove">
+      <i class="fas fa-times"></i>
+    </button>
+  </div>
+</div>
+
+
+<div class="card-body">
+      
+  <div class="card-body p-0">
+    <table class="table table-striped projects">
+  <thead>
+    <tr>
+      <th>#</th>
+      <th>Categoría</th>
+      <th>Proyecto</th>
+      <th>Item</th>
+      <th>Cantidad</th>
+      <th>Precio Unitario</th>
+      <th>Sub Total </th>
+      <th>I.V.A: 12%</th>
+      <th>Total</th>
+    </tr>
+  </thead>  
+    <tbody>
+     
+    <tr data-widget="expandable-table" aria-expanded="false" style="text-align:center;" >
+     {% for invoice in invoices %} 
+  
+      <td>{{ invoice.id }}</td>
+      
+      <td>{{ category.name }}</a></td>
+      
+      <td>
+      
+        <a href="{{ invoice.get_absolute_url }}">
+        {{ invoice.name }}
+      
+      </a>
+   
+      </td>
+      <td>{{ invoice.item }}</td>
+      <td>{{ invoice.quantity }}</td>
+      <td>{{ invoice.price }} $</td>
+      <td> {{ invoice.Sub_total }} $ </td>
+      <td> ${{ invoice.Sub_Total_IVA }}</td>
+      <td> ${{ invoice.Total }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+</div>
+</div>
+</div>
+{% endblock %}
+

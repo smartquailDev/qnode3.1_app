@@ -35,8 +35,13 @@ class InvoiceItemInline(admin.TabularInline):
     model = InvoiceItem
     raw_id_fields = ['coti']
 
+def order_cotizacion_detail(obj):
+    return mark_safe('<a href="{}">Cotización</a>'.format(
+        reverse('edificio_1:admin_cotizacion_detail', args=[obj.id])))
+order_cotizacion_detail.short_description = 'Imprimir'
+
 @admin.register(order_cotizacion)
 class order_cotizacionAdmin(admin.ModelAdmin):
-    list_display = [ 'code','email','aprobe','diss']
+    list_display = [ 'code','email','aprobe','diss',order_cotizacion_detail]
     list_filter = ['aprobe',]
     inlines = [InvoiceItemInline]

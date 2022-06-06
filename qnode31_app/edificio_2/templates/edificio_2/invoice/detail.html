@@ -28,7 +28,7 @@
   <div class="product-detail">
     <p class="price"><strong>Edificio:</strong>&nbsp; &nbsp; {{ invoice.Edificio }}</p>
     <img src="{% if invoice.image %}{{ invoice.image.url }}{% else %}{% static "img/no_image.png" %}{% endif %}">
-    <h1>{{ invoice.project_name }}</h1>
+    <h1>{{ invoice.name }}</h1>
     <h2><a href="{{ invoice.category.get_absolute_url }}">{{ invoice.category }}</a></h2>
     
     {{ invoice.description|linebreaks }}
@@ -38,7 +38,7 @@
     <p class="price"><strong>I.V.A: 12%:</strong>&nbsp; &nbsp;{{ invoice.Sub_Total_IVA  }}</p>
     <p class="price"><strong>Total:</strong>&nbsp; &nbsp;{{ invoice.Total  }}</p>
     <div class="input-group input-group-sm">
-      <form action="{% url "cart:cart_add" invoice.id %}" method="post">
+      <form action="{% url "edificio_2:cart_add" invoice.id %}" method="post">
         {{ cart_invoice_form }}
         {% csrf_token %}
         <button type="submit" value="{% trans "Add to cart" %}" class="btn btn-default"><i class="fas fa-cart-arrow-down"></i></button>
