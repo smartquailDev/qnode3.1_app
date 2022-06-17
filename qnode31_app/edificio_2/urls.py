@@ -13,4 +13,8 @@ urlpatterns = [
     path('cart/', views.cart_detail, name='cart_detail'),
     path('cart/add/<int:invoice_id>/',views.cart_add, name='cart_add'),
     path('remove/<int:invoice_id>/', views.cart_remove, name='cart_remove'),
+
+    path('coti_create/', views.coti_order_create, name='coti_order_create'),
+    path('admin/coti_order/<int:order_id>/', views.admin_coti_order_detail, name='admin_coti_order_detail'),
+    path('admin/coti_order/<int:order_id>/pdf/', views.admin_coti_order_pdf, name='admin_coti_order_pdf'),
 ]

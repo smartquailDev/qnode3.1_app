@@ -1,5 +1,5 @@
 from django import forms
-from .models import Cotizacion
+from .models import Cotizacion,Coti_Order
 import datetime
 from django.contrib.admin import widgets 
 
@@ -20,3 +20,9 @@ class CartAddProductForm(forms.Form):
     update = forms.BooleanField(required=False,
                                 initial=False,
                                 widget=forms.HiddenInput)
+
+
+class CotiOrderCreateForm(forms.ModelForm):
+    class Meta:
+        model = Coti_Order
+        fields = [ 'email', 'RUC2']

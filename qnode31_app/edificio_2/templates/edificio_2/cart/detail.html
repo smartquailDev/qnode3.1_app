@@ -1,78 +1,71 @@
 
 {% extends "DashBase.html" %}
+{% load i18n %}
 {% load static %}
-{% block content %}
-    <section class="content">
-      <div class="container-fluid">
-        <div class="row">
-          <div class="col-12">
-            
-            <!-- Main content -->
-            <div class="invoice p-3 mb-3">
-              <!-- title row -->
-              <div class="row">
-                <div class="col-12">
-                  <h4>
-                    <i class="fas fa-file-invoice"></i> NOTA DE PAGOsfas
-                  </h4>
-                </div>
-                <!-- /.col -->
-              </div>
-              <!-- info row -->
-             
-              <!-- /.row -->
-              
-            
-            
-              <div class="row">
-                <div class="col-12 table-responsive">
-                  <table class="table table-striped">
-                    <thead>
-                    <tr>
-                      <th>Mantenimientom</th>
-                      <th>Proyecto</th>
-                      <th>Cantidad</th>
-                      <th>Costo Unitario</th>
-                      <th>Subtotal</th>
-                      <th>Anticipo</th>
-                  
-                      <th>{{ cart.get_total_price }}</th>
-          
-                    </tr>
-                    </thead>
-                    <tbody>
-                      {% for item in cart %}
-                      {% with invoice=item.invoice %}
-                        <tr>
-                          <td>
-                            <a href="{{ invoice.get_absolute_url }}">
-                              <img src="{% if invoice.image %}{{ invoice.image.url }}{% else %}{% static "img/no_image.png" %}{% endif %}">
-                            </a>
-                          </td>
-                          <td>{{ invoice.name }}</td>
-                          <td>
-                            <form action="{% url "edificio_2:cart_add" invoice.id %}" method="post">
-                              {{ item.update_quantity_form.quantity }}
-                              {{ item.update_quantity_form.update }}
-                              <input type="submit" value="Update">
-                              {% csrf_token %}
-                            </form>
-                          </td>
-                          <td><a href="{% url "edificio_2:cart_remove" invoice.id %}">Remove</a></td>
-                          <td class="num">${{ item.price }}</td>
-                          <td class="num">${{ item.total_price }}</td>
-                        </tr>
-                      {% endwith %}
-                    {% endfor %}
-                  </table>
-                </div>
-               
-               
-                <!-- /.col -->
-              </div>
-              
-              <!-- /.row -->
+{% load thumbnail %}
+{% load humanize %}
 
+
+
+
+{% block content %}
+
+
+  <div class="card">
+    <div class="card-header">
+      <h4>{% block title %} 
+        {% for invoice in invoices %}
+        Items a ser cotizados para el edificio: {{ invoice.Edificio}}
+        {% endfor %}
+        {% endblock %}</h4>
+  <div class="card-tools">
+    <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
+      <i class="fas fa-minus"></i>
+    </button>
+    <button type="button" class="btn btn-tool" data-card-widget="remove" title="Remove">
+      <i class="fas fa-times"></i>
+    </button>
+  </div>
+</div>
+
+
+<div class="card-body">
+      
+  <div class="card-body p-0">
+    <table class="table table-striped projects">
+  <thead>
+    <tr>
+      <th>#</th>
+      <th>Item</th>
+      <th>Cantidad</th>
+      <th>Precio Unitario</th>
+      <th>Sub Total </th>
+      <th>I.V.A: 12%</th>
+      <th>Total</th>
+    </tr>
+  </thead>  
+    <tbody>
+    <tr data-widget="expandable-table" aria-expanded="false" style="text-align:left;" >
+      {% for item in cart %}
+      {% with invoice=item.invoice %}
+      <td>{{ invoice.id }}</td>
+      <td>{{ invoice.item }}</td>
+      <td>{{ invoice.quantity }}</td>
+      <td>{{ invoice.price|floatformat:"2" }} </td>
+      <td> {{ invoice.Sub_total|floatformat:"2" }}  </td>
+      <td> {{ invoice.Sub_Total_IVA}}</td>
+      <td> {{ invoice.Total}}</td>
+      <td> <a href="{% url "edificio_2:cart_remove" invoice.id %}"><i class="fas fa-trash"></i></a>
+      {% endwith %}
+      {% endfor %}
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+
+<section>
+  <div class="col-12 table-responsive">
               <div class="row">
                 <!-- accepted payments column -->
                
@@ -86,11 +79,12 @@
                       
                       <tr>
                         <th style="width:50%">Subtotal:</th>
-                        <td>${{ cart.get_total_price|floatformat:"2" }}</td>
+                        <td>${{ cart.Sub_total|floatformat:"2" }}</td>
+                        <td></td>
                       </tr>
                       <tr>
                         <th>I.V.A (12%)</th>
-                        <td>${{ cart.tax_price|floatformat:"2" }}</td>
+                        <td>${{ cart.subtotal_iva|floatformat:"2" }}</td>
                       </tr>
                       <tr>
                        
@@ -99,13 +93,21 @@
                       
                       <tr>
                         <th>Total:</th>
-                        <td>${{ cart.get_total_price_after_discount|floatformat:"2" }}</td>
+                        <td>${{ cart.total|floatformat:"2" }}</td>
+                      </tr>
+                      <tr>
+                        <th>Anticipo a cancelar:</th>
+                        <td>${{ cart.total_anticipo|floatformat:"2" }}</td>
+                      </tr>
+                      <tr>
+                        <th>Valor pendiente a liquidar:</th>
+                        <td>${{ cart.total_pendiente|floatformat:"2" }}</td>
                       </tr>
                     </table>
         
                         <p class="text-center">
-                          <a href="{% url "edificio_1:invoice_list" %}" class="btn btn-primary">AGREGAR PROYECTOS</a>
-                          <a href="" class="btn btn-success">PAGAR</a>
+                          <a href="{% url "edificio_2:invoice_list" %}" class="btn btn-primary">AGREGAR PROYECTOS</a>
+                          <a href="{% url "edificio_2:coti_order_create" %}" class="btn btn-success">PAGAR</a>
                         </p>
                   </div>
                 </div>
@@ -114,33 +116,10 @@
           </div>
         </div>
       </div>
-      <div class="callout callout-info">
-        <h5><i class="fas fa-info"></i> Términos & condiciones:</h5>
-        This page has been enhanced for printing. Click the print button at the bottom of the invoice to test.
-      </div><!-- /.container-fluid -->
+    </div>
     </section>
-    <!-- /.content -->
-  </div>
-  <!-- /.content-wrapper -->
 
 
-  <!-- Control Sidebar -->
-  <aside class="control-sidebar control-sidebar-dark">
-    <!-- Control sidebar content goes here -->
-  </aside>
-  <!-- /.control-sidebar -->
 </div>
-<!-- ./wrapper -->
-
-<!-- jQuery -->
-<script src="{% static 'plugins/jquery/jquery.min.js' %}"></script>
-<!-- Bootstrap 4 -->
-<script src="{% static 'plugins/bootstrap/js/bootstrap.bundle.min.js' % }"></script>
-<!-- AdminLTE App -->
-<script src="{% static 'dist/js/adminlte.min.js' %}"></script>
-<!-- AdminLTE for demo purposes -->
-<script src="{% static 'dist/js/demo.js' %}"></script>
-</body>
-</html>
-
 {% endblock %}
+

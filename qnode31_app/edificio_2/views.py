@@ -5,11 +5,12 @@ from datetime import date
 from django.shortcuts import render, redirect
 from django.contrib.admin.views.decorators import staff_member_required
 from django.shortcuts import get_object_or_404
-from .models import Cotizacion,Category
+from .models import Coti_Order, Cotizacion,Category,Coti_OrderItem
+
 #from .forms import ProFitCreateForm,CotiCartAddProductForm,CotiCreateForm
 #from Proyectos.models import Project,mantenimiento
 from django.conf import settings
-#from .tasks import cotizacion_created
+from .tasks import coti_order_created
 #from .coti_cart import Coti_Cart
 from edificio_2.cart import Cart
 from django.http import HttpResponse
@@ -20,7 +21,8 @@ from qr_code.qrcode.utils import ContactDetail, WifiConfig, Coordinates, QRCodeO
 from django.views.decorators.http import require_POST
 from io import BytesIO
 from django.core.mail import EmailMessage
-from .forms import CartAddProductForm
+from .forms import CartAddProductForm,CotiOrderCreateForm
+
 
 # Create your views here.
 
@@ -56,7 +58,7 @@ def cart_add(request, invoice_id):
     if form.is_valid():
         cd = form.cleaned_data
         cart.add(invoice=invoice,
-                # anticipo=cd['anticipo'],
+                 anticipo=cd['anticipo'],
                  quantity=cd['quantity'],
                  #update_anticipo=cd['update_a'],
                  update_quantity=cd['update'])
@@ -76,9 +78,63 @@ def cart_detail(request):
             item['update_quantity_form'] = CartAddProductForm(
                               initial={'quantity': item['quantity'],
                               'update': True})
-            #item['update_anticipo_form'] = CartAddProductForm(
-                             # initial={'anticipo': item['anticipo'],
-                             # 'update': True})
+            item['update_anticipo_form'] = CartAddProductForm(
+                              initial={'anticipo': item['anticipo'],
+                              'update': True})
    # coupon_apply_form = CouponApplyForm()
     return render(request, 'edificio_2/cart/detail.html', 
     {'cart': cart})
+
+#-----------Orden de Cotizacion----------------------
+
+def coti_order_create(request):
+    cart = Cart(request)
+    if request.method == 'POST':
+        form = CotiOrderCreateForm(request.POST)
+
+        if form.is_valid():
+            order = form.save(commit=False)
+            order.save()
+
+            for item in cart:
+                Coti_OrderItem.objects.create(order=order,
+                                         invoice=item['invoice'],
+                                         price=item['price'],
+                                         quantity=item['quantity'],
+                                         anticipo= item['anticipo'])
+            # clear the cart
+            cart.clear()
+            # launch asynchronous task
+            coti_order_created.delay(order.id)
+            # set the order in the session
+            request.session['order_id'] = order.id
+    
+            # redirect for payment
+            return redirect(reverse('payment:process'))
+    else:
+        form = CotiOrderCreateForm()
+    return render(request,
+                  'edificio_2/invoices/invoice/create.html',
+                  {'cart': cart, 'form': form})
+
+#--------------Detalles de Ordenes Admin---------------
+
+@staff_member_required
+def admin_coti_order_detail(request, order_id):
+    order = get_object_or_404(Coti_Order, id=order_id)
+    return render(request,
+                  'edificio_2/admin/invoices/invoice/detail.html',
+                  {'order': order})
+
+
+@staff_member_required
+def admin_coti_order_pdf(request, order_id):
+    order = get_object_or_404(Coti_Order, id=order_id)
+    html = render_to_string(
+        'edificio_2/admin/invoices/invoice/pdf.html',
+        {'order':order}
+    )
+    response = HttpResponse(content_type='application/pdf')
+    response['content-Disposition']='filename=\ "order_{}.pdf"'.format(order.id)
+    weasyprint.HTML(string=html,  base_url=request.build_absolute_uri() ).write_pdf(response,stylesheets=[weasyprint.CSS('staticfiles/css/pdf.css')], presentational_hints=True)
+    return response

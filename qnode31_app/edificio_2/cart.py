@@ -31,7 +31,10 @@ class Cart(object):
 
         for item in cart.values():
             item['price'] = Decimal(item['price'])
-            item['total_price'] = item['price'] * item['quantity']
+            item['iva'] = Decimal(item['price'])*(Decimal('12')/Decimal('100'))
+            item['anticipo'] = Decimal(item['anticipo'])/Decimal('10')
+            item['total_price'] = item['price'] * item['quantity']*item['anticipo']
+            item['total'] = item['total_price']*item['anticipo']
             yield item
     
     def __len__(self):
@@ -40,18 +43,24 @@ class Cart(object):
         """
         return sum(item['quantity'] for item in self.cart.values())
 
-    def add(self, invoice, quantity=1, update_quantity=False):
+    def add(self, invoice, quantity=1, anticipo=50, update_quantity=False,update_anticipo=True):
         """
         Add a product to the cart or update its quantity.
         """
         invoice_id = str(invoice.id)
         if invoice_id not in self.cart:
             self.cart[invoice_id] = {'quantity': 0,
-                                      'price': str(invoice.price)}
+                                      'price': str(invoice.price),'anticipo': 0}
         if update_quantity:
             self.cart[invoice_id]['quantity'] = quantity
         else:
             self.cart[invoice_id]['quantity'] += quantity
+
+        if update_anticipo:
+            self.cart[invoice_id]['anticipo'] = anticipo
+        else:
+            self.cart[invoice_id]['anticipo'] += anticipo
+            
         self.save()
 
     def save(self):
@@ -68,7 +77,31 @@ class Cart(object):
             self.save()
 
     def get_total_price(self):
-        return sum(Decimal(item['price']) * item['quantity'] for item in self.cart.values())
+        return sum((Decimal(item['total_price'])) for item in self.cart.values())
+
+    def Sub_total_price(self):
+        return (self.get_total_price()*sum(item['anticipo'] for item in self.cart.values()) )
+
+    def Anticipos(self):
+        return sum(Decimal(item['anticipo']) for item in self.cart.values())
+        
+    def Sub_total(self):
+        return sum(Decimal(item['price'])*item['quantity']for item in self.cart.values())
+
+    def subtotal_iva(self):
+        return sum(Decimal(item['iva']) for item in self.cart.values())
+
+    def total(self):
+        return self.Sub_total() + self.subtotal_iva()
+
+    def total_anticipo(self):
+        return self.total()*self.Anticipos()
+    
+    def total_pendiente(self):
+        return self.total() - self.total_anticipo()
+
+    def total2(self):
+        return sum((Decimal(item['total_price'])) for item in self.cart.values())
 
     def clear(self):
         # remove cart from session

@@ -31,7 +31,9 @@ class Cart(object):
 
         for item in cart.values():
             item['price'] = Decimal(item['price'])
-            item['total_price'] = item['price'] * item['quantity']
+            item['anticipo'] = Decimal(item['anticipo'])/Decimal('10')
+            item['total_price'] = item['price'] * item['quantity']*item['anticipo']
+            item['total'] = item['total_price']*item['anticipo']
             yield item
     
     def __len__(self):
@@ -68,7 +70,22 @@ class Cart(object):
             self.save()
 
     def get_total_price(self):
-        return sum(Decimal(item['price']) * item['quantity'] for item in self.cart.values())
+        return sum((Decimal(item['total_price'])) for item in self.cart.values())
+
+    def Sub_total_price(self):
+        return (self.get_total_price()*sum(item['anticipo'] for item in self.cart.values()) )
+
+    def Anticipos(self):
+        return sum(Decimal(item['anticipo']) for item in self.cart.values())
+        
+    def Sub_total(self):
+        return sum(Decimal(item['price'])*item['quantity']for item in self.cart.values())
+
+    def total(self):
+        return self.Anticipos()*self.get_total_price()
+
+    def total2(self):
+        return sum((Decimal(item['total_price'])) for item in self.cart.values())
 
     def clear(self):
         # remove cart from session
