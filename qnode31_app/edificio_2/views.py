@@ -138,3 +138,20 @@ def admin_coti_order_pdf(request, order_id):
     response['content-Disposition']='filename=\ "order_{}.pdf"'.format(order.id)
     weasyprint.HTML(string=html,  base_url=request.build_absolute_uri() ).write_pdf(response,stylesheets=[weasyprint.CSS('staticfiles/css/pdf.css')], presentational_hints=True)
     return response
+
+
+#-------------Lista y historico de cotizaciones-----------------------
+
+
+def coti_list(request, category_slug=None):
+    category = None
+    categories = Coti_Order.objects.all()
+    invoices =  Coti_Order.objects.filter(aprobe=True)
+    if category_slug:
+        category = get_object_or_404(Category, slug=category_slug)
+        invoices = invoices.filter(category=category)
+    return render(request, 
+        'edificio_2/coti/list.html',  
+        {'category':category,
+        'categories':categories,
+        'invoices': invoices})

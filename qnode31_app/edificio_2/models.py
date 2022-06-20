@@ -13,6 +13,7 @@ from django.utils.html import format_html
 from django.template.defaultfilters import slugify
 #from django.contrib.auth.models import User
 from django.urls import reverse
+from django.utils.safestring import mark_safe
 
 class Category(models.Model):
     
@@ -116,6 +117,7 @@ class Coti_Order(models.Model):
    # nombre= models.CharField(_('Nombre de Edificio'), max_length=50,null=True)
    # admin_name = models.CharField(_('Nombre de Administrador'), max_length=50)
     coti = models.ForeignKey(Cotizacion, on_delete=models.CASCADE,null=True,unique=False)
+    category= models.ForeignKey(Category, on_delete=models.CASCADE,null=True,unique=False)
     email = models.EmailField(_('Correo Electrónico'))
    # address = models.CharField(_('Dirección'), max_length=250)
     RUC2 = models.CharField(_('RUC'), max_length=100)
@@ -146,6 +148,11 @@ class Coti_Order(models.Model):
 
     def __str__(self):
         return 'Order {}'.format(self.id)
+
+    def coti_order_pdf(obj):
+        return mark_safe('<a href="{}">PDF</a>'.format(
+            reverse('edificio_2:admin_coti_order_pdf', args=[obj.id])))
+        coti_order_pdf.short_description = 'Invoice'
 
     #def __str__(self):
         #return '{}'.format(self.first_name)

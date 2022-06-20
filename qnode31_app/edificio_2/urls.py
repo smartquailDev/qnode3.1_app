@@ -17,4 +17,6 @@ urlpatterns = [
     path('coti_create/', views.coti_order_create, name='coti_order_create'),
     path('admin/coti_order/<int:order_id>/', views.admin_coti_order_detail, name='admin_coti_order_detail'),
     path('admin/coti_order/<int:order_id>/pdf/', views.admin_coti_order_pdf, name='admin_coti_order_pdf'),
+
+    path('coti_list/', views.coti_list, name='coti_list'),
 ]
