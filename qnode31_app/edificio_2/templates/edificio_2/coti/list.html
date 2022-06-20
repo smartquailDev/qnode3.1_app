@@ -36,39 +36,37 @@
   <thead>
     <tr>
       <th>#</th>
-      <th>Categoría</th>
-      <th>Proyecto</th>
-      <th>Item</th>
-      <th>Cantidad</th>
-      <th>Precio Unitario</th>
-      <th>Sub Total </th>
-      <th>I.V.A: 12%</th>
-      <th>Total</th>
+      <th>Cotización</th>
+      <th>Mantenimiento</th>
+      <th>Email</th>
+      <th>Valor total</th>
+      <th>Valor Anticipo</th>
+      <th>Fecha de Creación </th>
+      <th>Comprobante</th>
+      <th>Estado</th>
     </tr>
   </thead>  
     <tbody>
      
-    <tr data-widget="expandable-table" aria-expanded="false" style="text-align:center;" >
+    <tr data-widget="expandable-table" aria-expanded="false" style="text-align:left;" >
      {% for invoice in invoices %} 
   
       <td>{{ invoice.id }}</td>
-      
-      <td>{{ category.name }}</a></td>
-      
+      <td>{{ invoice.Codigo }}</td> 
+      <td> {{ invoice.category }}  </td>
       <td>
-      
         <a href="{{ invoice.get_absolute_url }}">
         {{ invoice.email }}
-      
-      </a>
-   
-      </td>
-      <td>{{ invoice.RUC2 }}</td>
-      <td>{{ invoice.aprobe }}</td>
-      <td>{{ invoice.coti }} $</td>
-      <td> {{ invoice.category }} $ </td>
-      <td> ${{ invoice.coti_order_pdf }}</td>
-      <td> ${{ invoice.get_total_cost }}</td>
+      </a></td>
+      <td> ${{ invoice.total }}</td>
+      <td> ${{ invoice.get_total_cost }}</td>  
+      <td>{{ invoice.created}}</td>
+      <td> {{ invoice.coti_order_pdf }}</td>
+      {% if invoice.aprobe == True %}
+      <td><i class="fa fa-check"></i></td> 
+      {% else %}
+      <td><i class="fa  fa-xmark"></i></td> 
+      {% endif %}
     </tr>
     {% endfor %}
   </tbody>

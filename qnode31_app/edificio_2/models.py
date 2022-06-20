@@ -113,6 +113,12 @@ class Cotizacion(models.Model):
 
 class Coti_Order(models.Model):
 
+    CHOICE2=[('CMC','CMC'),
+    ('CMP','CMP'),
+    ('CSE','CSE'),
+    ('CSR','CSR'),
+    ]
+    coti_code = models.CharField(max_length=3,choices=CHOICE2,null=True)
    # building_name =  models.ForeignKey(User, on_delete=models.CASCADE,null=True,unique=False)
    # nombre= models.CharField(_('Nombre de Edificio'), max_length=50,null=True)
    # admin_name = models.CharField(_('Nombre de Administrador'), max_length=50)
@@ -138,7 +144,9 @@ class Coti_Order(models.Model):
   
 
     Iva2 = models.PositiveSmallIntegerField(default=12)
+    code= models.CharField(max_length=1000000,blank=True)
   #  coti2 = models.ManyToManyField(to='HOMEDETAIL.Cotizacion')
+    
    
 
     class Meta:
@@ -146,11 +154,19 @@ class Coti_Order(models.Model):
         verbose_name = 'Orden de Compra'
         verbose_name_plural = 'Ordenes de Compras'
 
+    @property
+    def Codigo(self):
+        return ' '.join([self.coti_code,' ','{}'.format(self.id),' ',])
+
+    def save(self):
+        self.code = self.Codigo
+        super (Coti_Order, self).save()
+
     def __str__(self):
         return 'Order {}'.format(self.id)
 
     def coti_order_pdf(obj):
-        return mark_safe('<a href="{}">PDF</a>'.format(
+        return mark_safe('<a href="{}"><i class="fa fa-file"></i></a>'.format(
             reverse('edificio_2:admin_coti_order_pdf', args=[obj.id])))
         coti_order_pdf.short_description = 'Invoice'
 
@@ -163,6 +179,10 @@ class Coti_Order(models.Model):
 
     def get_total_cost(self):
         total_cost = sum(item.get_cost()*item.Anticipo() for item in self.items.all())
+        return total_cost
+
+    def total(self):
+        total_cost = sum(item.get_cost() for item in self.items.all())
         return total_cost
 
    

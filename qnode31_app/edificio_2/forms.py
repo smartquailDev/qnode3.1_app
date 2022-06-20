@@ -25,4 +25,4 @@ class CartAddProductForm(forms.Form):
 class CotiOrderCreateForm(forms.ModelForm):
     class Meta:
         model = Coti_Order
-        fields = [ 'email', 'RUC2']
+        fields = [ 'email', 'RUC2', 'coti_code','aprobe']
