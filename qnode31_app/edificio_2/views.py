@@ -130,9 +130,10 @@ def admin_coti_order_detail(request, order_id):
 @staff_member_required
 def admin_coti_order_pdf(request, order_id):
     order = get_object_or_404(Coti_Order, id=order_id)
+    invoices =  Cotizacion.objects.all()
     html = render_to_string(
         'edificio_2/admin/invoices/invoice/pdf.html',
-        {'order':order}
+        {'order':order,'invoices':invoices}
     )
     response = HttpResponse(content_type='application/pdf')
     response['content-Disposition']='filename=\ "order_{}.pdf"'.format(order.id)

@@ -14,11 +14,14 @@ from django.template.defaultfilters import slugify
 #from django.contrib.auth.models import User
 from django.urls import reverse
 from django.utils.safestring import mark_safe
+import time
+from datetime import datetime, timedelta
+from django.contrib.auth.models import Group
 
 class Category(models.Model):
     
-    CHOICE3=[('Mantenimiento Correctivo','MC'),
-             ('Mantenimiento Preventivo','MP'),
+    CHOICE3=[('Correctivo','MC'),
+             ('Preventivo','MP'),
     ]
 
     name = models.CharField(max_length=200, choices=CHOICE3,db_index=True,verbose_name='Tipo de mantenimiento')
@@ -90,11 +93,11 @@ class Cotizacion(models.Model):
     
     def Sub_Total_IVA(self):
         total_tax_cost = (self.price * self.quantity) * (self.iva / Decimal('100'))
-        return '{} $'.format(total_tax_cost)
+        return total_tax_cost
 
     def Total(self):
         total_cost = (self.price * self.quantity) * (self.iva / Decimal('100')) + (self.price * self.quantity)
-        return '{} $'.format(total_cost)
+        return total_cost
 
     #def __str__(self):
         #return '{}'.format(self.first_name)
@@ -119,7 +122,7 @@ class Coti_Order(models.Model):
     ('CSR','CSR'),
     ]
     coti_code = models.CharField(max_length=3,choices=CHOICE2,null=True)
-   # building_name =  models.ForeignKey(User, on_delete=models.CASCADE,null=True,unique=False)
+    building_name =  models.ForeignKey(Group, on_delete=models.CASCADE,null=True,unique=False)
    # nombre= models.CharField(_('Nombre de Edificio'), max_length=50,null=True)
    # admin_name = models.CharField(_('Nombre de Administrador'), max_length=50)
     coti = models.ForeignKey(Cotizacion, on_delete=models.CASCADE,null=True,unique=False)
@@ -173,9 +176,17 @@ class Coti_Order(models.Model):
     #def __str__(self):
         #return '{}'.format(self.first_name)
 
+    def exp_date(self):
+        timedifer = self.created + timedelta(days=14)
+        return timedifer
+
 
     def __bool__(self):
         return self.aprobe
+
+    def iva_price(self):
+        iva = self.Iva2/Decimal('100')
+        return iva
 
     def get_total_cost(self):
         total_cost = sum(item.get_cost()*item.Anticipo() for item in self.items.all())
@@ -184,6 +195,33 @@ class Coti_Order(models.Model):
     def total(self):
         total_cost = sum(item.get_cost() for item in self.items.all())
         return total_cost
+
+    def total_tax(self):
+        total_tax = self.total()*self.iva_price()
+        return total_tax
+
+    def TOTAL(self):
+        total_cost = self.total_tax() + self.total()
+        return total_cost
+
+    def anticipo_cost(self):
+        anticpo_cost = sum(item.get_cost_anticipo() for item in self.items.all())
+        return anticpo_cost
+    
+    def anticipo_cost_tax(self):
+        anticpo_cost_tax = self.anticipo_cost()*self.iva_price()
+        return anticpo_cost_tax
+
+    def anticipo_tota_cost_tax(self):
+        anticpo_total_cost_tax = self.anticipo_cost_tax()+self.anticipo_cost()
+        return anticpo_total_cost_tax
+
+
+
+
+ 
+
+  
 
    
 
@@ -209,3 +247,6 @@ class Coti_OrderItem(models.Model):
 
     def get_cost(self):
         return self.price * self.quantity
+
+    def get_cost_anticipo(self):
+        return self.get_cost()*self.Anticipo() 

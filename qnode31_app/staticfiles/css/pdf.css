@@ -1,60 +1,138 @@
-body {
-    font-family:Helvetica, sans-serif;
-    color:#222;
-    line-height:1.5;
+@charset "UTF-8";
+@import url("https://fonts.googleapis.com/css2?family=Open+Sans:wght@300&display=swap");
+@page {
+
+@bottom-right {
+  font-family: 'Open Sans', sans-serif;
+  font-weight: bold;
+  font-size: 1.2em;
+  content: counter(page);
+}
 }
 
-table {
-    width:100%;
-    border-spacing:0;
+html {
+  color: #14213d;
+  font-family: 'Open Sans', sans-serif;
+  font-size: 11pt;
+  line-height: 1.6; }
+  html body {
+    margin: 0; }
+  html h1 {
+    color: #454646;
+    font-family: 'Open Sans', sans-serif;
+    font-size: 12pt;
+    margin: 0;
+    text-align: center;
+   }
+
+   html p {
+    color: #454646;
+    font-family: 'Open Sans', sans-serif;
+    font-size: 9pt;
+    margin: 0;
+    text-align: justify;
+   }
+  html aside {
+    display: flex;
+    margin: 2em 0 4em; }
+    html aside address {
+      font-style: normal;
+      white-space: pre-line; }
+      html aside address#from {
+        color: #a9a;
+        flex: 1; }
+      html aside address#to {
+        text-align: right; }
+  html dl {
+    text-align: right;
+    position: absolute;
+    right: 0;
+    top: 0; }
+    html dl dt, html dl dd {
+      display: inline;
+      margin: 0; }
+    html dl dt {
+      color: #a9a; }
+      html dl dt::before {
+        content: '';
+        display: block; }
+      html dl dt::after {
+        content: ':'; }
+  html table {
     border-collapse: collapse;
-    margin:20px 0;
-}
+    width: 100%; }
+    html table th {
+      border-bottom: .2mm solid #a9a;
+      color: #a9a;
+      font-size: 8pt;
+      font-weight: 400;
+      padding-bottom: .25cm;
+      text-transform: uppercase; }
+    html table td {
+      padding-top: 7mm; }
+      html table td:last-of-type {
+        color: #363636;
+        font-weight:lighter;
+        text-align: right; }
+    html table th, html table td {
+      text-align: center; }
+      html table th:first-of-type, html table td:first-of-type {
+        text-align: left; }
+      html table th:last-of-type, html table td:last-of-type {
+        text-align: right; }
+    html table#total {
+      background: #f6f6f6;
+      border-color: #f6f6f6;
+      border-style: solid;
+      border-width: 1cm 4cm;
+      bottom: 0;
+      font-size: 8pt;
+      margin: 0 -3cm;
+      position: absolute;
+      width: 18cm; }
 
-table th, table td {
-    text-align:left;
-    font-size:14px;
-    padding:10px;
-    margin:0;
-}
+    html header{
+        border-bottom: 2px solid rgb(72, 72, 72);
+        padding: -2px;
+        text-align: left;
+        background: #ffffff;
+        color: rgb(0, 0, 0);
+        margin-top: -30px;
+        font-size: 10px;
+    }
 
-tbody tr:nth-child(odd) {
-    background:#efefef;
-}
+    html footer {
+      position: fixed;
+      left: 0;
+      bottom: 0;
+      border-top: 2px solid #000;
+      width: 100%;
+      background-color: rgb(255, 255, 255);
+      color: rgb(90, 90, 90);
+      text-align: left;
+      margin-bottom: -50px;
+      font-size: 10px;
+    }
 
-thead th, tbody tr.total {
-    background:#5993bb;
-    color:#fff;
-    font-weight:bold;
-}
+    html #signature {
+      padding: 24px;
+      position: relative;
+      left: 10px;
+      bottom: 200px;
+      top:50px;
+      border-bottom: 2px solid rgb(72, 72, 72);
+      border-top: 2px solid #000;
+      width: 100%;
+      background-color: rgb(198, 33, 33);
+      color: rgb(90, 90, 90);
+      text-align: left;
+      margin-bottom: 150px;
+      font-size: 10px;
+      align-content: center;
+    }
 
-h1 {
-    margin:0;
-}
-
-
-.secondary {
-    color:#bbb;
-    margin-bottom:20px;
-}
-
-.num {
-    text-align:right;
-}
-
-.paid, .pending {
-    color:#1bae37;
-    border:4px solid #1bae37;
-    text-transform:uppercase;
-    font-weight:bold;
-    font-size:22px;
-    padding:14px 12px 0px;
-    float:right;
-    transform: rotate(-15deg);
-    margin-right:40px;
-}
-
-.pending {
-    color:#a82d2d;
-    border:4px solid #a82d2d;
-}
+    html #signature h1 {
+      display: inline-block;
+     
+    }
+    
