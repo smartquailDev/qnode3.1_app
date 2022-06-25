@@ -30,13 +30,15 @@
     </aside>
 
     <dl id="informations" style="display:inline-block;">
-    <dd>Quito-Ecuador</dd>
+      <dt>Ciudad</dt>
+    <dd>Quito
+    </dd>
     <dt>Fecha</dt>
       <dd>{{ order.created|date:"M d, Y" }} </dd>
-      <dt>Cotización:</dt>
+      <dt>Cotización</dt>
       <dd>{{ order.Codigo }}</dd>
-      <dt>Cotización:</dt>
-      <dd>{{ order.Codigo }}</dd>
+      <dt>Aprobado por</dt>
+      <dd>{{order.user_name}}</dd>
     </dl>
 <h1>Cotización proyecto: {{order.Codigo}}</h1>
 <h3>{{ item.product.category }}</h3> 
@@ -52,6 +54,7 @@
           <th>Subtotal</th>
           <th>I.V.A: 12%</th>
           <th>Total</th>
+          <th>anticipo</th>
         </tr>
       </thead>
       <tbody>
@@ -61,10 +64,10 @@
         <td> {{ invoice.category }}  </td>
         <td> {{ invoice.quantity }} {{ invoice.Units }}  </td>
         <td> {{ invoice.price|floatformat:2 }} $  </td>
-
         <td> {{ invoice.Sub_total|floatformat:2 }} $</td>
         <td> {{ invoice.Sub_Total_IVA|floatformat:2 }} $</td> 
         <td> {{ invoice.Total|floatformat:2}} $</td>  
+        <td> {{ invoice.anticipo|floatformat:0 }} %  </td>
       </tr>
       {% endfor %}
       </tr>
@@ -76,7 +79,7 @@
         <tr>
           <th style="background:#f6f6f6; color:#000; text-align:left;">Valores a pagar</th>
           <th style="background:#f6f6f6; color:#000; text-align:left;">Información de la bancaria</th>
-          <th style="background:#f6f6f6; color:#000; text-align:left; ">Estado de Cuenta</th>
+          <th style="background:#f6f6f6; color:#000; text-align:left; ">Estado de Cotización</th>
         </tr>
       </thead>
       <tbody>
@@ -95,12 +98,12 @@
          <tr> 
          <td class="num">Total :$ {{ order.TOTAL|floatformat:2 }} </td>
           <td>Cuenta de Ahorros</td>
-          <td>Cloud Server: {{ order.cloud_server }}</td>
+          <td>Última actualización: {{ order.updated|date:" M d, Y,H:m"  }}</td>
         </tr>
         <tr> 
           <td class="num">Valor de Anticipo :  $ {{ order.anticipo_tota_cost_tax|floatformat:2 }}</td>
           <td>profix group</td>
-          <td>IP address: {{order.ip_address_cloud}} </td>
+          <td>Tiempo de ejecución de obra: {{order.dias}} días</td>
           
         </tr> 
         <tr>

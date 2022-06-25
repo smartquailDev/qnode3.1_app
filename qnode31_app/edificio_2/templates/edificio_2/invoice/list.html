@@ -47,9 +47,9 @@
     </tr>
   </thead>  
     <tbody>
-     
+      {% for invoice in invoices %} 
     <tr data-widget="expandable-table" aria-expanded="false" style="text-align:center;" >
-     {% for invoice in invoices %} 
+  
   
       <td>{{ invoice.id }}</td>
       
@@ -70,8 +70,9 @@
       <td> ${{ invoice.Sub_Total_IVA }}</td>
       <td> ${{ invoice.Total }}</td>
     </tr>
-    {% endfor %}
+    
   </tbody>
+  {% endfor %}
 </table>
 </div>
 </div>

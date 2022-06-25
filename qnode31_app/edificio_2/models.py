@@ -11,7 +11,7 @@ from parler.models import TranslatableModel, TranslatedFields
 from ProFit.models import Profile
 from django.utils.html import format_html
 from django.template.defaultfilters import slugify
-#from django.contrib.auth.models import User
+from django.contrib.auth.models import User
 from django.urls import reverse
 from django.utils.safestring import mark_safe
 import time
@@ -123,8 +123,9 @@ class Coti_Order(models.Model):
     ]
     coti_code = models.CharField(max_length=3,choices=CHOICE2,null=True)
     building_name =  models.ForeignKey(Group, on_delete=models.CASCADE,null=True,unique=False)
+    slug = models.SlugField(max_length=200,db_index=True,null=True)
    # nombre= models.CharField(_('Nombre de Edificio'), max_length=50,null=True)
-   # admin_name = models.CharField(_('Nombre de Administrador'), max_length=50)
+    user_name =  models.ForeignKey(User, on_delete=models.CASCADE,null=True,unique=False)
     coti = models.ForeignKey(Cotizacion, on_delete=models.CASCADE,null=True,unique=False)
     category= models.ForeignKey(Category, on_delete=models.CASCADE,null=True,unique=False)
     email = models.EmailField(_('Correo Electrónico'))
@@ -141,9 +142,9 @@ class Coti_Order(models.Model):
     #                           on_delete=models.SET_NULL)
     
     
-  #  discount = models.IntegerField(default=0,
-                            #       validators=[MinValueValidator(0),
-                            #                   MaxValueValidator(100)])
+    dias = models.IntegerField(default=0,
+                                   validators=[MinValueValidator(0),
+                                               MaxValueValidator(300)])
   
 
     Iva2 = models.PositiveSmallIntegerField(default=12)
@@ -156,6 +157,7 @@ class Coti_Order(models.Model):
         ordering = ('-created',)
         verbose_name = 'Orden de Compra'
         verbose_name_plural = 'Ordenes de Compras'
+        index_together = (('id','slug'),)
 
     @property
     def Codigo(self):
@@ -215,6 +217,9 @@ class Coti_Order(models.Model):
     def anticipo_tota_cost_tax(self):
         anticpo_total_cost_tax = self.anticipo_cost_tax()+self.anticipo_cost()
         return anticpo_total_cost_tax
+
+    def get_absolute_url(self):
+        return reverse('edificio_2:invoice_detail',args=[self.id,self.slug])
 
 
 

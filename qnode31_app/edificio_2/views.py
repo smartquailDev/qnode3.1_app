@@ -13,6 +13,7 @@ from django.conf import settings
 from .tasks import coti_order_created
 #from .coti_cart import Coti_Cart
 from edificio_2.cart import Cart
+from edificio_2.cart_pay import Cart_Pay
 from django.http import HttpResponse
 from django.template.loader import render_to_string
 import weasyprint
@@ -22,6 +23,7 @@ from django.views.decorators.http import require_POST
 from io import BytesIO
 from django.core.mail import EmailMessage
 from .forms import CartAddProductForm,CotiOrderCreateForm
+from django.db.models import Count
 
 
 # Create your views here.
@@ -131,6 +133,7 @@ def admin_coti_order_detail(request, order_id):
 def admin_coti_order_pdf(request, order_id):
     order = get_object_or_404(Coti_Order, id=order_id)
     invoices =  Cotizacion.objects.all()
+    counts = Coti_Order.objects.values("coti").annotate(Count("id"))
     html = render_to_string(
         'edificio_2/admin/invoices/invoice/pdf.html',
         {'order':order,'invoices':invoices}
@@ -153,6 +156,21 @@ def coti_list(request, category_slug=None):
         invoices = invoices.filter(category=category)
     return render(request, 
         'edificio_2/coti/list.html',  
+        {'category':category,
+        'categories':categories,
+        'invoices': invoices})
+
+#-------------Lista y historico de proyectos-----------------------
+
+def coti_project_list(request, category_slug=None):
+    category = None
+    categories = Category.objects.all()
+    invoices =  Coti_Order.objects.filter(aprobe=True)
+    if category_slug:
+        category = get_object_or_404(Category, slug=category_slug)
+        invoices = invoices.filter(category=category)
+    return render(request, 
+        'edificio_2/proyectos/list.html',  
         {'category':category,
         'categories':categories,
         'invoices': invoices})

@@ -19,4 +19,8 @@ urlpatterns = [
     path('admin/coti_order/<int:order_id>/pdf/', views.admin_coti_order_pdf, name='admin_coti_order_pdf'),
 
     path('coti_list/', views.coti_list, name='coti_list'),
+
+    path('proyectos/', views.coti_project_list, name='coti_project_list'),
+    path('proyectos/<slug:category_slug>/', views.coti_project_list, name='project_list_by_category'),
+    #path('cotizaciones/<int:id>/<slug:slug>/', views.invoice_detail,name='invoice_detail'),
 ]

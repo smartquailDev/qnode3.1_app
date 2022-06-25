@@ -45,9 +45,10 @@
     </tr>
   </thead>  
     <tbody>
-    <tr data-widget="expandable-table" aria-expanded="false" style="text-align:left;" >
       {% for item in cart %}
       {% with invoice=item.invoice %}
+    <tr data-widget="expandable-table" aria-expanded="false" style="text-align:left;" >
+     
       <td>{{ invoice.id }}</td>
       <td>{{ invoice.item }}</td>
       <td>{{ invoice.quantity }}</td>
@@ -56,9 +57,9 @@
       <td> {{ invoice.Sub_Total_IVA}}</td>
       <td> {{ invoice.Total}}</td>
       <td> <a href="{% url "edificio_2:cart_remove" invoice.id %}"><i class="fas fa-trash"></i></a>
-      {% endwith %}
-      {% endfor %}
     </tr>
+    {% endwith %}
+    {% endfor %}
   </tbody>
 </table>
 </div>
