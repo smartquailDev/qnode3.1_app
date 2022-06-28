@@ -145,7 +145,7 @@ class Coti_Order(models.Model):
     dias = models.IntegerField(default=0,
                                    validators=[MinValueValidator(0),
                                                MaxValueValidator(300)])
-  
+    date = models.DateTimeField(null=True)
 
     Iva2 = models.PositiveSmallIntegerField(default=12)
     code= models.CharField(max_length=1000000,blank=True)
@@ -219,7 +219,7 @@ class Coti_Order(models.Model):
         return anticpo_total_cost_tax
 
     def get_absolute_url(self):
-        return reverse('edificio_2:invoice_detail',args=[self.id,self.slug])
+        return reverse('edificio_2:project_detail',args=[self.id,self.slug])
 
 
 

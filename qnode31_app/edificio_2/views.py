@@ -22,7 +22,7 @@ from qr_code.qrcode.utils import ContactDetail, WifiConfig, Coordinates, QRCodeO
 from django.views.decorators.http import require_POST
 from io import BytesIO
 from django.core.mail import EmailMessage
-from .forms import CartAddProductForm,CotiOrderCreateForm
+from .forms import CartAddProductForm,CotiOrderCreateForm,CartAddProjectForm
 from django.db.models import Count
 
 
@@ -174,3 +174,40 @@ def coti_project_list(request, category_slug=None):
         {'category':category,
         'categories':categories,
         'invoices': invoices})
+
+def project_detail(request,id, slug):
+    invoice = get_object_or_404(Coti_Order,id=id,slug=slug, aprobe=True)
+    cart_project_form = CartAddProjectForm() #QUe sea el formulario del plan de trabajo
+   
+    return render(request,'edificio_2/proyectos/detail.html',{'invoice':invoice, 'cart_project_form':cart_project_form} )
+
+#-----------Cartas de pago---------
+
+@require_POST
+def cart_project_add(request, invoice_id):
+    cart = Cart_Pay(request)
+    invoice = get_object_or_404(Coti_Order, id=invoice_id)
+    form = CartAddProjectForm(request.POST)
+    if form.is_valid():
+        cd = form.cleaned_data
+        cart.add(invoice=invoice,
+                 date=cd['date'])
+    return redirect('edificio_2:cart_project_detail')
+
+
+def cart_project_remove(request, invoice_id):
+    cart = Cart_Pay(request)
+    invoice = get_object_or_404(Coti_Order, id=invoice_id)
+    cart.remove(invoice)
+    return redirect('edificio_2:cart_project_detail')
+
+
+def cart_project_detail(request):
+    cart = Cart_Pay(request)
+    for item in cart:
+            item['update_date_form'] = CartAddProjectForm(
+                              initial={'date': item['date'],
+                              'update': True})
+   # coupon_apply_form = CouponApplyForm()
+    return render(request, 'edificio_2/cart_pay/detail.html', 
+    {'cart': cart})

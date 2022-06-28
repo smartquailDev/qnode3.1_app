@@ -2,6 +2,7 @@ from django import forms
 from .models import Cotizacion,Coti_Order
 import datetime
 from django.contrib.admin import widgets 
+from core.widgets import BootstrapDateTimePickerInput
 
 
 PRODUCT_QUANTITY_CHOICES = [(i, str(i)) for i in range(1, 21)]
@@ -20,6 +21,17 @@ class CartAddProductForm(forms.Form):
     update = forms.BooleanField(required=False,
                                 initial=False,
                                 widget=forms.HiddenInput)
+
+
+class CartAddProjectForm(forms.Form):
+    date = forms.DateTimeField(
+        input_formats=['%d/%m/%Y %H:%M'],
+        widget=BootstrapDateTimePickerInput(),label='Fecha de inicio de ejecución de proyecto'
+        )
+    update = forms.BooleanField(required=False,
+                                initial=False,
+                                widget=forms.HiddenInput)
+    
 
 
 class CotiOrderCreateForm(forms.ModelForm):

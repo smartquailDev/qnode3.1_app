@@ -224,7 +224,7 @@ EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 #Ecommerce App
 CART_SESSION_ID = 'edificio_2.cart'
-#COTI_CART_SESSION_ID = 'coti_cart'
+CART_PAY_SESSION_ID = 'edificio_2.cart_pay'
 
 BRAINTREE_MERCHANT_ID = os.environ.get('BRAINTREE_M_ID')
 BRAINTREE_PUBLIC_KEY = os.environ.get('BRAINTREE_KEY')

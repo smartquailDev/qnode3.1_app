@@ -1,0 +1,126 @@
+
+{% extends "DashBase.html" %}
+{% load i18n %}
+{% load static %}
+{% load thumbnail %}
+{% load humanize %}
+
+
+
+
+{% block content %}
+
+
+  <div class="card">
+    <div class="card-header">
+      <h4>{% block title %} 
+        {% for invoice in invoices %}
+        Items a ser cotizados para el edificio: {{ invoice.Edificio}}
+        {% endfor %}
+        {% endblock %}</h4>
+  <div class="card-tools">
+    <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
+      <i class="fas fa-minus"></i>
+    </button>
+    <button type="button" class="btn btn-tool" data-card-widget="remove" title="Remove">
+      <i class="fas fa-times"></i>
+    </button>
+  </div>
+</div>
+
+
+<div class="card-body">
+      
+  <div class="card-body p-0">
+    <table class="table table-striped projects">
+  <thead>
+    <tr>
+      <th>#</th>
+      <th>Item</th>
+      <th>Cantidad</th>
+      <th>Precio Unitario</th>
+      <th>Sub Total </th>
+      <th>I.V.A: 12%</th>
+      <th>Total</th>
+    </tr>
+  </thead>  
+    <tbody>
+      {% for item in cart %}
+      {% with invoice=item.invoice %}
+    <tr data-widget="expandable-table" aria-expanded="false" style="text-align:left;" >
+     
+      <td>{{ invoice.id }}</td>
+      <td>{{ invoice.Codigo }}</td>
+      <td>{{ invoice.total }}</td>
+      <td>{{ invoice.price|floatformat:"2" }} </td>
+      <td> {{ invoice.Sub_total|floatformat:"2" }}  </td>
+      <td> {{ invoice.Sub_Total_IVA}}</td>
+      <td> {{ invoice.Total}}</td>
+      <td> <a href="{% url "edificio_2:cart_remove" invoice.id %}"><i class="fas fa-trash"></i></a>
+    </tr>
+    {% endwith %}
+    {% endfor %}
+  </tbody>
+</table>
+</div>
+</div>
+
+<section>
+  <div class="col-12 table-responsive">
+              <div class="row">
+                <!-- accepted payments column -->
+               
+                <!-- /.col -->
+                
+                <div class="col-6">
+                  <p class="lead">Montos finales a pagar</p>
+
+                  <div class="table-responsive">
+                    <table class="table">
+                      
+                      <tr>
+                        <th style="width:50%">Subtotal:</th>
+                        <td>${{ cart.total|floatformat:"2" }}</td>
+                        <td></td>
+                      </tr>
+                      <tr>
+                        <th>I.V.A (12%)</th>
+                        <td>${{ cart.subtotal_iva|floatformat:"2" }}</td>
+                      </tr>
+                      <tr>
+                       
+                      
+                      </tr>
+                      
+                      <tr>
+                        <th>Total:</th>
+                        <td>${{ cart.total|floatformat:"2" }}</td>
+                      </tr>
+                      <tr>
+                        <th>Anticipo a cancelar:</th>
+                        <td>${{ cart.total_anticipo|floatformat:"2" }}</td>
+                      </tr>
+                      <tr>
+                        <th>Valor pendiente a liquidar:</th>
+                        <td>${{ cart.total_pendiente|floatformat:"2" }}</td>
+                      </tr>
+                    </table>
+        
+                        <p class="text-center">
+                          <a href="{% url "edificio_2:invoice_list" %}" class="btn btn-primary">AGREGAR PROYECTOS</a>
+                          <a href="{% url "edificio_2:coti_order_create" %}" class="btn btn-success">PAGAR</a>
+                        </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    </section>
+
+
+</div>
+{% endblock %}
+

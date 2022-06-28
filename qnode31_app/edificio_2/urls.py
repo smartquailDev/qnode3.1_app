@@ -22,5 +22,9 @@ urlpatterns = [
 
     path('proyectos/', views.coti_project_list, name='coti_project_list'),
     path('proyectos/<slug:category_slug>/', views.coti_project_list, name='project_list_by_category'),
-    #path('cotizaciones/<int:id>/<slug:slug>/', views.invoice_detail,name='invoice_detail'),
+    path('proyectos/<int:id>/<slug:slug>/', views.project_detail, name='project_detail'),
+
+    path('cart_pay/', views.cart_project_detail, name='cart_project_detail'),
+    path('cart_pay/add/<int:invoice_id>/',views.cart_project_add, name='cart_project_add'),
+    #path('remove/<int:invoice_id>/', views.cart_remove, name='cart_remove'),
 ]
