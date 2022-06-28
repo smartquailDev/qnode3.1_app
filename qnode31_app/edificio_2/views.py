@@ -185,29 +185,29 @@ def project_detail(request,id, slug):
 
 @require_POST
 def cart_project_add(request, invoice_id):
-    cart = Cart_Pay(request)
+    cart_pay = Cart_Pay(request)
     invoice = get_object_or_404(Coti_Order, id=invoice_id)
     form = CartAddProjectForm(request.POST)
     if form.is_valid():
         cd = form.cleaned_data
-        cart.add(invoice=invoice,
+        cart_pay.add(invoice=invoice,
                  date=cd['date'])
     return redirect('edificio_2:cart_project_detail')
 
 
 def cart_project_remove(request, invoice_id):
-    cart = Cart_Pay(request)
+    cart_pay = Cart_Pay(request)
     invoice = get_object_or_404(Coti_Order, id=invoice_id)
-    cart.remove(invoice)
+    cart_pay.remove(invoice)
     return redirect('edificio_2:cart_project_detail')
 
 
 def cart_project_detail(request):
-    cart = Cart_Pay(request)
-    for item in cart:
+    cart_pay = Cart_Pay(request)
+    for item in cart_pay:
             item['update_date_form'] = CartAddProjectForm(
                               initial={'date': item['date'],
                               'update': True})
    # coupon_apply_form = CouponApplyForm()
     return render(request, 'edificio_2/cart_pay/detail.html', 
-    {'cart': cart})
+    {'cart_pay': cart_pay})

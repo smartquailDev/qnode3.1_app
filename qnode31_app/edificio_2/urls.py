@@ -26,5 +26,5 @@ urlpatterns = [
 
     path('cart_pay/', views.cart_project_detail, name='cart_project_detail'),
     path('cart_pay/add/<int:invoice_id>/',views.cart_project_add, name='cart_project_add'),
-    #path('remove/<int:invoice_id>/', views.cart_remove, name='cart_remove'),
+    path('cart_pay/remove/<int:invoice_id>/', views.cart_project_remove, name='cart_project_remove'),
 ]
