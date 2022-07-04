@@ -8,50 +8,137 @@
 
 {% block content %}
 
-<section class="content">
-  <div class="card">
-    <div class="card-header">
-      <h4>{% block title %} Detalle de Mantenimiento a Cotizar{% endblock %}</h4>
-  <div class="card-tools">
-    <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
-      <i class="fas fa-minus"></i>
-    </button>
-    <button type="button" class="btn btn-tool" data-card-widget="remove" title="Remove">
-      <i class="fas fa-times"></i>
-    </button>
-  </div>
-</div>
+<div class="content">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-lg-6">
+        <div class="card">
+          <div class="card-header border-0">
+            <div class="d-flex justify-content-between">
+              <h3 class="card-title">Edificio: {{ invoice.Edificio }} </h3>
+              <a href="javascript:void(0);">Imagen de Item </a>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="d-flex">
+              <img src="{% if invoice.image %}{{ invoice.image.url }}{% else %}{% static "img/no_image.png" %}{% endif %}">
+            
+            </div>
+            <!-- /.d-flex -->
 
-<div class="card-body">
-  <div class="card-body p-0">
+            <div class="position-relative mb-4">
+              <canvas id="visitors-chart" height="20"></canvas>
+            </div>
 
-  <div class="product-detail">
-    <p class="price"><strong>Edificio:</strong>&nbsp; &nbsp; {{ invoice.Edificio }}</p>
-    <img src="{% if invoice.image %}{{ invoice.image.url }}{% else %}{% static "img/no_image.png" %}{% endif %}">
-    <h1>{{ invoice.name }}</h1>
-    <h2><a href="{{ invoice.category.get_absolute_url }}">{{ invoice.category }}</a></h2>
-    
-    {{ invoice.description|linebreaks }}
-    <p class="price"><strong>Cantidad:</strong>&nbsp; &nbsp; {{ invoice.quantity }} {{invoice.Units}}</p>
-    <p class="price"><strong>Valor unitario:</strong>&nbsp; &nbsp;${{ invoice.price  }}</p>
-    <p class="price"><strong> Sub Total </strong>&nbsp; &nbsp;${{ invoice.Sub_total  }}</p>
-    <p class="price"><strong>I.V.A: 12%:</strong>&nbsp; &nbsp;{{ invoice.Sub_Total_IVA  }}</p>
-    <p class="price"><strong>Total:</strong>&nbsp; &nbsp;{{ invoice.Total  }}</p>
-    <div class="input-group input-group-sm">
-      <form action="{% url "edificio_2:cart_add" invoice.id %}" method="post">
-        {{ cart_invoice_form }}
-        {% csrf_token %}
-        <button type="submit" value="{% trans "Add to cart" %}" class="btn btn-default"><i class="fas fa-cart-arrow-down"></i></button>
-      </form>
+           
+          </div>
+        </div>
+        <!-- /.card -->
+
+      
+        <!-- /.card -->
+      </div>
+      <!-- /.col-md-6 -->
+      <div class="col-lg-6">
+        <div class="card">
+          <div class="card-header border-0">
+            <div class="d-flex justify-content-between">
+              <h3 class="card-title">Descripción de Item: {{ invoice.name }}</h3>
+              <a href="{{ invoice.category.get_absolute_url }}">Volver a lista de Items</a>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="d-flex">
+              <p class="d-flex flex-column">
+                <span class="text-bold text-lg"> {{ invoice.description|linebreaks }}</span>
+              </p>
+            </div>
+            <!-- /.d-flex -->
+
+            <div class="position-relative mb-4">
+              <canvas id="sales-chart" height="10"></canvas>
+            </div>
+          </div>
+        </div>
+        <!-- /.card -->
+
+        <div class="card">
+          <div class="card-header border-0">
+            <h3 class="card-title">Valores Cotizados</h3>
+          </div>
+          <div class="card-body">
+            <div class="d-flex justify-content-between align-items-center border-bottom mb-3">
+              <p class="text-success text-xl">
+                <i class="ion ion-ios-refresh-empty"></i>
+              </p>
+              <p class="d-flex flex-column text-right">
+                <span class="font-weight-bold">
+                  <i class="ion ion-android-arrow-up text-success"></i> {{ invoice.quantity }} {{invoice.Units}}
+                </span>
+                <span class="text-muted">CANTIDAD</span>
+              </p>
+            </div>
+            <!-- /.d-flex -->
+            <div class="d-flex justify-content-between align-items-center border-bottom mb-3">
+              <p class="text-warning text-xl">
+                <i class="ion ion-ios-cart-outline"></i>
+              </p>
+              <p class="d-flex flex-column text-right">
+                <span class="font-weight-bold">
+                  <i class="ion ion-android-arrow-up text-warning"></i> {{ invoice.price|floatformat:2 }} $
+                </span>
+                <span class="text-muted">VALOR UNITARIO</span>
+              </p>
+            </div>
+            <!-- /.d-flex -->
+            <div class="d-flex justify-content-between align-items-center mb-0">
+              <p class="text-danger text-xl">
+                <i class="ion ion-ios-people-outline"></i>
+              </p>
+              <p class="d-flex flex-column text-right">
+                <span class="font-weight-bold">
+                  <i class="ion ion-android-arrow-down text-danger"></i> {{ invoice.Sub_total|floatformat:2 }} $
+                </span>
+                <span class="text-muted"> SUB TOTAL</span>
+              </p>
+              <p class="d-flex flex-column text-right">
+                <span class="font-weight-bold">
+                  <i class="ion ion-android-arrow-down text-danger"></i> {{ invoice.Sub_Total_IVA|floatformat:2 }} $
+                </span>
+                <span class="text-muted">I.V.A: 12%:</span>
+              </p>
+              <p class="d-flex flex-column text-right">
+                <span class="font-weight-bold">
+                  <i class="ion ion-android-arrow-down text-danger"></i> {{ invoice.Total|floatformat:2 }} $ 
+                </span>
+                <span class="text-muted">TOTAL</span>
+              </p>
+            </div> 
+            <!-- /.d-flex -->
+          </div>
+        </div>
+        <div class="card">
+        <div class="card-body">
+          <div class="d-flex justify-content-between align-items-center border-bottom mb-3">
+       
+            <form action="{% url "edificio_2:cart_add" invoice.id %}" method="post">
+              {{ cart_invoice_form }}
+              {% csrf_token %}
+              <button type="submit" value="{% trans "Add to cart" %}" class="btn btn-default"><i class="fas fa-plus"></i>  Agregar Item</button>
+            </form> 
+          </div>
+          <!-- /.d-flex -->
+        
+        
+          <!-- /.d-flex -->
+        </div>
+      </div>
+      <!-- /.col-md-6 -->
     </div>
-    
-    
+    <!-- /.row -->
   </div>
+  <!-- /.container-fluid -->
 </div>
-</div>
-</div>
-</section>
-
 
 
 

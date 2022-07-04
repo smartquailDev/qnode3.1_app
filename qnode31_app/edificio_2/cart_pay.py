@@ -1,6 +1,6 @@
 from decimal import Decimal
 from django.conf import settings
-from edificio_2.models import Coti_Order
+from edificio_2.models import Cotizacion, Coti_Order
 
 
 class Cart_Pay(object):
@@ -10,63 +10,71 @@ class Cart_Pay(object):
         Initialize the cart.
         """
         self.session = request.session
-        cart_pay = self.session.get(settings.CART_PAY_SESSION_ID)
-        if not cart_pay:
+        cart = self.session.get(settings.CART_PAY_SESSION_ID)
+        if not cart:
             # save an empty cart in the session
-            cart_pay = self.session[settings.CART_PAY_SESSION_ID] = {}
-        self.cart_pay = cart_pay
+            cart = self.session[settings.CART_PAY_SESSION_ID] = {}
+        self.cart = cart
 
     def __iter__(self):
         """
         Iterate over the items in the cart and get the products 
         from the database.
         """
-        project_invoice_ids = self.cart_pay.keys()
+        invoice_ids = self.cart.keys()
         # get the product objects and add them to the cart
-        project_invoices = Coti_Order.objects.filter(id__in=project_invoice_ids)
+        invoices = Coti_Order.objects.filter(id__in=invoice_ids)
 
-        cart_pay = self.cart_pay.copy()
-        for project_invoice in project_invoices:
-            cart_pay[str(project_invoice.id)]['project_invoice'] = project_invoice
+        cart = self.cart.copy()
+        for invoice in invoices:
+            cart[str(invoice.id)]['invoice'] = invoice
 
-        for item in cart_pay.values():
-            item['total'] = Decimal(item['total'])
-            item['total_tax'] = Decimal(item['total'])*(Decimal('12')/Decimal('100'))
-            item['total_cost'] = item['total_tax'] + item['total']
+        for item in cart.values():
+            item['price1'] = Decimal(item['price1'])
+
             yield item
     
     def __len__(self):
         """
         Count all items in the cart.
         """
-        return sum(item['date'] for item in self.cart_pay.values())
+        return sum(item['quantity'] for item in self.cart.values())
 
-    def add(self, project_invoice, date=True, update_date=False):
+    def add(self, invoice, quantity=1, update_quantity=False):
         """
         Add a product to the cart or update its quantity.
         """
-        project_invoice_id = str(project_invoice.id)
-        if project_invoice_id not in self.cart:
-            self.cart_pay[project_invoice_id] = {'date': str(project_invoice.date)}
-        if update_date:
-            self.cart_pay[project_invoice_id]['date'] = date
+        invoice_id = str(invoice.id)
+        if invoice_id not in self.cart:
+            self.cart[invoice_id] = {'quantity': 0,
+                                       'price1': str(invoice.price1)}
+        if update_quantity:
+            self.cart[invoice_id]['quantity'] = quantity
         else:
-            self.cart_pay[project_invoice_id]['date'] += date
-        
+            self.cart[invoice_id]['quantity'] += quantity
+
+            
         self.save()
 
     def save(self):
         # mark the session as "modified" to make sure it gets saved
         self.session.modified = True
 
-    def remove(self, project_invoice):
+    def remove(self, invoice):
         """
         Remove a product from the cart.
         """
-        project_invoice_id = str(project_invoice.id)
-        if project_invoice_id in self.cart_pay:
-            del self.cart_pay[project_invoice_id]
+        invoice_id = str(invoice.id)
+        if invoice_id in self.cart:
+            del self.cart[invoice_id]
             self.save()
+
+    def get_total_price(self):
+        return sum(Decimal(item['price1']) for item in self.cart.values())
+
+
+
+  
 
     def clear(self):
         # remove cart from session

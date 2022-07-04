@@ -7,7 +7,6 @@
 
 
 
-
 {% block content %}
 
 
@@ -35,27 +34,25 @@
     <table class="table table-striped projects">
   <thead>
     <tr>
-      <th>#</th>
-      <th>Item</th>
-      <th>Cantidad</th>
-      <th>Precio Unitario</th>
-      <th>Sub Total </th>
-      <th>I.V.A: 12%</th>
-      <th>Total</th>
+      <th>Cotización</th>
+      <th>Valor Sub total</th>
+      <th>I.V.A:12%</th>
+      <th>Total </th>
+      <th>Anticipo</th>
+      <th>Pago Pendiente</th>
+
     </tr>
   </thead>  
     <tbody>
-      {% for item in cart_pay %}
-      {% with project_invoice=item.project_invoice %}
+      {% for item in cart %}
+      {% with invoice=item.invoice %}
     <tr data-widget="expandable-table" aria-expanded="false" style="text-align:left;" >
-     
-      <td>{{ project_invoice.id }}</td>
+      <td>{{ invoice.Codigo }}</td>
       <td>{{ invoice.total }}</td>
-      <td>{{ invoice.coti }}</td>
-      <td>{{ invoice.price|floatformat:"2" }} </td>
-      <td> {{ invoice.Sub_total|floatformat:"2" }}  </td>
-      <td> {{ invoice.Sub_Total_IVA}}</td>
-      <td> {{ invoice.Total}}</td>
+      <td>{{ invoice.total_tax|floatformat:"2" }} $ </td>
+      <td> {{ invoice.TOTAL|floatformat:"2" }} $ </td>
+      <td> {{ invoice.anticipo_tota_cost_tax|floatformat:"2" }} $</td>
+      <td> {{ invoice.pendiente|floatformat:"2" }} $</td>
       <td> <a href="{% url "edificio_2:cart_project_remove" invoice.id %}"><i class="fas fa-trash"></i></a>
     </tr>
     {% endwith %}
@@ -64,6 +61,45 @@
 </table>
 </div>
 </div>
+<section>
+  <div class="col-12 table-responsive">
+              <div class="row">
+                <!-- accepted payments column -->
+               
+                <!-- /.col -->
+                
+                <div class="col-6">
+                  <p class="lead">Montos finales a pagar</p>
 
+                  <div class="table-responsive">
+                    <table class="table">
+                      
+                      <tr>
+                        <th>Total:</th>
+                        <td>${{ cart.get_total_price|floatformat:"2" }}</td>
+                      </tr>
+                      <tr>
+                        <th>Anticipo a cancelar:</th>
+                        <td>${{ cart.get_total_price_anticipo|floatformat:"2" }}</td>
+                      </tr>
+                      <tr>
+                        <th>Valor pendiente a liquidar:</th>
+                        <td>${{ cart.get_total_price_pendiente|floatformat:"2" }}</td>
+                      </tr>
+                    </table>
+        
+                        <p class="text-center">
+                          <a href="{% url "edificio_2:invoice_list" %}" class="btn btn-primary">AGREGAR PROYECTOS</a>
+                          <a href="{% url "edificio_2:project_order_create" %}" class="btn btn-success">PAGAR</a>
+                        </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    </section>
 {% endblock %}
 

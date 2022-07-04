@@ -37,37 +37,36 @@
     <tr>
       <th>#</th>
       <th>Cotización</th>
-      <th>Categoría</th>
-      <th>Estado</th>
-      <th>Valor Total </th>
-      <th>Valor anticipo</th>
-      <th>Agregar pago</th>
-    
+      <th>Proyecto</th>
+      <th>Sub total</th>
+      <th>I.V.A: 12%</th>
+      <th>Total </th>
+      <th> Valor a pagar</th>
+      <th>Fecha de validez</th>
     </tr>
   </thead>  
     <tbody>
-      {% for invoice in invoices %} 
-    <tr data-widget="expandable-table" aria-expanded="false" style="text-align:left;" >
-      <td>{{ invoice.id }}</td>
-      <td>
-        {{ invoice.Codigo }}</a>
-      </td>
-      <td>{{ invoice.category }}</a></td>
-      
-      {% if invoice.aprobe == True %}
-      <td>Aprobado</td> 
-      {% else %}
-      <td>Rechazado</td>
-      {% endif %}
-      <td> {{ invoice.TOTAL|floatformat:2 }} $ </td>
-      <td> {{ invoice.anticipo_tota_cost_tax |floatformat:2  }}$</td>
-      <td><a href="{{ invoice.get_absolute_url }}"><button clss="btn btn-default" ><i class="fas fa-plus"></i></button></a></td>
-    </tr>
-  </tbody>
-  {% endfor %}
+        {% for invoice in invoices %} 
+        <tr data-widget="expandable-table" aria-expanded="false" style="text-align:left;" >
+          <td>{{ invoice.id }}</td> 
+          <td>
+          
+            <a href="{{ invoice.get_absolute_url }}">
+            {{ invoice.Codigo}}  </a>
+       
+          </td>
+          <td>{{ invoice.coti }}</td>
+          <td>{{ invoice.total|floatformat:"2" }}</td>
+          <td>{{ invoice.total_tax|floatformat:"2" }} $</td>
+          <td> {{ invoice.TOTAL|floatformat:"2" }} $ </td>
+          <td style="color:rgb(248, 0, 0);"> {{ invoice.anticipo_tota_cost_tax|floatformat:"2" }} $</td>
+          <td> {{ invoice.exp_date|date:" M d, Y" }}</td>
+        </tr>
+        
+      </tbody>
+      {% endfor %}
 </table>
 </div>
 </div>
 </div>
 {% endblock %}
-

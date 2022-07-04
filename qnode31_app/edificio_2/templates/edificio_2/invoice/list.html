@@ -48,12 +48,12 @@
   </thead>  
     <tbody>
       {% for invoice in invoices %} 
-    <tr data-widget="expandable-table" aria-expanded="false" style="text-align:center;" >
+    <tr data-widget="expandable-table" aria-expanded="false" style="text-align:left;" >
   
   
       <td>{{ invoice.id }}</td>
       
-      <td>{{ category.name }}</a></td>
+      <td>{{ invoice.category }}</a></td>
       
       <td>
       
@@ -64,11 +64,11 @@
    
       </td>
       <td>{{ invoice.item }}</td>
-      <td>{{ invoice.quantity }}</td>
-      <td>{{ invoice.price }} $</td>
-      <td> {{ invoice.Sub_total }} $ </td>
-      <td> ${{ invoice.Sub_Total_IVA }}</td>
-      <td> ${{ invoice.Total }}</td>
+      <td>{{ invoice.quantity }} {{invoice.Units}}</td>
+      <td>{{ invoice.price|floatformat:2 }} $</td>
+      <td> {{ invoice.Sub_total|floatformat:2 }} $ </td>
+      <td> {{ invoice.Sub_Total_IVA|floatformat:2 }} $</td>
+      <td> {{ invoice.Total|floatformat:2 }} $</td>
     </tr>
     
   </tbody>

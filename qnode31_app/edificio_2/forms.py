@@ -1,5 +1,5 @@
 from django import forms
-from .models import Cotizacion,Coti_Order
+from .models import Cotizacion,Coti_Order, Project_Order
 import datetime
 from django.contrib.admin import widgets 
 from core.widgets import BootstrapDateTimePickerInput
@@ -10,29 +10,43 @@ PORCENTAJES = [(i, str(i)) for i in range(50, 101)]
 
 
 class CartAddProductForm(forms.Form):
-    quantity = forms.TypedChoiceField(
-                                choices=PRODUCT_QUANTITY_CHOICES,
-                                coerce=int,
-                                label='Cantidad')
+    #quantity = forms.TypedChoiceField(
+                               # choices=PRODUCT_QUANTITY_CHOICES,
+                               # coerce=int,
+                               # label='Cantidad',widget=forms.HiddenInput)
     anticipo = forms.TypedChoiceField(
                                 choices=PORCENTAJES,
                                 coerce=int,
-                                label='Anticipo')
+                                label='Elija el porcentaje de anticipo que desea pagar')
     update = forms.BooleanField(required=False,
                                 initial=False,
                                 widget=forms.HiddenInput)
 
 
 class CartAddProjectForm(forms.Form):
-    date = forms.DateTimeField(
-        input_formats=['%d/%m/%Y %H:%M'],
-        widget=BootstrapDateTimePickerInput(),label='Fecha de inicio de ejecución de proyecto'
-        )
+
+    quantity = forms.TypedChoiceField(
+                                choices=PRODUCT_QUANTITY_CHOICES,
+                                coerce=int,
+                                label='Cantidad',
+                               )
+
     update = forms.BooleanField(required=False,
                                 initial=False,
                                 widget=forms.HiddenInput)
+  
     
 
+
+class ProjectOrderCreateForm(forms.ModelForm):
+    
+    update = forms.BooleanField(required=False,
+                                initial=False,
+                                widget=forms.HiddenInput)
+
+    class Meta:
+        model=Project_Order
+        fields = [ 'email', 'RUC2','project_code']
 
 class CotiOrderCreateForm(forms.ModelForm):
     class Meta:

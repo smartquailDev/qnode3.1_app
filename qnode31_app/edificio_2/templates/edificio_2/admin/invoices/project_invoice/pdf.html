@@ -60,14 +60,14 @@
       <tbody>
         {% for item in order.items.all %} 
         <td>{{ item.id }}</td>
-        <td>{{ item.invoice.name }}</td> 
-        <td> {{ item.order.category }}  </td>
+        <td>{{ item.name }}</td> 
+        <td> {{ item.invoice.category }}  </td>
         <td> {{ item.quantity }} {{ item.invoice.Units }}  </td>
         <td> {{ item.price|floatformat:2 }} $  </td>
-        <td> {{ item.invoice.Sub_total|floatformat:2 }} $</td>
-        <td> {{ item.invoice.Sub_Total_IVA|floatformat:2 }} $</td> 
-        <td> {{ item.invoice.Total|floatformat:2}} $</td>  
-        <td> {{ item.invoice.anticipo|floatformat:0 }} %  </td>
+        <td> {{ item.Sub_total|floatformat:2 }} $</td>
+        <td> {{ invoice.Sub_Total_IVA|floatformat:2 }} $</td> 
+        <td> {{ invoice.Total|floatformat:2}} $</td>  
+        <td> {{ invoice.anticipo|floatformat:0 }} %  </td>
       </tr>
       {% endfor %}
       </tr>

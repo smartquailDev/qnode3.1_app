@@ -27,4 +27,8 @@ urlpatterns = [
     path('cart_pay/', views.cart_project_detail, name='cart_project_detail'),
     path('cart_pay/add/<int:invoice_id>/',views.cart_project_add, name='cart_project_add'),
     path('cart_pay/remove/<int:invoice_id>/', views.cart_project_remove, name='cart_project_remove'),
+
+    path('project_create/', views.project_order_create, name='project_order_create'),
+    path('admin/project_order/<int:order_id>/', views.admin_project_order_detail, name='admin_project_order_detail'),
+    path('admin/project_order/<int:order_id>/pdf/', views.admin_project_order_pdf, name='admin_project_order_pdf'),
 ]

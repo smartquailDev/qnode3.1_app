@@ -42,6 +42,7 @@
       <th>Sub Total </th>
       <th>I.V.A: 12%</th>
       <th>Total</th>
+      <th>Eliminar</th>
     </tr>
   </thead>  
     <tbody>
@@ -51,11 +52,11 @@
      
       <td>{{ invoice.id }}</td>
       <td>{{ invoice.item }}</td>
-      <td>{{ invoice.quantity }}</td>
-      <td>{{ invoice.price|floatformat:"2" }} </td>
-      <td> {{ invoice.Sub_total|floatformat:"2" }}  </td>
-      <td> {{ invoice.Sub_Total_IVA}}</td>
-      <td> {{ invoice.Total}}</td>
+      <td>{{ invoice.quantity }} {{invoice.Units}}</td>
+      <td>{{ invoice.price|floatformat:"2" }} $</td>
+      <td> {{ invoice.Sub_total|floatformat:"2" }} $ </td>
+      <td> {{ invoice.Sub_Total_IVA|floatformat:"2"}} $</td>
+      <td> {{ invoice.Total|floatformat:"2"}} $</td>
       <td> <a href="{% url "edificio_2:cart_remove" invoice.id %}"><i class="fas fa-trash"></i></a>
     </tr>
     {% endwith %}
@@ -73,14 +74,13 @@
                 <!-- /.col -->
                 
                 <div class="col-6">
-                  <p class="lead">Montos finales a pagar</p>
+                  <p class="lead">Montos finales a cotizar</p>
 
                   <div class="table-responsive">
                     <table class="table">
-                      
                       <tr>
                         <th style="width:50%">Subtotal:</th>
-                        <td>${{ cart.Sub_total|floatformat:"2" }}</td>
+                        <td>${{ cart.total_price|floatformat:"2" }}</td>
                         <td></td>
                       </tr>
                       <tr>
@@ -88,22 +88,22 @@
                         <td>${{ cart.subtotal_iva|floatformat:"2" }}</td>
                       </tr>
                       <tr>
+                        <th style="width:50%">Valor Total:</th>
+                        <td>${{ cart.Total|floatformat:"2" }}</td>
+                        <td></td>
+                      </tr>
+                      <tr>
+                        <th style="width:50%">Valor total de anticipos:</th>
+                        <td>${{ cart.anticipos_final|floatformat:"2" }}</td>
+                        <td></td>
+                      </tr>
+                     
+                      
+                      <tr>
                        
                       
                       </tr>
-                      
-                      <tr>
-                        <th>Total:</th>
-                        <td>${{ cart.total|floatformat:"2" }}</td>
-                      </tr>
-                      <tr>
-                        <th>Anticipo a cancelar:</th>
-                        <td>${{ cart.total_anticipo|floatformat:"2" }}</td>
-                      </tr>
-                      <tr>
-                        <th>Valor pendiente a liquidar:</th>
-                        <td>${{ cart.total_pendiente|floatformat:"2" }}</td>
-                      </tr>
+
                     </table>
         
                         <p class="text-center">

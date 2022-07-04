@@ -134,6 +134,7 @@ class Coti_Order(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
     aprobe = models.BooleanField(default=True)
+
    # braintree_id = models.CharField(max_length=150, blank=True)
    # coupon = models.ForeignKey(Coupon,
     #                           related_name='orders',
@@ -145,11 +146,15 @@ class Coti_Order(models.Model):
     dias = models.IntegerField(default=0,
                                    validators=[MinValueValidator(0),
                                                MaxValueValidator(300)])
-    date = models.DateTimeField(null=True)
+    date = models.DateTimeField(null=True,blank=True)
+    price1 = models.DecimalField(max_digits=1000, decimal_places=2,null=True,verbose_name='Valor total de Cotización')
+    price2 = models.DecimalField(max_digits=10000, decimal_places=2,null=True)
+    price3 = models.DecimalField(max_digits=10000, decimal_places=2,null=True)
 
     Iva2 = models.PositiveSmallIntegerField(default=12)
     code= models.CharField(max_length=1000000,blank=True)
   #  coti2 = models.ManyToManyField(to='HOMEDETAIL.Cotizacion')
+
     
    
 
@@ -162,6 +167,8 @@ class Coti_Order(models.Model):
     @property
     def Codigo(self):
         return ' '.join([self.coti_code,' ','{}'.format(self.id),' ',])
+
+  
 
     def save(self):
         self.code = self.Codigo
@@ -215,20 +222,15 @@ class Coti_Order(models.Model):
         return anticpo_cost_tax
 
     def anticipo_tota_cost_tax(self):
-        anticpo_total_cost_tax = self.anticipo_cost_tax()+self.anticipo_cost()
+        anticpo_total_cost_tax = self.anticipo_cost_tax()+ self.anticipo_cost()
         return anticpo_total_cost_tax
+
+    def pendiente(self):
+        pago_pendiente = self.TOTAL()-self.anticipo_tota_cost_tax()
+        return pago_pendiente 
 
     def get_absolute_url(self):
         return reverse('edificio_2:project_detail',args=[self.id,self.slug])
-
-
-
-
- 
-
-  
-
-   
 
 
 class Coti_OrderItem(models.Model):
@@ -252,6 +254,149 @@ class Coti_OrderItem(models.Model):
 
     def get_cost(self):
         return self.price * self.quantity
+
+    def get_cost_anticipo(self):
+        return self.get_cost()*self.Anticipo() 
+
+
+class Project_Order(models.Model):
+
+    CHOICE2=[('CMC','CMC'),
+    ('CMP','CMP'),
+    ('CSE','CSE'),
+    ('CSR','CSR'),
+    ]
+    project_code = models.CharField(max_length=3,choices=CHOICE2,null=True)
+    building_name =  models.ForeignKey(Group, on_delete=models.CASCADE,null=True,unique=False)
+    slug = models.SlugField(max_length=200,db_index=True,null=True)
+   # nombre= models.CharField(_('Nombre de Edificio'), max_length=50,null=True)
+    user_name =  models.ForeignKey(User, on_delete=models.CASCADE,null=True,unique=False)
+    coti = models.ForeignKey(Cotizacion, on_delete=models.CASCADE,null=True,unique=False)
+    category= models.ForeignKey(Category, on_delete=models.CASCADE,null=True,unique=False)
+    email = models.EmailField(_('Correo Electrónico'))
+   # address = models.CharField(_('Dirección'), max_length=250)
+    RUC2 = models.CharField(_('RUC'), max_length=100)
+    created = models.DateTimeField(auto_now_add=True)
+    updated = models.DateTimeField(auto_now=True)
+    aprobe = models.BooleanField(default=True)
+
+   # braintree_id = models.CharField(max_length=150, blank=True)
+   # coupon = models.ForeignKey(Coupon,
+    #                           related_name='orders',
+    #                           null=True,
+    #                           blank=True,
+    #                           on_delete=models.SET_NULL)
+    
+    
+    dias = models.IntegerField(default=0,
+                                   validators=[MinValueValidator(0),
+                                               MaxValueValidator(300)])
+    date = models.DateTimeField(null=True,blank=True)
+ 
+
+    Iva2 = models.PositiveSmallIntegerField(default=12)
+    code= models.CharField(max_length=1000000,blank=True)
+  #  coti2 = models.ManyToManyField(to='HOMEDETAIL.Cotizacion')
+
+    
+   
+
+    class Meta:
+        ordering = ('-created',)
+        verbose_name = 'Proyectos'
+        verbose_name_plural = 'Proyectos'
+        index_together = (('id','slug'),)
+
+    @property
+    def Codigo(self):
+        return ' '.join([self.project_code,' ','{}'.format(self.id),' ',])
+
+  
+
+    def save(self):
+        self.code = self.Codigo
+        super (Project_Order, self).save()
+
+    def __str__(self):
+        return 'Order {}'.format(self.id)
+
+    def project_order_pdf(obj):
+        return mark_safe('<a href="{}"><i class="fa fa-file"></i></a>'.format(
+            reverse('edificio_2:admin_project_order_pdf', args=[obj.id])))
+        coti_order_pdf.short_description = 'Project_Invoice'
+
+    #def __str__(self):
+        #return '{}'.format(self.first_name)
+
+    def exp_date(self):
+        timedifer = self.created + timedelta(days=14)
+        return timedifer
+
+
+    def __bool__(self):
+        return self.aprobe
+
+    def iva_price(self):
+        iva = self.Iva2/Decimal('100')
+        return iva
+
+    def get_total_cost(self):
+        total_cost = sum(item.get_cost()*item.Anticipo() for item in self.items.all())
+        return total_cost
+
+    def total(self):
+        total_cost = sum(item.get_cost() for item in self.items.all())
+        return total_cost
+
+    def total_tax(self):
+        total_tax = self.total()*self.iva_price()
+        return total_tax
+
+    def TOTAL(self):
+        total_cost = self.total_tax() + self.total()
+        return total_cost
+
+    def anticipo_cost(self):
+        anticpo_cost = sum(item.get_cost_anticipo() for item in self.items.all())
+        return anticpo_cost
+    
+    def anticipo_cost_tax(self):
+        anticpo_cost_tax = self.anticipo_cost()*self.iva_price()
+        return anticpo_cost_tax
+
+    def anticipo_tota_cost_tax(self):
+        anticpo_total_cost_tax = self.anticipo_cost_tax()+ self.anticipo_cost()
+        return anticpo_total_cost_tax
+
+    def pendiente(self):
+        pago_pendiente = self.TOTAL()-self.anticipo_tota_cost_tax()
+        return pago_pendiente 
+
+    def get_absolute_url(self):
+        return reverse('edificio_2:project_detail',args=[self.id,self.slug])
+
+
+class Project_OrderItem(models.Model):
+    order = models.ForeignKey(Project_Order,
+                              related_name='items',
+                              on_delete=models.CASCADE)
+    invoice = models.ForeignKey(Coti_Order,
+                                related_name='order_items',
+                                on_delete=models.CASCADE)
+    price1 = models.DecimalField(max_digits=10, decimal_places=2)
+    quantity = models.PositiveIntegerField(default=1)
+    anticipo = models.PositiveIntegerField(default=50,verbose_name='anticipo')
+
+    def Anticipo(self):
+        return self.anticipo / Decimal('10')
+
+
+
+    def __str__(self):
+        return '{}'.format(self.id)
+
+    def get_cost(self):
+        return self.price1 * self.quantity
 
     def get_cost_anticipo(self):
         return self.get_cost()*self.Anticipo() 

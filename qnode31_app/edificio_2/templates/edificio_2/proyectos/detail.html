@@ -1,9 +1,8 @@
-
 {% extends "DashBase.html" %}
 {% load i18n %}
 {% load static %}
-
-
+{% load thumbnail %}
+{% load humanize %}
 
 
 {% block content %}
@@ -25,53 +24,38 @@
 <div class="card-body">
   <div class="card-body p-0">
 
-    <table class="table table-striped projects">
-        <thead>
-          <tr>
-            <th>#</th>
-            <th>Cotización</th>
-            <th>Proyecto</th>
-            <th>Sub total</th>
-            <th>I.V.A: 12%</th>
-            <th>Total </th>
-            <th> Valor a pagar</th>
-            <th>Fecha de validez</th>
-            <th>Agregar a Proyecto</th>
-          </tr>
-        </thead>  
-          <tbody>
-             
-              <tr data-widget="expandable-table" aria-expanded="false" style="text-align:left;" >
-                <td>{{ invoice.id }}</td> 
-                <td>
-                
-                  <a href="{{ invoice.get_absolute_url }}">
-                  {{ invoice.Codigo}}  </a>
-             
-                </td>
-                <td>{{ invoice.coti }}</td>
-                <td>{{ invoice.total|floatformat:"2" }}</td>
-                <td>{{ invoice.total_tax|floatformat:"2" }} $</td>
-                <td> {{ invoice.TOTAL|floatformat:"2" }} $ </td>
-                <td style="color:rgb(248, 0, 0);"> {{ invoice.anticipo_tota_cost_tax|floatformat:"2" }} $</td>
-                <td> {{ invoice.exp_date|date:" M d, Y" }}</td>
-                <td> 
-                    
-                </td>
-              </tr>
-              
-            </tbody>
-        
-      </table>
+  <div class="product-detail">
+    <h1>Cotización: {{ invoice.Codigo }}</h1>
+    <h4>Ver:<a href="{{ invoice.category.get_absolute_url }}">Items</a></h4>
+    <p class="price"><strong>Valor sub total:</strong>&nbsp; &nbsp; {{ invoice.total|floatformat:2}} $</p>
+    <p class="price"><strong>I.V.A: 12% </strong>&nbsp; &nbsp;{{ invoice.total_tax|floatformat:2 }} $</p>
+    <p class="price"><strong> Valor Total </strong>&nbsp; &nbsp;{{ invoice.TOTAL|floatformat:2  }} $</p>
+    <p class="price"><strong>Valor de anticipo a pagar:</strong>&nbsp; &nbsp;{{ invoice.anticipo_tota_cost_tax|floatformat:2  }} $</p>
+    <p class="price"><strong>Fecha de Creación:</strong>&nbsp; &nbsp;{{ invoice.created|date:"M d, Y"  }}</p>
+    <p class="price"><strong>Fecha de expiración:</strong>&nbsp; &nbsp;{{ invoice.exp_date|date:"M d, Y"  }}</p>
+    <p class="price"><strong>Días de ejecución de obra:</strong>&nbsp; &nbsp;{{ invoice.dias }}</p>
+    <p class="price"><strong>Estado:</strong>&nbsp; &nbsp;  {% if invoice.aprobe == True %}
+      <td>Aprobado por {{invoice.user_name}}</td> 
+      {% else %}
+      <td>Rechazado</td>
+      {% endif %}</p>
+    <div class="input-group input-group-sm">
       <form action="{% url "edificio_2:cart_project_add" invoice.id %}" method="post">
         {{ cart_project_form }}
         {% csrf_token %}
-        <button type="submit" value="{% trans "Add to cart" %}" class="btn btn-default"><i class="fas  fa-plus"></i> Agregar Proyecto</button>
+        <button type="submit" value="{% trans "Add to cart" %}" class="btn btn-default"><i class="fas fa-cart-arrow-down"></i></button>
       </form>
-      
+    </div>
+    
+    
+  </div>
 </div>
 </div>
 </div>
 </section>
+
+
+
+
 
 {% endblock %}
