@@ -19,11 +19,11 @@
     margin: 3cm;
     @bottom-left {
     color: #3f3f3f;
-    content: 'SmartQuail,Inc ';
+    content: 'ProFix Maintenance Housing';
     }
     @bottom-right {
     color: #a9a;
-    content: 'smartquail.info@gmail.com | www.smartquail.io';
+    content: 'info@profixgroup.io | www.profixgroup.io';
     font-size: 9pt;
     }
     }
@@ -105,7 +105,7 @@
     
     border-bottom: .2mm solid rgb(79, 79, 79);
     color: rgb(255, 255, 255);
-    background: #726e6e;
+    background: #000000;
     font-weight: 100;
     padding-bottom: .25cm;
     text-transform: uppercase;
@@ -117,12 +117,12 @@
     border-bottom: .2mm solid rgb(79, 79, 79);
     }
     td:last-of-type {
-    color: #222222;
+    color: #000000;
     font-weight:lighter;
     text-align: center;
     }
     td {
-    text-align: left;
+    text-align: center;
     font-size: 7pt;
     background: #f6f6f6;
     }
@@ -143,5 +143,6 @@
     position: absolute;
     width: 18cm;
     }
+
     
     
