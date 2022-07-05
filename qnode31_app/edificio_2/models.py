@@ -121,19 +121,19 @@ class Coti_Order(models.Model):
     ('CSE','CSE'),
     ('CSR','CSR'),
     ]
-    coti_code = models.CharField(max_length=3,choices=CHOICE2,null=True)
+    coti_code = models.CharField(max_length=3,choices=CHOICE2,null=True,verbose_name='Elija el codigo de cotización')
     building_name =  models.ForeignKey(Group, on_delete=models.CASCADE,null=True,unique=False)
     slug = models.SlugField(max_length=200,db_index=True,null=True)
    # nombre= models.CharField(_('Nombre de Edificio'), max_length=50,null=True)
     user_name =  models.ForeignKey(User, on_delete=models.CASCADE,null=True,unique=False)
     coti = models.ForeignKey(Cotizacion, on_delete=models.CASCADE,null=True,unique=False)
     category= models.ForeignKey(Category, on_delete=models.CASCADE,null=True,unique=False)
-    email = models.EmailField(_('Correo Electrónico'))
+    email = models.EmailField(verbose_name='Escriba su correo electrónico')
    # address = models.CharField(_('Dirección'), max_length=250)
-    RUC2 = models.CharField(_('RUC'), max_length=100)
+    RUC2 = models.CharField(max_length=100,verbose_name='Escriba su C.I o RUC')
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
-    aprobe = models.BooleanField(default=True)
+    aprobe = models.BooleanField(default=False,verbose_name='Hacer click en el recueadro para verificar aprobación')
 
    # braintree_id = models.CharField(max_length=150, blank=True)
    # coupon = models.ForeignKey(Coupon,

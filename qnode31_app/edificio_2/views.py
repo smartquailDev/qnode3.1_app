@@ -5,6 +5,7 @@ from datetime import date
 from django.shortcuts import render, redirect
 from django.contrib.admin.views.decorators import staff_member_required
 from django.shortcuts import get_object_or_404
+from ProFit.models import Profile
 from .models import Coti_Order, Cotizacion,Category,Coti_OrderItem,Project_Order,Project_OrderItem
 
 #from .forms import ProFitCreateForm,CotiCartAddProductForm,CotiCreateForm
