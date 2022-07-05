@@ -21,9 +21,14 @@
           </div>
           <div class="card-body">
             <div class="d-flex">
-              <img src="{% if invoice.image %}{{ invoice.image.url }}{% else %}{% static "img/no_image.png" %}{% endif %}">
-            
-            </div>
+          <div class="filtr-item col-sm-10" >
+            <a href="{% if invoice.image %}{{ invoice.image.url }}{% else %}{% static "img/no_image.png" %}{% endif %}" data-toggle="lightbox" data-title="sample 4 - red">
+              <img src="{% if invoice.image %}{{ invoice.image.url }}{% else %}{% static "img/no_image.png" %}{% endif %}" class="img-fluid mb-2" alt="red sample"/>
+            </a>
+          </div>
+        </div>
+
+         
             <!-- /.d-flex -->
 
             <div class="position-relative mb-4">
