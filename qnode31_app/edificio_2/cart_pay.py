@@ -31,6 +31,8 @@ class Cart_Pay(object):
 
         for item in cart.values():
             item['price1'] = Decimal(item['price1'])
+            item['price2'] = Decimal(item['price2'])
+            item['price3'] = Decimal(item['price3'])
 
             yield item
     
@@ -47,7 +49,7 @@ class Cart_Pay(object):
         invoice_id = str(invoice.id)
         if invoice_id not in self.cart:
             self.cart[invoice_id] = {'quantity': 0,
-                                       'price1': str(invoice.price1)}
+                                       'price1': str(invoice.price1),'price2': str(invoice.price2),'price3': str(invoice.price3)}
         if update_quantity:
             self.cart[invoice_id]['quantity'] = quantity
         else:
@@ -72,6 +74,11 @@ class Cart_Pay(object):
     def get_total_price(self):
         return sum(Decimal(item['price1']) for item in self.cart.values())
 
+    def get_total_anticipos(self):
+        return sum(Decimal(item['price2']) for item in self.cart.values())
+
+    def get_total_pendientes(self):
+        return sum(Decimal(item['price3']) for item in self.cart.values())
 
 
   

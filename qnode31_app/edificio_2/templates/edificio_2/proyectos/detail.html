@@ -7,52 +7,118 @@
 
 {% block content %}
 
-<section class="content">
-  <div class="card">
-    <div class="card-header">
-      <h4>{% block title %} Detalle de Mantenimiento a Cotizar{% endblock %}</h4>
-  <div class="card-tools">
-    <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
-      <i class="fas fa-minus"></i>
-    </button>
-    <button type="button" class="btn btn-tool" data-card-widget="remove" title="Remove">
-      <i class="fas fa-times"></i>
-    </button>
-  </div>
-</div>
+ <section class="content">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-12">
+          
 
-<div class="card-body">
-  <div class="card-body p-0">
 
-  <div class="product-detail">
-    <h1>Cotización: {{ invoice.Codigo }}</h1>
-    <h4>Ver:<a href="{{ invoice.category.get_absolute_url }}">Items</a></h4>
-    <p class="price"><strong>Valor sub total:</strong>&nbsp; &nbsp; {{ invoice.total|floatformat:2}} $</p>
-    <p class="price"><strong>I.V.A: 12% </strong>&nbsp; &nbsp;{{ invoice.total_tax|floatformat:2 }} $</p>
-    <p class="price"><strong> Valor Total </strong>&nbsp; &nbsp;{{ invoice.TOTAL|floatformat:2  }} $</p>
-    <p class="price"><strong>Valor de anticipo a pagar:</strong>&nbsp; &nbsp;{{ invoice.anticipo_tota_cost_tax|floatformat:2  }} $</p>
-    <p class="price"><strong>Fecha de Creación:</strong>&nbsp; &nbsp;{{ invoice.created|date:"M d, Y"  }}</p>
-    <p class="price"><strong>Fecha de expiración:</strong>&nbsp; &nbsp;{{ invoice.exp_date|date:"M d, Y"  }}</p>
-    <p class="price"><strong>Días de ejecución de obra:</strong>&nbsp; &nbsp;{{ invoice.dias }}</p>
-    <p class="price"><strong>Estado:</strong>&nbsp; &nbsp;  {% if invoice.aprobe == True %}
-      <td>Aprobado por {{invoice.user_name}}</td> 
-      {% else %}
-      <td>Rechazado</td>
-      {% endif %}</p>
-    <div class="input-group input-group-sm">
-      <form action="{% url "edificio_2:cart_project_add" invoice.id %}" method="post">
-        {{ cart_project_form }}
-        {% csrf_token %}
-        <button type="submit" value="{% trans "Add to cart" %}" class="btn btn-default"><i class="fas fa-cart-arrow-down"></i></button>
-      </form>
-    </div>
-    
-    
-  </div>
-</div>
-</div>
-</div>
-</section>
+            <!-- Main content -->
+            <div class="invoice p-3 mb-3">
+              <!-- title row -->
+              <div class="row">
+                <div class="col-12">
+                  <h4>
+                    <i class="fas fa-building"></i> Edificio: {{invoice.building_name}}
+                    <small class="float-right">Fecha de creación: {{ invoice.created|date:"M d, Y"  }}</small>
+                  </h4>
+                </div>
+                <!-- /.col -->
+              </div>
+              <!-- info row -->
+              <div class="row invoice-info">
+                <div class="col-sm-4 invoice-col">
+                  <address>
+                    <strong>ProFix Maintenance Housing IT, S.A.S</strong><br>
+                    795 Folsom Ave, Suite 600<br>
+                    San Francisco, CA 94107<br>
+                    RUC: 171918383001<br>
+                    Email: info@profixgroup.io
+                  </address>
+                </div>
+                <!-- /.col -->
+                <div class="col-sm-4 invoice-col">
+                  <address>
+                    <strong>{{invoice.user_name}} </strong><br>
+                    795 Folsom Ave, Suite 600<br>
+                    San Francisco, CA 94107<br>
+                    RUC: {{invoice.RUC2 }}<br>
+                    Email: {{invoice.email}}
+                  </address>
+                </div>
+                <!-- /.col -->
+                <div class="col-sm-4 invoice-col">
+                  <br>
+                  <b>Cotización:</b> {{ invoice.Codigo }}<br>
+                  <b>Fecha de velidez:</b> {{ invoice.exp_date|date:"M d, Y"  }}<br>
+                  <b>Días de ejecución de obra:</b> {{invoice.dias}}
+                </div>
+                <!-- /.col -->
+              </div>
+              <!-- /.row -->
+
+              <!-- Table row -->
+              <div class="row">
+                <div class="col-12 table-responsive">
+                  <table class="table table-striped">
+                    <thead>
+                    <tr>
+                      <th>Cotización</th>
+                      <th>Sub total</th>
+                      <th>I.V.A: 12%</th>
+                      <th>Valor Total</th>
+                      <th>Valor anticipo a pagar</th>
+                      <th>Valor pendiente a lquidar</th>
+                    
+                    </tr>
+                    </thead>
+                    <tbody>
+              
+                    <tr>
+                      <td>{{ invoice.Codigo }}</td>
+                      <td>{{ invoice.total|floatformat:2}} $</a></td>       
+                      <td>{{ invoice.total_tax|floatformat:2 }} $</td> 
+                       <td>{{ invoice.TOTAL|floatformat:2  }} $ </td>
+                       <td>{{ invoice.anticipo_tota_cost_tax|floatformat:2  }} $</td>
+                       <td>{{ invoice.pendiente|floatformat:2  }} $</td>
+                       <td><form action="{% url "edificio_2:cart_project_add" invoice.id %}" method="post">
+                        {{ cart_project_form }}
+                        {% csrf_token %}
+                        <button type="submit"  value="{% trans "Add to cart" %}" class="btn btn-primary"><i class="fas fa-plus"></i> Agregar a Tarjeta de pago</button>
+                      </form></td>
+                    </tr>
+                  
+               
+                    </tbody>
+                  </table>
+                </div>
+                <!-- /.col -->
+              </div>
+              <!-- /.row -->
+
+              <div class="row">
+                <!-- accepted payments column -->
+                <div class="col-6">
+                  <p class="text-muted well well-sm shadow-none" style="margin-top: 10px;">
+                    Etsy doostang zoodles disqus groupon greplin oooj voxy zoodles, weebly ning heekya handango imeem
+                    plugg
+                    dopplr jibjab, movity jajah plickers sifteo edmodo ifttt zimbra.
+                  </p>
+                </div>
+                <!-- /.col -->
+            
+                <!-- /.col -->
+              </div>
+              <!-- /.row -->
+
+             
+            </div>
+            <!-- /.invoice -->
+          </div><!-- /.col -->
+        </div><!-- /.row -->
+      </div><!-- /.container-fluid -->
+    </section>
 
 
 

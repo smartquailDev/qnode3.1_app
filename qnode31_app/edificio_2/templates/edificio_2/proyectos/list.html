@@ -14,9 +14,7 @@
   <div class="card">
     <div class="card-header">
       <h4>{% block title %} 
-        {% for invoice in invoices %}
-        Items a ser cotizados para el edificio: {{ invoice.Edificio}}
-        {% endfor %}
+       Lista de proyectos a ser pagados.
         {% endblock %}</h4>
   <div class="card-tools">
     <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
@@ -41,12 +39,16 @@
       <th>Estado</th>
       <th>Valor Total </th>
       <th>Valor anticipo</th>
+      <th>Valor pendiente</th>
       <th>Agregar pago</th>
     
     </tr>
   </thead>  
     <tbody>
       {% for invoice in invoices %} 
+      {% if invoice.category == None %}
+     
+      {% else %}
     <tr data-widget="expandable-table" aria-expanded="false" style="text-align:left;" >
       <td>{{ invoice.id }}</td>
       <td>
@@ -61,8 +63,10 @@
       {% endif %}
       <td> {{ invoice.TOTAL|floatformat:2 }} $ </td>
       <td> {{ invoice.anticipo_tota_cost_tax |floatformat:2  }}$</td>
-      <td><a href="{{ invoice.get_absolute_url }}"><button clss="btn btn-default" ><i class="fas fa-plus"></i></button></a></td>
+      <td> {{ invoice.pendiente |floatformat:2  }}$</td>
+      <td><a href="{{ invoice.get_absolute_url }}"><button clss="btn btn-primary" ><i class="fas fa-plus"></i></button></a></td>
     </tr>
+    {% endif %}
   </tbody>
   {% endfor %}
 </table>

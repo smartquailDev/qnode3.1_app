@@ -112,8 +112,8 @@ def coti_order_create(request):
             # set the order in the session
             request.session['order_id'] = order.id
     
-            # redirect for payment
-            return redirect(reverse('payment:process'))
+            # redirect for invoices sucess
+            return render(request,'invoices/invoice/created.html', {'order':order})
     else:
         form = CotiOrderCreateForm()
     return render(request,
@@ -267,3 +267,4 @@ def admin_project_order_pdf(request, order_id):
     response['content-Disposition']='filename=\ "order_{}.pdf"'.format(order.id)
     weasyprint.HTML(string=html,  base_url=request.build_absolute_uri() ).write_pdf(response,stylesheets=[weasyprint.CSS('staticfiles/css/pdf.css')], presentational_hints=True)
     return response
+

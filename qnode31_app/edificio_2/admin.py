@@ -49,7 +49,7 @@ class Coti_OrderItemInline(admin.TabularInline):
 
 @admin.register(Coti_Order)
 class Coti_OrderAdmin(admin.ModelAdmin):
-    list_display = ['email',
+    list_display = ['Codigo',
                    'RUC2', 'aprobe',
                     'created', 'updated',coti_order_detail,coti_order_pdf]
     list_filter = ['aprobe', 'created', 'updated']

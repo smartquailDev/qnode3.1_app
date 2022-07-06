@@ -25,24 +25,20 @@
                   <table class="table table-striped">
                     <thead>
                     <tr>
-                      <th>Mantenimiento</th>
                       <th>Proyecto</th>
-                      <th>Cantidad</th>
-                      <th>Costo Unitario</th>
-                      <th>Anticipo</th>
-                      <th>Subtotal</th>
+                      <th>Valor total </th>
+                      <th>Valor de anticipo a pagar</th>
+                      <th>Valor pendiente a liquidar</th>
                     </tr>
                     </thead>
                     <tbody>
                       {% for item in cart %}
                      {% with invoice=item.invoice %}
                     <tr>
-                      <td>{{item.invoice.category}}</td>
-                      <td>{{ item.invoice.name }}</td>
-                      <td>{{ item.invoice.quantity }}</td>
-                      <td class="num">${{ item.price }}</td>
-                      <td>%{{ item.invoice.anticipo|floatformat:"0" }}</td>
-                      <td>${{ item.invoice.SubTotal_cost|floatformat:"2" }}</td>
+                      <td>{{item.invoice.Codigo}}</td>
+                      <td class="num">{{ item.invoice.price1|floatformat:"2" }} $</td>
+                      <td class="num">{{ item.invoice.price2|floatformat:"2" }} $</td>
+                      <td class="num">{{ item.invoice.price3|floatformat:"2" }} $</td>
                     </tr>
                     </tbody>
                     {% endwith %}
@@ -147,8 +143,8 @@
                         </table>
             
                             <p class="text-center">
-                              <a href="{% url "edificio_2:invoice_list" %}" class="btn btn-primary">AGREGAR PROYECTOS</a>
-                              <a href="{% url "edificio_2:coti_order_create" %}" class="btn btn-success">PAGAR</a>
+                              <a href="{% url "edificio_2:coti_project_list" %}" class="btn btn-primary">AGREGAR PROYECTOS</a>
+                              <a href="{% url "edificio_2:project_order_create" %}" class="btn btn-success">PAGAR</a>
                             </p>
                       </div>
                     </div>

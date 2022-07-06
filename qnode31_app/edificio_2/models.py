@@ -245,7 +245,7 @@ class Coti_OrderItem(models.Model):
     anticipo = models.PositiveIntegerField(default=50,verbose_name='anticipo')
 
     def Anticipo(self):
-        return self.anticipo / Decimal('10')
+        return self.anticipo / Decimal('100')
 
 
 
