@@ -31,4 +31,8 @@ urlpatterns = [
     path('project_create/', views.project_order_create, name='project_order_create'),
     path('admin/project_order/<int:order_id>/', views.admin_project_order_detail, name='admin_project_order_detail'),
     path('admin/project_order/<int:order_id>/pdf/', views.admin_project_order_pdf, name='admin_project_order_pdf'),
+
+    path('process/', views.payment_process, name='process'),
+    path('done/', views.payment_done, name='done'),
+    path('canceled/', views.payment_canceled, name='canceled'),
 ]

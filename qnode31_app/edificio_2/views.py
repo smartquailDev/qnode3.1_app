@@ -7,6 +7,7 @@ from django.contrib.admin.views.decorators import staff_member_required
 from django.shortcuts import get_object_or_404
 from ProFit.models import Profile
 from .models import Coti_Order, Cotizacion,Category,Coti_OrderItem,Project_Order,Project_OrderItem
+import braintree
 
 #from .forms import ProFitCreateForm,CotiCartAddProductForm,CotiCreateForm
 #from Proyectos.models import Project,mantenimiento
@@ -113,7 +114,7 @@ def coti_order_create(request):
             request.session['order_id'] = order.id
     
             # redirect for invoices sucess
-            return render(request,'invoices/invoice/created.html', {'order':order})
+            return render(request,'edificio_2/invoices/invoice/created.html', {'order':order})
     else:
         form = CotiOrderCreateForm()
     return render(request,
@@ -237,7 +238,7 @@ def project_order_create(request):
             request.session['order_id'] = order.id
     
             # redirect for payment
-            return redirect(reverse('payment:process'))
+            return redirect(reverse('edificio_2:process'))
     else:
         form = ProjectOrderCreateForm()
     return render(request,
@@ -267,4 +268,68 @@ def admin_project_order_pdf(request, order_id):
     response['content-Disposition']='filename=\ "order_{}.pdf"'.format(order.id)
     weasyprint.HTML(string=html,  base_url=request.build_absolute_uri() ).write_pdf(response,stylesheets=[weasyprint.CSS('staticfiles/css/pdf.css')], presentational_hints=True)
     return response
+
+    #------------- Pago de Proyectos---------------
+
+def payment_process(request):
+    order_id = request.session.get('order_id')
+    order = get_object_or_404(Project_Order, id=order_id)
+
+    if request.method == 'POST':
+        # retrieve nonce
+        nonce = request.POST.get('payment_method_nonce', None)
+        # create and submit transaction
+        result = braintree.Transaction.sale({
+            'amount': '{:.2f}'.format(order.get_total_cost()),
+            'payment_method_nonce': nonce,
+            'options': {
+                'submit_for_settlement': True
+            }
+        })
+        if result.is_success:
+            # mark the order as paid
+            order.paid = True
+            # store the unique transaction id
+            order.braintree_id = result.transaction.id
+            order.save()
+
+            # create invoice e-mail
+            subject = 'My Shop - Invoice no. {}'.format(order.id)
+            message = 'Please, find attached the invoice for your recent purchase.'
+            email = EmailMessage(subject,
+                                 message,
+                                 'admin@myshop.com',
+                                 [order.email])
+
+            # generate PDF
+            html = render_to_string('edificio_2/admin/invoices/project_invoice/pdf.html', {'order': order})
+            out = BytesIO()
+            response = HttpResponse(content_type='application/pdf')
+            response['content-Disposition']='filename=\ "order_{}.pdf"'.format(order.id)
+            weasyprint.HTML(string=html,  base_url=request.build_absolute_uri() ).write_pdf(response,stylesheets=[weasyprint.CSS('staticfiles/css/pdf.css')], presentational_hints=True)
+            # attach PDF file
+            email.attach('order_{}.pdf'.format(order.id),
+                         out.getvalue(),
+                         'application/pdf')
+            # send e-mail
+            email.send()
+
+            return redirect('edificio_2:done')
+        else:
+            return redirect('edificio_2:canceled')
+    else:
+        # generate token 
+        client_token = braintree.ClientToken.generate()
+        return render(request, 
+                      'payment/process.html', 
+                      {'order': order,
+                       'client_token': client_token})
+
+
+def payment_done(request):
+    return render(request, 'payment/done.html')
+
+
+def payment_canceled(request):
+    return render(request, 'payment/canceled.html')
 
