@@ -35,4 +35,8 @@ urlpatterns = [
     path('process/', views.payment_process, name='process'),
     path('done/', views.payment_done, name='done'),
     path('canceled/', views.payment_canceled, name='canceled'),
+
+    path('process_trans/', views.payment_trans_process, name='trans_process'),
+    path('done_trans/', views.payment_trans_done, name='trans_done'),
+    path('canceled_trans/', views.payment_trans_canceled, name='trans_canceled'),
 ]

@@ -1,5 +1,5 @@
 from django import forms
-from .models import Cotizacion,Coti_Order, Project_Order
+from .models import Cotizacion,Coti_Order, Project_Order,Paytrans
 import datetime
 from django.contrib.admin import widgets 
 from core.widgets import BootstrapDateTimePickerInput
@@ -52,3 +52,9 @@ class CotiOrderCreateForm(forms.ModelForm):
     class Meta:
         model = Coti_Order
         fields = [ 'email', 'RUC2', 'coti_code','aprobe']
+
+class PaytransForm(forms.ModelForm):
+    class Meta:
+        model = Paytrans
+        fields = [ 'comprobante', 'valor']
+

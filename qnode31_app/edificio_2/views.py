@@ -24,7 +24,7 @@ from qr_code.qrcode.utils import ContactDetail, WifiConfig, Coordinates, QRCodeO
 from django.views.decorators.http import require_POST
 from io import BytesIO
 from django.core.mail import EmailMessage
-from .forms import CartAddProductForm,CotiOrderCreateForm,CartAddProjectForm,ProjectOrderCreateForm
+from .forms import CartAddProductForm,CotiOrderCreateForm,CartAddProjectForm,ProjectOrderCreateForm,PaytransForm
 from django.db.models import Count
 
 
@@ -269,7 +269,7 @@ def admin_project_order_pdf(request, order_id):
     weasyprint.HTML(string=html,  base_url=request.build_absolute_uri() ).write_pdf(response,stylesheets=[weasyprint.CSS('staticfiles/css/pdf.css')], presentational_hints=True)
     return response
 
-    #------------- Pago de Proyectos---------------
+    #------------- Pago de Proyectos debito/Credito ---------------
 
 def payment_process(request):
     order_id = request.session.get('order_id')
@@ -332,4 +332,60 @@ def payment_done(request):
 
 def payment_canceled(request):
     return render(request, 'payment/canceled.html')
+
+
+#-----------Pago de Proyectos transferencia ------------------
+
+def payment_trans_process(request):
+    order_id = request.session.get('order_id')
+    order = get_object_or_404(Project_Order, id=order_id)
+
+    if request.method == 'POST':
+        form = PaytransForm(request.POST)
+
+        if form.is_valid:
+            # mark the order as paid
+            order.paid = True
+            # store the unique transaction id
+            order.save()
+
+            # create invoice e-mail
+            subject = 'My Shop - Invoice no. {}'.format(order.id)
+            message = 'Please, find attached the invoice for your recent purchase.'
+            email = EmailMessage(subject,
+                                 message,
+                                 'admin@myshop.com',
+                                 [order.email])
+
+            # generate PDF
+            html = render_to_string('edificio_2/admin/invoices/project_invoice/pdf.html', {'order': order})
+            out = BytesIO()
+            response = HttpResponse(content_type='application/pdf')
+            response['content-Disposition']='filename=\ "order_{}.pdf"'.format(order.id)
+            weasyprint.HTML(string=html,  base_url=request.build_absolute_uri() ).write_pdf(response,stylesheets=[weasyprint.CSS('staticfiles/css/pdf.css')], presentational_hints=True)
+            # attach PDF file
+            email.attach('order_{}.pdf'.format(order.id),
+                         out.getvalue(),
+                         'application/pdf')
+            # send e-mail
+            email.send()
+
+            return redirect('edificio_2:done')
+        else:
+            return redirect('edificio_2:canceled')
+        
+    else:
+        form = PaytransForm()
+        return render(request, 
+                      'payment_trans/process.html', 
+                      {'order': order, 'form':form})
+
+
+def payment_trans_done(request):
+    return render(request, 'payment_trans/done.html')
+
+
+def payment_trans_canceled(request):
+    return render(request, 'payment_trans/canceled.html')
+
 

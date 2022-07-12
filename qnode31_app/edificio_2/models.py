@@ -386,6 +386,7 @@ class Project_OrderItem(models.Model):
     price1 = models.DecimalField(max_digits=10, decimal_places=2)
     quantity = models.PositiveIntegerField(default=1)
     anticipo = models.PositiveIntegerField(default=50,verbose_name='anticipo')
+    paid = models.BooleanField(default=False)
 
     def Anticipo(self):
         return self.anticipo / Decimal('10')
@@ -400,3 +401,10 @@ class Project_OrderItem(models.Model):
 
     def get_cost_anticipo(self):
         return self.get_cost()*self.Anticipo() 
+
+
+class Paytrans(models.Model):
+    comprobante = models.ImageField(upload_to='users/%Y/%m/%d/', blank=True,verbose_name='Subir su comprobante')
+    valor = models.DecimalField(max_digits=10, decimal_places=2,verbose_name='Valor final de comprobante')
+    
+  
