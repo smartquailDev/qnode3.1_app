@@ -279,6 +279,9 @@ class Project_Order(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
     aprobe = models.BooleanField(default=True)
+    price1 = models.DecimalField(max_digits=1000, decimal_places=2,null=True,verbose_name='Valor total de proyectos')
+    price2 = models.DecimalField(max_digits=10000, decimal_places=2,null=True,verbose_name='Valor de anticipo de proyectos')
+    price3 = models.DecimalField(max_digits=10000, decimal_places=2,null=True,verbose_name='Valor de pendiente de proyectos')
 
    # braintree_id = models.CharField(max_length=150, blank=True)
    # coupon = models.ForeignKey(Coupon,
@@ -405,6 +408,10 @@ class Project_OrderItem(models.Model):
 
 class Paytrans(models.Model):
     comprobante = models.ImageField(upload_to='users/%Y/%m/%d/', blank=True,verbose_name='Subir su comprobante')
+    valor = models.DecimalField(max_digits=10, decimal_places=2,verbose_name='Valor final de comprobante')
+
+class Paycheck(models.Model):
+    cheque = models.ImageField(upload_to='users/%Y/%m/%d/', blank=True,verbose_name='Subir fotografia del cheque')
     valor = models.DecimalField(max_digits=10, decimal_places=2,verbose_name='Valor final de comprobante')
     
   

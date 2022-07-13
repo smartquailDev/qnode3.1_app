@@ -318,6 +318,7 @@ def payment_process(request):
         else:
             return redirect('edificio_2:canceled')
     else:
+        
         # generate token 
         client_token = braintree.ClientToken.generate()
         return render(request, 
@@ -370,9 +371,9 @@ def payment_trans_process(request):
             # send e-mail
             email.send()
 
-            return redirect('edificio_2:done')
+            return redirect('edificio_2:trans_done')
         else:
-            return redirect('edificio_2:canceled')
+            return redirect('edificio_2:trans_canceled')
         
     else:
         form = PaytransForm()

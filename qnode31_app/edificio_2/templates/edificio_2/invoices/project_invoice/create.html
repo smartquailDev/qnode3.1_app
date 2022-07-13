@@ -1,8 +1,9 @@
 
 {% extends "DashBase.html" %}
 {% load static %}
-{% block content %}
 {% load widget_tweaks %}
+{% block content %}
+
 
 <section class="content">
   <div class="container-fluid">
@@ -133,9 +134,9 @@
                   </div>
                 {% endfor %}  
               <p class="lead">Formas de Pago</p>   
-              <a href="{% url 'edificio_2:trans_process'%}"><button class="btn btn-secondary float-center"> <i class="far fa-credit-card"></i> Transferencia Bancaria</button> </a>
              <a href="{% url 'edificio_2:process'%}"> <button type="submit" class="btn btn-secondary float-center"><i class="far fa-credit-card"></i> Debito/Credito </button>  </a>  
-              <a href=""><button type="button" class="btn btn-secondary float-center"> <i class="far fa-credit-card"></i> Cheque</button> </a>                      
+              <a href=""><button type="button" class="btn btn-secondary float-center"> <i class="far fa-credit-card"></i> Cheque</button> </a>               
+              <a href="{% url 'edificio_2:trans_process'%}"><button class="btn btn-secondary float-center"> <i class="far fa-credit-card"></i> Transferencia Bancaria</button> </a>       
               </form>
             </div> 
             </div>
