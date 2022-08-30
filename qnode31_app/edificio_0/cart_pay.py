@@ -1,6 +1,6 @@
 from decimal import Decimal
 from django.conf import settings
-from edificio_2.models import Cotizacion, Coti_Order
+from edificio_0.models import Cotizacion, Coti_Order
 
 
 class Cart_Pay(object):
@@ -10,10 +10,10 @@ class Cart_Pay(object):
         Initialize the cart.
         """
         self.session = request.session
-        cart = self.session.get(settings.CART_PAY_SESSION_ID)
+        cart = self.session.get(settings.CART_PAY_SESSION_ID_0)
         if not cart:
             # save an empty cart in the session
-            cart = self.session[settings.CART_PAY_SESSION_ID] = {}
+            cart = self.session[settings.CART_PAY_SESSION_ID_0] = {}
         self.cart = cart
 
     def __iter__(self):
@@ -31,7 +31,9 @@ class Cart_Pay(object):
 
         for item in cart.values():
             item['price1'] = item['price1']
+            item['price2'] = item['price2']
             item ['quantity'] = item['quantity']
+            
 
 
             yield item
@@ -49,7 +51,7 @@ class Cart_Pay(object):
         invoice_id = str(invoice.id)
         if invoice_id not in self.cart:
             self.cart[invoice_id] = {'quantity': 0,
-                                       'price1': str(invoice.price1)}
+                                       'price1': str(invoice.price1),'price2': str(invoice.price2)}
         if update_quantity:
             self.cart[invoice_id]['quantity'] = quantity
         else:
@@ -85,5 +87,5 @@ class Cart_Pay(object):
 
     def clear(self):
         # remove cart from session
-        del self.session[settings.CART_PAY_SESSION_ID]
+        del self.session[settings.CART_PAY_SESSION_ID_0]
         self.save()

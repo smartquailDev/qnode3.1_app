@@ -1,0 +1,133 @@
+
+{% extends "DashBase.html" %}
+{% load i18n %}
+{% load static %}
+{% load thumbnail %}
+{% load humanize %}
+
+
+
+
+{% block content %}
+
+
+
+
+<section class="content">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-12">
+        <div class="card">
+          <div class="card-header">
+            <h3 class="card-title">Lista de items de proyecto a ser cotizados</h3>
+          </div>
+          <!-- /.card-header -->
+          <div class="card-body">
+            <table id="example2" class="table table-bordered table-hover">
+              <thead>
+              <tr>
+                <th>#</th>
+      <th>Item</th>
+      <th>Cantidad</th>
+      <th>Precio Unitario</th>
+      <th>Sub Total </th>
+      <th>I.V.A: 12%</th>
+      <th>Total</th>
+      <th>Eliminar</th>
+              </tr>
+              </thead>
+              <tbody>
+                {% for item in cart %}
+                {% with invoice=item.invoice %}
+              <tr>
+               
+                <td>{{ invoice.id }}</td>
+                <td>{{ invoice.item }}</td>
+                <td>{{ invoice.quantity }} {{invoice.Units}}</td>
+                <td>{{ invoice.price|floatformat:"2" }} $</td>
+                <td> {{ invoice.Sub_total|floatformat:"2" }} $ </td>
+                <td> {{ invoice.Sub_Total_IVA|floatformat:"2"}} $</td>
+                <td> {{ invoice.Total|floatformat:"2"}} $</td>
+                <td> <a href="{% url "edificio_0:cart_remove" invoice.id %}"><i class="fas fa-trash"></i></a>
+                 
+              </tr>
+              {% endwith %}
+              {% endfor %}
+              
+              </tbody>
+              
+            </table>
+          </div>
+          <!-- /.card-body -->
+        </div>
+        <!-- /.card -->
+      
+        <!-- /.card -->
+      </div>
+      <!-- /.col -->
+    </div>
+    
+    <!-- /.row -->
+  </div>
+  <!-- /.container-fluid -->
+</section>
+
+<section class="content">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-12">
+<div class="invoice p-3 mb-3">
+<div class="row">
+  <!-- accepted payments column -->
+
+  <!-- /.col -->
+  <div class="col-6">
+    <p class="lead">Valores finales</p>
+
+    <div class="table-responsive">
+      <table class="table">
+        <tr>
+          <th >Sub total:</th>
+          <td>${{ cart.total_price|floatformat:"2" }}</td>
+         
+        </tr>
+        <tr>
+          <th>I.V.A (12%)</th>
+          <td>${{ cart.subtotal_iva|floatformat:"2" }}</td>
+        </tr>
+        <tr>
+          <th >Valor Total:</th>
+          <td>${{ cart.Total|floatformat:"2" }}</td>
+        
+        </tr>
+        <tr>
+          <th>Valor total de anticipos:</th>
+          <td>${{ cart.anticipos_final|floatformat:"2" }}</td>
+      
+        </tr>
+      </table>
+    </div>
+  </div>
+  <!-- /.col -->
+</div>
+<div class="row no-print">
+  <div class="col-12">
+    <a href="{% url "edificio_0:coti_order_create" %}" > <button  type="button" class="btn btn-success float-right"><i class="far fa-credit-card"></i> Aprobar Cotización
+    </button></a>
+   <a href="{% url "edificio_0:invoice_list" %}"> <button  type="button" class="btn btn-warning float-right" style="margin-right: 5px;">
+      <i class="fas fa-plus-square"></i> Agregar items</a>
+    </button>
+  </div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+
+
+
+<!-- /.content -->
+{% endblock %}
+
+

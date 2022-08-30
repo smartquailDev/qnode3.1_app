@@ -1,0 +1,158 @@
+
+{% extends "DashBase.html" %}
+{% load static %}
+{% load widget_tweaks %}
+{% block content %}
+
+
+<section class="content">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-12">
+        <!-- Main content -->
+        <div class="invoice p-3 mb-3">
+          <!-- title row -->
+          <div class="row">
+            <div class="col-12">
+              <h4>
+                <i class="fas fa-building"></i> AdminLTE, Inc.
+                <small class="float-right">Date: 2/10/2014</small>
+              </h4>
+            </div>
+            <!-- /.col -->
+          </div>
+          <!-- info row -->
+       
+          <!-- /.row -->
+
+          <!-- Table row -->
+          <div class="row">
+            <div class="col-12 table-responsive">
+              <table class="table table-striped">
+                <thead>
+                <tr>
+                  <th>Proyecto</th>
+                  <th>Valor total </th>
+                  <th>Valor de anticipo a pagar</th>
+                  <th>Valor pendiente a liquidar</th>
+                </tr>
+                </thead>
+                <tbody>
+                  {% for item in cart %}
+                 {% with invoice=item.invoice %}
+                <tr>
+                  <td>{{item.invoice.Codigo}}</td>
+                  <td class="num">{{ item.invoice.price1|floatformat:"2" }} $</td>
+                  <td class="num">{{ item.invoice.price2|floatformat:"2" }} $</td>
+                  <td class="num">{{ item.invoice.price3|floatformat:"2" }} $</td>
+                </tr>
+                </tbody>
+                {% endwith %}
+                {% endfor %}
+              </table>
+            </div>
+            <!-- /.col -->
+          </div>
+          <!-- /.row -->
+
+          <div class="row">
+            <!-- accepted payments column -->
+            <div class="col-6">
+              
+              <p class="lead">Payment Methods:</p>
+              <div class="table-responsive">
+                <table class="table">
+                  
+                  <tr>
+                    <th>Total:</th>
+                    <td>${{ cart.get_total_price|floatformat:"2" }}</td>
+                    <td></td>
+                  </tr>  
+                  <tr>
+                    <th>Valor total de anticipos:</th>
+                    <td>${{ cart.get_total_anticipos|floatformat:"2" }}</td>
+                  </tr>
+                  <tr>
+                    <th>Anticipo a cancelar:</th>
+                    <td>${{ cart.get_total_anticipos|floatformat:"2" }}</td>
+                  </tr>
+                  <tr>
+                    <th>Valores pendientes:</th>
+                    <td>${{ cart.get_total_pendientes|floatformat:"2" }}</td>
+                  </tr>
+                </table>
+              </div>
+              <img src="../../dist/img/credit/visa.png" alt="Visa">
+              <img src="../../dist/img/credit/mastercard.png" alt="Mastercard">
+              <img src="../../dist/img/credit/american-express.png" alt="American Express">
+              <img src="../../dist/img/credit/paypal2.png" alt="Paypal">
+
+              <p class="text-muted well well-sm shadow-none" style="margin-top: 10px;">
+                Etsy doostang zoodles disqus groupon greplin oooj voxy zoodles, weebly ning heekya handango imeem
+                plugg
+                dopplr jibjab, movity jajah plickers sifteo edmodo ifttt zimbra.
+              </p>
+            </div>
+            <!-- /.col -->
+            <div class="col-6">
+              <form action="." method="post" novalidate>
+                {% csrf_token %}
+                {% for hidden_field in form.hidden_fields %}
+                  {{ hidden_field }}
+                {% endfor %}
+              
+                {% if form.non_field_errors %}
+                  <div class="alert alert-danger" role="alert">
+                    {% for error in form.non_field_errors %}
+                      {{ error }}
+                    {% endfor %}
+                  </div>
+                {% endif %}
+              
+                {% for field in form.visible_fields %}
+                  <div class="form-group">
+                    {{ field.label_tag }}
+              
+                    {% if form.is_bound %}
+                      {% if field.errors %}
+                        {% render_field field class="form-control is-invalid" %}
+                        {% for error in field.errors %}
+                          <div class="invalid-feedback">
+                            {{ error }}
+                          </div>
+                        {% endfor %}
+                      {% else %}
+                        {% render_field field class="form-control is-valid" %}
+                      {% endif %}
+                    {% else %}
+                      {% render_field field class="form-control" %}
+                    {% endif %}
+              
+                    {% if field.help_text %}
+                      <small class="form-text text-muted">{{ field.help_text }}</small>
+                    {% endif %}
+                  </div>
+                {% endfor %}  
+              <p class="lead">Formas de Pago</p>   
+             <a href="{% url 'edificio_2:process'%}"> <button type="submit" class="btn btn-secondary float-center"><i class="far fa-credit-card"></i> Debito/Credito </button>  </a>  
+              <a href=""><button type="button" class="btn btn-secondary float-center"> <i class="far fa-credit-card"></i> Cheque</button> </a>               
+              <a href="{% url 'edificio_2:trans_process'%}"><button class="btn btn-secondary float-center"> <i class="far fa-credit-card"></i> Transferencia Bancaria</button> </a>       
+              </form>
+            </div> 
+            </div>
+            <!-- /.col -->
+          </div>
+          <!-- /.row -->
+
+          <!-- this row will not appear when printing -->
+         
+        </div>
+        <!-- /.invoice -->
+      </div><!-- /.col -->
+    </div><!-- /.row -->
+  </div><!-- /.container-fluid -->
+</section>
+
+
+
+{% endblock %}

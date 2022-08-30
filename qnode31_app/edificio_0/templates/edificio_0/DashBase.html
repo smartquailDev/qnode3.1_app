@@ -34,7 +34,7 @@
   <link rel="stylesheet" href="{% static 'plugins/datatables-bs4/css/dataTables.bootstrap4.min.css' %}">
   <link rel="stylesheet" href="{% static 'plugins/datatables-responsive/css/responsive.bootstrap4.min.css' %}">
   <link rel="stylesheet" href="{% static 'plugins/ekko-lightbox/ekko-lightbox.css' %}">
- 
+  
 
 
   <link href="{% static "css/adminlte.css" %}" rel="stylesheet">
@@ -130,8 +130,8 @@
                 </a>
                 <ul class="nav nav-treeview">
                   <li class="nav-item">
-                    {% if perms.edificio_1.can_add_ProFit %}
-                    <a href="{% url "edificio_1:cotizacion_create" %}" class="nav-link">
+                    {% if perms.edificio_2.can_add_ProFit %}
+                    <a href="{% url "edificio_2:cotizacion_create" %}" class="nav-link">
                       <i class="far fa-circle nav-icon"></i> 
                     {% endif %}
                     
@@ -139,13 +139,13 @@
                     </a>
                   </li>
                   <li class="nav-item">
-                    <a href="{% url "edificio_0:invoice_list" %}"  class="nav-link">
+                    <a href="{% url "edificio_2:invoice_list" %}"  class="nav-link">
                       <i class="far fa-circle nav-icon"></i>
                       <p>Generador de Cotizaciones</p>
                     </a>
                   </li>
                   <li class="nav-item">
-                    <a href="{% url "edificio_0:coti_list" %}" class="nav-link">
+                    <a href="{% url "edificio_2:coti_list" %}" class="nav-link">
                       <i class="far fa-circle nav-icon"></i>
                       <p> Cotizaciones aprobadas</p>
                     </a>
@@ -163,13 +163,13 @@
                 <ul class="nav nav-treeview">
                   
                   <li {% if section == "products" %}class="nav-item"{% endif %}> 
-                    <a href="{% url "Proyectos:product_list" %}" class="nav-link">
+                    <a href="{% url "edificio_2:coti_project_list" %}"  class="nav-link">
                       <i class="far fa-circle nav-icon"></i>
                       <p>Histórico de Proyectos</p>
                     </a>
                   </li>
                   <li {% if section == "products" %}class="nav-item"{% endif %}> 
-                    <a href="{% url "edificio_0:coti_project_list" %}"  class="nav-link">
+                    <a href="{% url "edificio_2:coti_project_list" %}"  class="nav-link">
                       <i class="far fa-circle nav-icon"></i>
                       <p>Pago de Proyectos</p>
                     </a>
@@ -289,7 +289,7 @@
 <script src="{% static '/plugins/datatables-responsive/js/responsive.bootstrap4.min.js' %}"></script>
 <script src="{% static '/plugins/filterizr/jquery.filterizr.min.js' %}"></script>
 <script src="{% static '/plugins/ekko-lightbox/ekko-lightbox.min.js' %}"></script>
-
+<script src="{% static '/dist/js/demo.js' %}"></script>
 
 
 <script>
@@ -316,6 +316,39 @@
       format: 'DD/MM/YYYY HH:mm',
     });
   });
+</script>
+<script>
+  $(function () {
+    $("#example1").DataTable({
+      "responsive": true,
+      "autoWidth": false,
+    });
+    $('#example2').DataTable({
+      "paging": true,
+      "lengthChange": false,
+      "searching": false,
+      "ordering": true,
+      "info": true,
+      "autoWidth": false,
+      "responsive": true,
+    });
+  });
+</script>
+<script>
+  $(function () {
+    $(document).on('click', '[data-toggle="lightbox"]', function(event) {
+      event.preventDefault();
+      $(this).ekkoLightbox({
+        alwaysShowClose: true
+      });
+    });
+
+    $('.filter-container').filterizr({gutterPixels: 3});
+    $('.btn[data-filter]').on('click', function() {
+      $('.btn[data-filter]').removeClass('active');
+      $(this).addClass('active');
+    });
+  })
 </script>
 </body>
 </html>

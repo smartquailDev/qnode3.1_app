@@ -36,7 +36,7 @@ class Category(models.Model):
         return self.name
 
     def get_absolute_url(self):
-        return reverse('edificio_2:invoice_list_by_category',args=[self.slug])
+        return reverse('edificio_0:invoice_list_by_category',args=[self.slug])
 
 class Cotizacion(models.Model):
 
@@ -111,7 +111,7 @@ class Cotizacion(models.Model):
         super (Cotizacion, self).save()
 
     def get_absolute_url(self):
-        return reverse('edificio_2:invoice_detail',args=[self.id,self.slug])
+        return reverse('edificio_0:invoice_detail',args=[self.id,self.slug])
 
 
 class Coti_Order(models.Model):
@@ -122,10 +122,10 @@ class Coti_Order(models.Model):
     ('CSR','CSR'),
     ]
     coti_code = models.CharField(max_length=3,choices=CHOICE2,null=True,verbose_name='Elija el codigo de cotización')
-    building_name =  models.ForeignKey(Group, on_delete=models.CASCADE,null=True,unique=False)
+    building_name =  models.ForeignKey(Group, on_delete=models.CASCADE,null=True,unique=False,related_name='building')
     slug = models.SlugField(max_length=200,db_index=True,null=True)
    # nombre= models.CharField(_('Nombre de Edificio'), max_length=50,null=True)
-    user_name =  models.ForeignKey(User, on_delete=models.CASCADE,null=True,unique=False)
+    user_name =  models.ForeignKey(User, on_delete=models.CASCADE,null=True,unique=False,related_name='user')
     coti = models.ForeignKey(Cotizacion, on_delete=models.CASCADE,null=True,unique=False)
     category= models.ForeignKey(Category, on_delete=models.CASCADE,null=True,unique=False)
     email = models.EmailField(verbose_name='Escriba su correo electrónico')
@@ -150,6 +150,7 @@ class Coti_Order(models.Model):
     price1 = models.DecimalField(max_digits=1000, decimal_places=2,null=True)
     price2 = models.DecimalField(max_digits=10000, decimal_places=2,null=True)
     price3 = models.DecimalField(max_digits=10000, decimal_places=2,null=True)
+    anticipo = models.PositiveIntegerField(default=50,verbose_name='Anticipo',null=True)
 
     Iva2 = models.PositiveSmallIntegerField(default=12)
     code= models.CharField(max_length=1000000,blank=True)
@@ -175,11 +176,11 @@ class Coti_Order(models.Model):
         super (Coti_Order, self).save()
 
     def __str__(self):
-        return self.category
+        return '{}'.format(self.id)
 
     def coti_order_pdf(obj):
         return mark_safe('<a href="{}"><i class="fa fa-file"></i></a>'.format(
-            reverse('edificio_2:admin_coti_order_pdf', args=[obj.id])))
+            reverse('edificio_0:admin_coti_order_pdf', args=[obj.id])))
         coti_order_pdf.short_description = 'Invoice'
 
     #def __str__(self):
@@ -229,8 +230,9 @@ class Coti_Order(models.Model):
         pago_pendiente = self.TOTAL()-self.anticipo_tota_cost_tax()
         return pago_pendiente 
 
+
     def get_absolute_url(self):
-        return reverse('edificio_2:project_detail',args=[self.id,self.slug])
+        return reverse('edificio_0:project_detail',args=[self.id,self.slug])
 
 
 class Coti_OrderItem(models.Model):
@@ -261,7 +263,6 @@ class Coti_OrderItem(models.Model):
 
 
 
-
 class Project_Order(models.Model):
 
     CHOICE2=[('PMC','PMC'),
@@ -271,10 +272,10 @@ class Project_Order(models.Model):
     ]
 
     project_code = models.CharField(max_length=3,choices=CHOICE2,null=True)
-    building_name =  models.ForeignKey(Group, on_delete=models.CASCADE,null=True,unique=False)
+    #building_name =  models.ForeignKey(Group, on_delete=models.CASCADE,null=True,unique=False)
     slug = models.SlugField(max_length=200,db_index=True,null=True)
    # nombre= models.CharField(_('Nombre de Edificio'), max_length=50,null=True)
-    user_name =  models.ForeignKey(User, on_delete=models.CASCADE,null=True,unique=False)
+   # user_name =  models.ForeignKey(User, on_delete=models.CASCADE,null=True,unique=False)
 
     #category= models.ForeignKey(Category, on_delete=models.CASCADE,null=True,unique=False)
     email = models.EmailField(_('Correo Electrónico'))
@@ -283,6 +284,7 @@ class Project_Order(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
     aprobe = models.BooleanField(default=True)
+    anticipo = models.PositiveIntegerField(default=50,verbose_name='Anticipo',null=True)
     price1 = models.DecimalField(max_digits=1000, decimal_places=2,null=True,verbose_name='Valor total de proyectos')
     price2 = models.DecimalField(max_digits=10000, decimal_places=2,null=True,verbose_name='Valor de anticipo de proyectos')
     price3 = models.DecimalField(max_digits=10000, decimal_places=2,null=True,verbose_name='Valor de pendiente de proyectos')
@@ -412,14 +414,3 @@ class Project_OrderItem(models.Model):
 
     def get_cost_anticipo(self):
         return self.get_cost()*self.Anticipo() 
-
-
-class Paytrans(models.Model):
-    comprobante = models.ImageField(upload_to='users/%Y/%m/%d/', blank=True,verbose_name='Subir su comprobante')
-    valor = models.DecimalField(max_digits=10, decimal_places=2,verbose_name='Valor final de comprobante')
-
-class Paycheck(models.Model):
-    cheque = models.ImageField(upload_to='users/%Y/%m/%d/', blank=True,verbose_name='Subir fotografia del cheque')
-    valor = models.DecimalField(max_digits=10, decimal_places=2,verbose_name='Valor final de comprobante')
-    
-  

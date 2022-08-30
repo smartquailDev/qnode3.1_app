@@ -23,6 +23,7 @@ urlpatterns = [
     path('Orders/', include('edificio_1.urls', namespace='orders')),
     path('cotizaciones_profit/', include('cotizaciones.urls', namespace='cotizaciones')),
     path('edificio_2/', include('edificio_2.urls', namespace='edificio_2')),
+    path('edificio_0/', include('edificio_0.urls', namespace='edificio_0')),
 
     path('cotizaciones/', include('edificio_1.urls', namespace='edificio_1')),
     #path('edificios/', include('HOMEDETAIL.urls', namespace='edificio')),

@@ -1,0 +1,77 @@
+
+{% extends "DashBase.html" %}
+{% load i18n %}
+{% load static %}
+{% load thumbnail %}
+{% load humanize %}
+
+
+
+
+{% block content %}
+
+
+  <div class="card">
+    <div class="card-header">
+      <h4>{% block title %} 
+       Lista de proyectos a ser pagados.
+        {% endblock %}</h4>
+  <div class="card-tools">
+    <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
+      <i class="fas fa-minus"></i>
+    </button>
+    <button type="button" class="btn btn-tool" data-card-widget="remove" title="Remove">
+      <i class="fas fa-times"></i>
+    </button>
+  </div>
+</div>
+
+
+<div class="card-body">
+      
+  <div class="card-body p-0">
+    <table class="table table-striped projects">
+  <thead>
+    <tr>
+      <th>#</th>
+      <th>Cotización</th>
+      <th>Categoría</th>
+      <th>Estado</th>
+      <th>Valor Total </th>
+      <th>Valor anticipo</th>
+      <th>Valor pendiente</th>
+      <th>Agregar pago</th>
+    
+    </tr>
+  </thead>  
+    <tbody>
+      {% for invoice in invoices %} 
+      {% if invoice.category == None %}
+     
+      {% else %}
+    <tr data-widget="expandable-table" aria-expanded="false" style="text-align:left;" >
+      <td>{{ invoice.id }}</td>
+      <td>
+        {{ invoice.Codigo }}</a>
+      </td>
+      <td>{{ invoice.category }}</a></td>
+      
+      {% if invoice.aprobe == True %}
+      <td>Aprobado</td> 
+      {% else %}
+      <td>Rechazado</td>
+      {% endif %}
+      <td> {{ invoice.TOTAL|floatformat:2 }} $ </td>
+      <td> {{ invoice.anticipo_tota_cost_tax |floatformat:2  }}$</td>
+      <td> {{ invoice.pendiente |floatformat:2  }}$</td>
+      <td><a href="{{ invoice.get_absolute_url }}"><button clss="btn btn-primary" ><i class="fas fa-plus"></i></button></a></td>
+    </tr>
+    {% endif %}
+  </tbody>
+  {% endfor %}
+</table>
+</div>
+</div>
+</div>
+{% endblock %}
+

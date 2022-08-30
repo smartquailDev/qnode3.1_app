@@ -1,0 +1,125 @@
+{% load static %}
+{% load qr_code %}
+{% load humanize %}
+
+<html>
+  <head>
+   
+    <link href="{% static 'css/orders.css' %}" media="print" rel="stylesheet">
+    <title>{{ order.Codigo }}</title>
+    <meta name="description" content="Invoice demo sample">
+  </head>
+
+  <body>
+    <div style="background-color:#000;">
+      <img src="{% static 'img/logo_profix.png' %} " style="display:inline-flex;" align="left"  width="30%">
+    </div>
+
+    <aside>
+      <address id="from">
+        ProFix Maintenance Housing IT, S.A.S
+        info@profixgroup.io
+        R.U.C: 171918383001
+      </address>
+   
+      <address id="to">
+    {{order.building_name}}  
+    {{ order.email }}
+    R.U.C: {{ order.RUC2 }} 
+      </address>
+    </aside>
+
+    <dl id="informations" style="display:inline-block;">
+      <dt>Ciudad</dt>
+    <dd>Quito
+    </dd>
+    <dt>Fecha</dt>
+      <dd>{{ order.created|date:"M d, Y" }} </dd>
+      <dt>Cotización</dt>
+      <dd>{{ order.Codigo }}</dd>
+      <dt>Aprobado por</dt>
+      <dd>{{order.user_name}}</dd>
+    </dl>
+<h1>Cotización proyecto: {{order.Codigo}}</h1>
+<h3>{{ item.product.category }}</h3> 
+
+    <table>
+      <thead>
+        <tr>
+        <th>#</th>
+        <th>Item</th>
+          <th>Mantenimiento</th>
+          <th>Cantidad</th>
+          <th>Precio Unitario</th>
+          <th>Subtotal</th>
+          <th>I.V.A: 12%</th>
+          <th>Total</th>
+          <th>anticipo</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for item in order.items.all %} 
+        <td>{{ item.id }}</td>
+        <td>{{ item.name }}</td> 
+        <td> {{ item.invoice.category }}  </td>
+        <td> {{ item.quantity }} {{ item.invoice.Units }}  </td>
+        <td> {{ item.price|floatformat:2 }} $  </td>
+        <td> {{ item.Sub_total|floatformat:2 }} $</td>
+        <td> {{ invoice.Sub_Total_IVA|floatformat:2 }} $</td> 
+        <td> {{ invoice.Total|floatformat:2}} $</td>  
+        <td> {{ invoice.anticipo|floatformat:0 }} %  </td>
+      </tr>
+      {% endfor %}
+      </tr>
+     </tbody>
+    </table>
+
+    <table id="total">
+      <thead>
+        <tr>
+          <th style="background:#f6f6f6; color:#000; text-align:left;">Valores a pagar</th>
+          <th style="background:#f6f6f6; color:#000; text-align:left;">Información de la bancaria</th>
+          <th style="background:#f6f6f6; color:#000; text-align:left; ">Estado de Cotización</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr> 
+         
+          <td class="num"> Sub Total: $ {{ order.total}} </td>
+     
+          <td>Banco Internacional</td>
+          <td>Estado: {% if order.aprobe %}Aprobado{% else %}No aprobado{% endif %}</td>
+        </tr> 
+        <tr>
+        <td>I.V.A ( {{order.Iva2}}) % : $ {{ order.total_tax|floatformat:2 }}</td>
+          <td>C.T.A:708011138</td>
+          <td>válido hasta: {{ order.exp_date|date:"M d, Y"  }}</td>
+        </tr>
+         <tr> 
+         <td class="num">Total :$ {{ order.TOTAL|floatformat:2 }} </td>
+          <td>Cuenta de Ahorros</td>
+          <td>Última actualización: {{ order.updated|date:" M d, Y,H:m"  }}</td>
+        </tr>
+        <tr> 
+          <td class="num">Valor de Anticipo :  $ {{ order.anticipo_tota_cost_tax|floatformat:2 }}</td>
+          <td>profix group</td>
+          <td>Tiempo de ejecución de obra: {{order.dias}} días</td>
+          
+        </tr> 
+        <tr>
+        <td>
+        </td>
+        </tr>
+        <tr> 
+          <td style = "font-size:12px;font-weight: bold; color:#b60202;;"class="num">Valor a cancelar: $ {{ order.anticipo_tota_cost_tax|floatformat:2 }}</td>
+        </tr> 
+      </tbody>
+    
+    </table>
+
+   
+   
+  </body>
+</html>
+
+   

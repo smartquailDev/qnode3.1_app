@@ -1,0 +1,77 @@
+
+{% extends "DashBase.html" %}
+{% load i18n %}
+{% load static %}
+
+
+
+
+{% block content %}
+
+<section class="content">
+  <div class="card">
+    <div class="card-header">
+      <h4>{% block title %} Detalle de Mantenimiento a Cotizar{% endblock %}</h4>
+  <div class="card-tools">
+    <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
+      <i class="fas fa-minus"></i>
+    </button>
+    <button type="button" class="btn btn-tool" data-card-widget="remove" title="Remove">
+      <i class="fas fa-times"></i>
+    </button>
+  </div>
+</div>
+
+<div class="card-body">
+  <div class="card-body p-0">
+
+    <table class="table table-striped projects">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Cotización</th>
+            <th>Proyecto</th>
+            <th>Sub total</th>
+            <th>I.V.A: 12%</th>
+            <th>Total </th>
+            <th> Valor a pagar</th>
+            <th>Fecha de validez</th>
+            <th>Agregar a Proyecto</th>
+          </tr>
+        </thead>  
+          <tbody>
+             
+              <tr data-widget="expandable-table" aria-expanded="false" style="text-align:left;" >
+                <td>{{ invoice.id }}</td> 
+                <td>
+                
+                  <a href="{{ invoice.get_absolute_url }}">
+                  {{ invoice.Codigo}}  </a>
+             
+                </td>
+                <td>{{ invoice.coti }}</td>
+                <td>{{ invoice.total|floatformat:"2" }}</td>
+                <td>{{ invoice.total_tax|floatformat:"2" }} $</td>
+                <td> {{ invoice.TOTAL|floatformat:"2" }} $ </td>
+                <td style="color:rgb(248, 0, 0);"> {{ invoice.anticipo_tota_cost_tax|floatformat:"2" }} $</td>
+                <td> {{ invoice.exp_date|date:" M d, Y" }}</td>
+                <td> 
+                    
+                </td>
+              </tr>
+              
+            </tbody>
+        
+      </table>
+      <form action="{% url "edificio_2:cart_project_add" invoice.id %}" method="post">
+        {{ cart_project_form }}
+        {% csrf_token %}
+        <button type="submit" value="{% trans "Add to cart" %}" class="btn btn-default"><i class="fas  fa-plus"></i> Agregar Proyecto</button>
+      </form>
+      
+</div>
+</div>
+</div>
+</section>
+
+{% endblock %}

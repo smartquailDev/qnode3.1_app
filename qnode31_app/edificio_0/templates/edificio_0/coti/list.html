@@ -1,0 +1,77 @@
+
+{% extends "DashBase.html" %}
+{% load i18n %}
+{% load static %}
+{% load thumbnail %}
+{% load humanize %}
+
+
+
+
+{% block content %}
+
+
+  <div class="card">
+    <div class="card-header">
+      <h4>{% block title %} 
+        Lista de cotiaciones aprobadas.
+        {% endblock %}</h4>
+  <div class="card-tools">
+    <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
+      <i class="fas fa-minus"></i>
+    </button>
+    <button type="button" class="btn btn-tool" data-card-widget="remove" title="Remove">
+      <i class="fas fa-times"></i>
+    </button>
+  </div>
+</div>
+
+
+<div class="card-body">
+      
+  <div class="card-body p-0">
+    <table class="table table-striped projects">
+  <thead>
+    <tr>
+      <th>#</th>
+      <th>Cotización</th>
+      <th>Mantenimiento</th>
+      <th>Email</th>
+      <th>Valor total</th>
+      <th>Valor Anticipo</th>
+      <th>Fecha de Creación </th>
+      <th>Detalle</th>
+      <th>Estado</th>
+    </tr>
+  </thead>  
+    <tbody>
+      {% for invoice in invoices %} 
+    <tr data-widget="expandable-table" aria-expanded="false" style="text-align:left;" >
+    
+  
+      <td>{{ invoice.id }}</td>
+      <td>{{ invoice.Codigo }}</td> 
+      <td> {{ invoice.category }}  </td>
+      <td>
+        <a href="{{ invoice.get_absolute_url }}">
+        {{ invoice.email }}
+      </a></td>
+      <td> {{ invoice.total|floatformat:2 }} $</td>
+      <td> {{ invoice.get_total_cost|floatformat:2 }} $</td>  
+      <td>{{ invoice.created}}</td>
+      <td> {{ invoice.coti_order_pdf }}</td>
+      {% if invoice.aprobe == True %}
+      <td><i class="fa fa-check"></i></td> 
+      {% else %}
+      <td><i class="fa  fa-xmark"></i></td> 
+      {% endif %}
+    </tr>
+   
+  </tbody>
+  {% endfor %}
+</table>
+</div>
+</div>
+</div>
+{% endblock %}
+

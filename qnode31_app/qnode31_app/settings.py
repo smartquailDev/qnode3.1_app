@@ -99,6 +99,7 @@ INSTALLED_APPS = [
     'coupons',
     'edificio_1',
     'edificio_2',
+    'edificio_0',
     #'HOMEDETAIL',
     #'ordenes_servicios',
     'payment',
@@ -223,6 +224,10 @@ BATON = {
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 #Ecommerce App
+
+CART_SESSION_ID_0 = 'edificio_0.cart'
+CART_PAY_SESSION_ID_0 = 'edificio_0.cart_pay'
+
 CART_SESSION_ID = 'edificio_2.cart'
 CART_PAY_SESSION_ID = 'edificio_2.cart_pay'
 
@@ -361,7 +366,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'America/Guayaquil'
 
 USE_I18N = True
 

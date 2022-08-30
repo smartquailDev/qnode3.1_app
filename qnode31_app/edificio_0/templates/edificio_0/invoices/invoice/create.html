@@ -1,0 +1,153 @@
+
+{% extends "DashBase.html" %}
+{% load static %}
+{% block content %}
+{% load widget_tweaks %}
+{% load humanize %}
+
+    <section class="content">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-12">
+           
+
+
+            <!-- Main content -->
+            <div class="invoice p-3 mb-3">
+              <!-- title row -->
+              <div class="row">
+             
+                <!-- /.col -->
+              </div>
+              <!-- info row -->
+             
+              <!-- /.row -->
+
+              <!-- Table row -->
+              <div class="row">
+                <div class="col-12 table-responsive">
+                  <table class="table table-striped">
+                    <thead>
+                      <tr>
+                        <th>Mantenimiento</th>
+                        <th>Proyecto</th>
+                        <th>Cantidad</th>
+                        <th>Costo Unitario</th>
+                        <th>Sub Total</th>
+                        <th>I.V.A:12%</th>
+                        <th>Total</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {% for item in cart %}
+                     {% with invoice=item.invoice %}
+                    <tr>
+                      <td>{{item.invoice.category}}</td>
+                      <td>{{ item.invoice.name }}</td>
+                      <td>{{ item.invoice.quantity }} {{ item.invoice.Units }}</td>
+                      <td class="num">{{ item.price|floatformat:2  }} $</td>
+                      <td>{{ item.invoice.Sub_total|floatformat:"2" }} $</td>
+                      <td>{{ item.invoice.Sub_Total_IVA|floatformat:"2" }} $</td>
+                      <td>{{ item.invoice.Total|floatformat:"2" }} $ </td>
+                    </tr>
+                    </tbody>
+                    {% endwith %}
+                    {% endfor %}
+                  </table>
+                </div>
+                <!-- /.col -->
+              </div>
+              <!-- /.row -->
+
+              <div class="row">
+                <!-- accepted payments column -->
+                <div class="col-6">
+                  <p class="lead">Formulario de aprobación::</p>
+                  <p class="text-muted well well-sm shadow-none" style="margin-top: 10px;">
+                    Porfavor llene el siguiente formulario para verificar la aprobación de su cotización. 
+                  </p>
+                  <form action="." method="post" novalidate>
+                    {% csrf_token %}
+                    {% for hidden_field in form.hidden_fields %}
+                      {{ hidden_field }}
+                    {% endfor %}
+                  
+                    {% if form.non_field_errors %}
+                      <div class="alert alert-danger" role="alert">
+                        {% for error in form.non_field_errors %}
+                          {{ error }}
+                        {% endfor %}
+                      </div>
+                    {% endif %}
+                  
+                    {% for field in form.visible_fields %}
+                      <div class="form-group">
+                        {{ field.label_tag }}
+                  
+                        {% if form.is_bound %}
+                          {% if field.errors %}
+                            {% render_field field class="form-control is-invalid" %}
+                            {% for error in field.errors %}
+                              <div class="invalid-feedback">
+                                {{ error }}
+                              </div>
+                            {% endfor %}
+                          {% else %}
+                            {% render_field field class="form-control is-valid" %}
+                          {% endif %}
+                        {% else %}
+                          {% render_field field class="form-control" %}
+                        {% endif %}
+                  
+                        {% if field.help_text %}
+                          <small class="form-text text-muted">{{ field.help_text }}</small>
+                        {% endif %}
+                      </div>
+                    {% endfor %}    
+                  <button type="submit" class="btn btn-secondary float-center"><i class="fas fa-check"></i> Aprobar Cotización </button>                           
+                  </form>
+
+                  
+                </div>
+                <!-- /.col -->
+                <div class="col-6">
+                  <p class="lead">Montos cotizados</p>
+
+                  <div class="table-responsive">
+                    <table class="table">
+                      <tr>
+                        <th>Subtotal:</th>
+                        <td>${{ cart.total_price|floatformat:"2" }}</td>
+                      </tr>
+                      <tr>
+                        <th>I.V.A (12%)</th>
+                        <td>${{ cart.subtotal_iva|floatformat:"2" }}</td>
+                      </tr>
+                      <tr>
+                        <th >Valor Total:</th>
+                        <td>${{ cart.Total|floatformat:"2" }}</td>
+                      </tr>
+                      <tr>
+                        <th>Valor total de anticipos:</th>
+                        <td>{{ cart.anticipos_final|floatformat:"2" }} $</td>
+                      </tr>
+                    </table>
+                  </div>
+                </div>
+                <!-- /.col -->
+              </div>
+              <!-- /.row -->
+
+              <!-- this row will not appear when printing -->
+             
+            </div>
+            <!-- /.invoice -->
+          </div><!-- /.col -->
+        </div><!-- /.row -->
+      </div><!-- /.container-fluid -->
+    </section>
+    <!-- /.content -->
+  </div>
+  <!-- /.content-wrapper -->
+
+{% endblock %}
