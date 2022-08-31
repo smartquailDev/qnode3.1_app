@@ -31,9 +31,7 @@ class Cart_Pay(object):
 
         for item in cart.values():
             item['price1'] = item['price1']
-            item['price2'] = item['price2']
             item ['quantity'] = item['quantity']
-            
 
 
             yield item
@@ -51,7 +49,7 @@ class Cart_Pay(object):
         invoice_id = str(invoice.id)
         if invoice_id not in self.cart:
             self.cart[invoice_id] = {'quantity': 0,
-                                       'price1': str(invoice.price1),'price2': str(invoice.price2)}
+                                       'price1': str(invoice.price1)}
         if update_quantity:
             self.cart[invoice_id]['quantity'] = quantity
         else:

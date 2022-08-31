@@ -36,4 +36,6 @@ urlpatterns = [
     path('done/', views.payment_done, name='done'),
     path('canceled/', views.payment_canceled, name='canceled'),
 
+    path('project_list/', views.project_list, name='project_list'), 
+
 ]

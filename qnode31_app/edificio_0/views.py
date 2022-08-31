@@ -339,3 +339,17 @@ def payment_canceled(request):
     return render(request, 'payment/canceled.html')
 
 
+def project_list(request, category_slug=None):
+    category = None
+    categories = Category.objects.all()
+    invoices =  Project_Order.objects.filter(aprobe=True)
+    if category_slug:
+        category = get_object_or_404(Category, slug=category_slug)
+        invoices = invoices.filter(category=category)
+    return render(request, 
+        'edificio_0/project/list.html',  
+        {'category':category,
+        'categories':categories,
+        'invoices': invoices})
+
+

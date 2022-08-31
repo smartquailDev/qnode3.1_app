@@ -485,7 +485,8 @@ a:focus {
   padding: 30px 25px;
   font-size: 16px;
   line-height: 18px;
-  color: #999;
+  color: #000;
+
 }
 .navbar-default .navbar-nav > li > a > i {
   display: inline-block;
@@ -500,8 +501,8 @@ a:focus {
 .navbar-default .navbar-nav > li.active:hover > a:focus,
 .navbar-default .navbar-nav > li:hover > a:focus,
 .navbar-default .navbar-nav > li:focus > a:focus {
-  background-color: #52b6ec;
-  color: #fff;
+  background-color: #c3c4ca;
+color: #bc3624;
 }
 .icon-lg {
   font-size: 48px;

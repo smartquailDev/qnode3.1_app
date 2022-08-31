@@ -69,7 +69,7 @@ class Cotizacion(models.Model):
     iva= models.IntegerField(default=12,validators=[MinValueValidator(0),MaxValueValidator(100)])
     quantity = models.PositiveIntegerField(default=1,null=True)
     updated_a = models.DateTimeField(auto_now=True,verbose_name='Fecha de última actualización de anticipo',null=True)
-    anticipo = models.PositiveIntegerField(default=50,verbose_name='Anticipo',null=True)
+   # anticipo = models.PositiveIntegerField(default=50,verbose_name='Anticipo',null=True)
     #coupon = models.ForeignKey(Coupon,
                                #related_name='projects',
                                #null=True,
@@ -150,7 +150,7 @@ class Coti_Order(models.Model):
     price1 = models.DecimalField(max_digits=1000, decimal_places=2,null=True)
     price2 = models.DecimalField(max_digits=10000, decimal_places=2,null=True)
     price3 = models.DecimalField(max_digits=10000, decimal_places=2,null=True)
-    anticipo = models.PositiveIntegerField(default=50,verbose_name='Anticipo',null=True)
+  
 
     Iva2 = models.PositiveSmallIntegerField(default=12)
     code= models.CharField(max_length=1000000,blank=True)
@@ -335,7 +335,7 @@ class Project_Order(models.Model):
 
     def project_order_pdf(obj):
         return mark_safe('<a href="{}"><i class="fa fa-file"></i></a>'.format(
-            reverse('edificio_2:admin_project_order_pdf', args=[obj.id])))
+            reverse('edificio_0:admin_project_order_pdf', args=[obj.id])))
         coti_order_pdf.short_description = 'Project_Invoice'
 
     #def __str__(self):
@@ -386,7 +386,7 @@ class Project_Order(models.Model):
         return pago_pendiente 
 
     def get_absolute_url(self):
-        return reverse('edificio_2:project_detail',args=[self.id,self.slug])
+        return reverse('edificio_0:project_detail',args=[self.id,self.slug])
 
 
 class Project_OrderItem(models.Model):
